@@ -36,7 +36,7 @@ const choiceGroups={
 ["Hypertension","History of hypertension","No history of hypertension"],
 ["Diabetes","History of diabetes","No history of diabetes"],
 ["Drug allergies","History of drug allergies","No known drug allergies"],
-["Osteoarthritis","Osteoarthritis of","No history of osteoarthritis"],["Smoking status","Smoker","Non-smoker"],["Smoking cessation","Ex-smoker","Never smoked"],["Inflammatory joint disease","Evidence of inflammatory joint disease noted on","No evidence of inflammatory joint disease noted on"],["Personal cancer","History of cancer","No history of cancer"],["Family inflammatory bowel disease","Family history of ulcerative colitis or Crohn\'s disease","No family history of ulcerative colitis or Crohn\'s disease"],["BMI","Normal BMI","Increased BMI"],["Renal function","Normal renal function","Renal dysfunction"]
+["Osteoarthritis","Osteoarthritis of","No history of osteoarthritis"],["Smoking status","Smoker","Non-smoker"],["Inflammatory joint disease","Evidence of inflammatory joint disease noted on","No evidence of inflammatory joint disease noted on"],["Personal cancer","History of cancer","No history of cancer"],["Family inflammatory bowel disease","Family history of ulcerative colitis or Crohn\'s disease","No family history of ulcerative colitis or Crohn\'s disease"],["BMI","Normal BMI","Increased BMI"],["Renal function","Normal renal function","Renal dysfunction"]
 ],
 "History":[["Joint swelling","History of joint swelling","No history of joint swelling"],["Sleep disturbance","History of sleep disturbance","No history of sleep disturbance"]],
 "Systems Review":[["Raynaud's","History of Raynaud's phenomenon","No history of Raynaud's phenomenon"],["Iritis","History of iritis","No history of iritis"],["Inflammatory bowel disease","History of inflammatory bowel disease","No history of inflammatory bowel disease"],["Mouth ulcers","History of mouth ulcers","No history of mouth ulcers"],["DVT / PE","History of DVT / PE","No history of DVT / PE"]],
@@ -45,7 +45,7 @@ const choiceGroups={
 
 const extended={
 "Diagnosis List":[
-["Decreased BMI","Decreased BMI noted on"],
+["Decreased BMI","Decreased BMI noted on"],["Ex-smoker","Ex-smoker (smoking cessation advice given on)"],
 ["Flu vaccination","Annual influenza vaccination advised / confirmed"],
 ["Pneumococcal vaccination","Pneumococcal vaccination (Pneumovax) advised / confirmed as indicated"],
 ["COVID-19 vaccination","COVID-19 vaccination advised / confirmed"],
@@ -86,12 +86,12 @@ function initExtra(){for(const section of Object.keys(extended))for(const [id] o
 function extendedUI(section){
 let a=extended[section]||[];let html=a.length?'<h4>Additional selectable items</h4>':'';
 for(const [id,label] of a){const k=section+'::'+id,st=extraState[k]||{on:false,note:''};
-html+='<div class="line"><label><input type="checkbox" '+(st.on?'checked':'')+' onchange="extraToggle('+JSON.stringify(k).replace(/"/g,'&quot;')+',this.checked)"> '+esc(label)+'</label><textarea '+(st.on?'':'hidden')+' placeholder="Optional date, result, site or other detail" oninput="extraNote('+JSON.stringify(k).replace(/"/g,'&quot;')+',this.value)">'+esc(st.note)+'</textarea></div>';}
+html+='<div class="line"><label><input type="checkbox" '+(st.on?'checked':'')+' onchange="extraToggle('+JSON.stringify(k).replace(/"/g,'&quot;')+',this.checked,this)"> '+esc(label)+'</label><textarea '+(st.on?'':'hidden')+' placeholder="Optional date, result, site or other detail" oninput="extraNote('+JSON.stringify(k).replace(/"/g,'&quot;')+',this.value)">'+esc(st.note)+'</textarea></div>';}
 if(section==='Medications')html+=medicationUI();
 if(section==='History / Examination'||section==='Interval History')html+='<p class="muted">Use the free-text field below for dictated or typed examination findings.</p>';
 return html;
 }
-function extraToggle(key,on){extraState[key].on=on;let el=event.target.closest('.line').querySelector('textarea');el.hidden=!on;preview()}
+function extraToggle(key,on,input){extraState[key].on=on;let el=input.closest('.line').querySelector('textarea');el.hidden=!on;preview()}
 function extraNote(key,value){extraState[key].note=value;preview()}
 function extraLines(section){return (extended[section]||[]).filter(([id])=>extraState[section+'::'+id]?.on).map(([id,label])=>label+(extraState[section+'::'+id].note.trim()?': '+extraState[section+'::'+id].note.trim():''))}
 function medicationUI(){return '<h4>Medication list</h4><button onclick="addMedication()">+ Add medication</button>'+meds.map((m,i)=>'<div class="line"><div class="row"><label><input type="checkbox" '+(m.on?'checked':'')+' onchange="medChange('+i+',\'on\',this.checked)"> Include</label><button class="x" onclick="removeMedication('+i+')">X</button></div>'+[['generic','Generic drug'],['brand','Brand (if applicable)'],['strength','Strength'],['dose','Prescribed dose'],['frequency','Frequency (e.g. OD, nocte, twice daily)'],['history','Previous use / response / adverse effects']].map(([key,lab])=>'<label>'+lab+'<input style="width:100%" value="'+esc(m[key]||'')+'" oninput="medChange('+i+',\''+key+'\',this.value)"></label>').join('')+'</div>').join('')}
