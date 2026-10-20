@@ -63,8 +63,8 @@ const extended={
 "Management":[
 ["Routine blood tests","I have ordered routine blood tests including FBC, U&E, eGFR, LFTs, CRP and ESR"],
 ["Quantiferon","I have ordered a Quantiferon test"],
-["Fibromyalgia mimic screen","I have ordered a fibromyalgia mimic screen including FBC, U&E, eGFR, LFTs, CRP and ESR"],
-["Calcium","Calcium"],["Phosphate","Phosphate"],["Vitamin D","Vitamin D"],["PTH","PTH"],["CK","CK"],["Cholesterol","Cholesterol"],["Glucose","Glucose"],["HbA1c","HbA1c"],["Prolactin","Prolactin"],["TFTs","TFTs"],["Ferritin","Ferritin"],["Iron studies","Iron studies"],["B12","Vitamin B12"],["Folate","Folate"],["IgA","IgA"],["tTG","Tissue transglutaminase (tTG)"],["HLA-B27","HLA-B27"],["ANCA","ANCA"],["ANA","ANA"],["Rheumatoid factor","Rheumatoid factor"],["Anti-CCP","Anti-CCP"],["Serum urate","Serum urate"],["BNP","BNP"],["Immunoglobulins","Immunoglobulins"],["C3","C3"],["C4","C4"],["Anticardiolipin antibodies","Anticardiolipin antibodies"],["Beta-2 glycoprotein I","Beta-2 glycoprotein I antibodies"],["Lyme disease","Lyme disease serology"],["HIV","HIV test"],["HSV","HSV test"],["CA-125","CA-125"],["PSA","PSA"],["VZV immune status","VZV immune status"],["Hepatitis B","Hepatitis B serology"],["Hepatitis C","Hepatitis C serology"],["Anti-HBc","Anti-hepatitis B core antibody"],["Parvovirus IgM","Parvovirus IgM"],["EBV IgM","EBV IgM"],["CMV IgM","CMV IgM"],["Cardiovascular risk profile","Cardiovascular risk profile"],["Random lipids","Random lipid profile"],
+["Fibromyalgia mimic screen","I have ordered a fibromyalgia mimic screen"],["FBC","FBC"],["U&E","U&E"],["eGFR","eGFR"],["LFTs","LFTs"],["CRP","CRP"],["ESR","ESR"],["ENA","ENA"],["ASOT","ASOT"],
+["Calcium","Calcium"],["Phosphate","Phosphate"],["Vitamin D","Vitamin D"],["PTH","PTH"],["CK","CK"],["Cholesterol","Cholesterol"],["Glucose","Glucose"],["HbA1c","HbA1c"],["Prolactin","Prolactin"],["TFTs","TFTs"],["Ferritin","Ferritin"],["Iron studies","Iron studies"],["B12","Vitamin B12"],["Folate","Folate"],["IgA tTG","IgA tTG"],["HLA-B27","HLA-B27"],["ANCA","ANCA"],["ANA","ANA"],["Rheumatoid factor","Rheumatoid factor"],["Anti-CCP","Anti-CCP"],["Serum urate","Serum urate"],["BNP","BNP"],["Immunoglobulins","Immunoglobulins"],["C3","C3"],["C4","C4"],["Anticardiolipin antibodies","Anticardiolipin antibodies"],["Beta-2 glycoprotein I","Beta-2 glycoprotein I antibodies"],["Lyme disease","Lyme disease serology"],["HIV","HIV test"],["HSV","HSV test"],["CA-125","CA-125"],["PSA","PSA"],["VZV immune status","VZV immune status"],["Hepatitis B","Hepatitis B serology"],["Hepatitis C","Hepatitis C serology"],["Anti-HBc","Anti-hepatitis B core antibody"],["Parvovirus IgM","Parvovirus IgM"],["EBV IgM","EBV IgM"],["CMV IgM","CMV IgM"],["Cardiovascular risk profile","Cardiovascular risk profile"],["Random lipids","Random lipid profile"],
 ["Bilateral hands X-ray","I have ordered bilateral hand X-rays"],["Bilateral feet X-ray","I have ordered bilateral foot X-rays"],["Pelvis X-ray","I have ordered a pelvis X-ray"],["Chest X-ray","I have ordered a chest X-ray"],
 ["DXA","I have ordered a DXA scan to assess bone mineral density from Regional Hospital Mullingar (estimated waiting time up to 12 months; verify locally)"],
 ["Isotope bone scan","I have ordered an isotope bone scan with dedicated views of the hands and feet from the Nuclear Medicine Department, MRH Tullamore (estimated waiting time up to 6 months; verify locally)"],
@@ -546,8 +546,15 @@ const managementGroups=[
  ['Follow-up and discharge',/review|follow-up|discharg/i],
  ['Other management',/.*/]
 ];
-function managementGroup(label){if(/24-hour\s*(?:bp|blood pressure)|ambulatory blood pressure monitoring/i.test(label))return 'Other diagnostic investigations';return managementGroups.find(([name,re])=>re.test(label))[0]}
-function managementToggle(key,on){extraState[key].on=on;render();}
+function managementGroup(label){if(/^(?:FBC|U&E|eGFR|LFTs|CRP|ESR|ENA|ASOT|IgA tTG)\b/i.test(label))return 'Blood tests and laboratory screening';if(/24-hour\s*(?:bp|blood pressure)|ambulatory blood pressure monitoring/i.test(label))return 'Other diagnostic investigations';return managementGroups.find(([name,re])=>re.test(label))[0]}
+const fibromyalgiaMimicTests=["FBC","U&E","eGFR","LFTs","CRP","ESR","Calcium","Phosphate","Vitamin D","PTH","CK","Glucose","HbA1c","Prolactin","TFTs","Ferritin","Iron studies","B12","Folate","IgA tTG","HLA-B27","ANA","ENA","Rheumatoid factor","Anti-CCP","Serum urate","BNP","Immunoglobulins","ANCA","C3","C4","Anticardiolipin antibodies","Beta-2 glycoprotein I","Lyme disease","HIV","ASOT","CA-125","PSA","VZV immune status","Hepatitis B","Hepatitis C","Anti-HBc","Parvovirus IgM","EBV IgM","CMV IgM"];
+function managementToggle(key,on){
+ if(key==='Management::Fibromyalgia mimic screen'){
+  extraState[key].on=on;
+  for(const id of fibromyalgiaMimicTests){const testKey='Management::'+id;if(extraState[testKey])extraState[testKey].on=on;}
+ }else{extraState[key].on=on;}
+ render();
+}
 const collapsibleManagementGroups=new Set(['Blood tests and laboratory screening','Urinalysis and urine studies','Radiology and imaging','Other diagnostic investigations','Aids, splints and orthotics','Allied health and specialist referrals']);
 const openManagementGroups=new Set();
 function rememberManagementGroup(el){if(el.open)openManagementGroups.add(el.dataset.managementGroup);else openManagementGroups.delete(el.dataset.managementGroup);}
