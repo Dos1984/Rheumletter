@@ -550,7 +550,7 @@ function managementGroup(label){if(/24-hour\s*(?:bp|blood pressure)|ambulatory b
 function managementToggle(key,on){extraState[key].on=on;render();}
 function managementUI(sectionBlocks,makeBlock,addUI){
  const choices=extended.Management||[];
- let html=treatmentPlanUI()+'<h3>Other management interventions</h3><p class="muted">Select only interventions actually requested or provided. Each selected item can have additional typed or dictated details.</p>';
+ let html='<p class="muted">Select only interventions actually requested or provided. Each selected item can have additional typed or dictated details.</p>';
  for(const [heading] of managementGroups){
   const entries=choices.filter(([id,label])=>managementGroup(id+' '+label)===heading);
   const templates=sectionBlocks.filter(b=>managementGroup(b.text)===heading);
@@ -565,6 +565,7 @@ function managementUI(sectionBlocks,makeBlock,addUI){
   if(templates.length)html+='<details class="management-templates"><summary>Additional editable template statements ('+templates.length+')</summary>'+templates.map(makeBlock).join('')+'</details>';
   if(heading==='Other management')html+=addUI;
   html+='</div>';
+  if(heading==='Allied health and specialist referrals')html+=treatmentPlanUI();
  }
  return html;
 }
