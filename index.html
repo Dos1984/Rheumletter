@@ -549,11 +549,28 @@ const managementGroups=[
 function managementGroup(label){if(/^(?:FBC|U&E|eGFR|LFTs|CRP|ESR|ENA|ASOT|IgA tTG)\b/i.test(label))return 'Blood tests and laboratory screening';if(/24-hour\s*(?:bp|blood pressure)|ambulatory blood pressure monitoring/i.test(label))return 'Other diagnostic investigations';return managementGroups.find(([name,re])=>re.test(label))[0]}
 const fibromyalgiaMimicTests=["FBC","U&E","eGFR","LFTs","CRP","ESR","Calcium","Phosphate","Vitamin D","PTH","CK","Glucose","HbA1c","Prolactin","TFTs","Ferritin","Iron studies","B12","Folate","IgA tTG","HLA-B27","ANA","ENA","Rheumatoid factor","Anti-CCP","Serum urate","BNP","Immunoglobulins","ANCA","C3","C4","Anticardiolipin antibodies","Beta-2 glycoprotein I","Lyme disease","HIV","ASOT","CA-125","PSA","VZV immune status","Hepatitis B","Hepatitis C","Anti-HBc","Parvovirus IgM","EBV IgM","CMV IgM"];
 function managementToggle(key,on){
- if(key==='Management::Fibromyalgia mimic screen'){
-  extraState[key].on=on;
-  for(const id of fibromyalgiaMimicTests){const testKey='Management::'+id;if(extraState[testKey])extraState[testKey].on=on;}
- }else{extraState[key].on=on;}
- render();
+ const affected=key==='Management::Fibromyalgia mimic screen'?[key,...fibromyalgiaMimicTests.map(id=>'Management::'+id)]:[key];
+ for(const testKey of affected){
+  if(!extraState[testKey])extraState[testKey]={on:false,note:''};
+  extraState[testKey].on=on;
+ }
+ document.querySelectorAll('.management-item').forEach(row=>{
+  const checkbox=row.querySelector('input[type="checkbox"][data-management-key]');
+  if(!checkbox||!affected.includes(checkbox.dataset.managementKey))return;
+  checkbox.checked=on;
+  checkbox.closest('.choice-option')?.classList.toggle('selected',on);
+  let detail=row.querySelector('.management-detail-label');
+  if(on&&!detail){
+   detail=document.createElement('label');detail.className='management-detail-label';
+   detail.textContent='Additional information';
+   const field=document.createElement('textarea');field.rows=3;
+   field.placeholder='Type additional clinical information or select Dictate';
+   field.value=extraState[checkbox.dataset.managementKey].note||'';
+   field.addEventListener('input',()=>extraNote(checkbox.dataset.managementKey,field.value));
+   detail.appendChild(field);row.appendChild(detail);
+  }else if(!on&&detail){detail.remove();}
+ });
+ attachDictationButtons();preview();
 }
 const collapsibleManagementGroups=new Set(['Blood tests and laboratory screening','Urinalysis and urine studies','Radiology and imaging','Other diagnostic investigations','Aids, splints and orthotics','Allied health and specialist referrals']);
 const openManagementGroups=new Set();
@@ -569,7 +586,7 @@ function managementUI(sectionBlocks,makeBlock,addUI){
   html+=collapsible?'<details class="history-group management-group management-collapsible" data-management-group="'+esc(heading)+'" ontoggle="rememberManagementGroup(this)" '+(openManagementGroups.has(heading)?'open':'')+'><summary>▸ '+esc(heading)+' ('+(entries.length+templates.length)+')</summary>':'<div class="history-group management-group"><h4>'+esc(heading)+'</h4>';
   for(const [id,label] of entries){
    const k='Management::'+id,st=extraState[k]||{on:false,note:''};
-   html+='<div class="line management-item"><label class="choice-option '+(st.on?'selected':'')+'"><input type="checkbox" '+(st.on?'checked':'')+' onchange="managementToggle('+JSON.stringify(k).replace(/"/g,'&quot;')+',this.checked)"> '+esc(label)+'</label>';
+   html+='<div class="line management-item"><label class="choice-option '+(st.on?'selected':'')+'"><input type="checkbox" data-management-key="'+esc(k)+'" '+(st.on?'checked':'')+' onchange="managementToggle('+JSON.stringify(k).replace(/"/g,'&quot;')+',this.checked)"> '+esc(label)+'</label>';
    if(st.on)html+='<label class="management-detail-label">Additional information<textarea rows="3" aria-label="Additional information for '+esc(id)+'" placeholder="Type additional clinical information or select Dictate" oninput="extraNote('+JSON.stringify(k).replace(/"/g,'&quot;')+',this.value)">'+esc(st.note)+'</textarea></label>';
    html+='</div>';
   }
