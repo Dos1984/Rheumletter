@@ -531,6 +531,7 @@ const managementGroups=[
  ['Other management',/.*/]
 ];
 function managementGroup(label){return managementGroups.find(([name,re])=>re.test(label))[0]}
+function managementToggle(key,on){extraState[key].on=on;render();}
 function managementUI(sectionBlocks,makeBlock,addUI){
  const choices=extended.Management||[];
  let html='<p class="muted">Select only interventions actually requested or provided. Each selected item can have additional typed or dictated details.</p>';
@@ -541,8 +542,8 @@ function managementUI(sectionBlocks,makeBlock,addUI){
   html+='<div class="history-group management-group"><h4>'+esc(heading)+'</h4>';
   for(const [id,label] of entries){
    const k='Management::'+id,st=extraState[k]||{on:false,note:''};
-   html+='<div class="line management-item"><label class="choice-option '+(st.on?'selected':'')+'"><input type="checkbox" '+(st.on?'checked':'')+' onchange="extraToggle('+JSON.stringify(k).replace(/"/g,'&quot;')+',this.checked,this)"> '+esc(label)+'</label>';
-   if(st.on)html+='<textarea placeholder="Optional clinical details" oninput="extraNote('+JSON.stringify(k).replace(/"/g,'&quot;')+',this.value)">'+esc(st.note)+'</textarea>';
+   html+='<div class="line management-item"><label class="choice-option '+(st.on?'selected':'')+'"><input type="checkbox" '+(st.on?'checked':'')+' onchange="managementToggle('+JSON.stringify(k).replace(/"/g,'&quot;')+',this.checked)"> '+esc(label)+'</label>';
+   if(st.on)html+='<label class="management-detail-label">Additional information<textarea rows="3" aria-label="Additional information for '+esc(id)+'" placeholder="Type additional clinical information or select Dictate" oninput="extraNote('+JSON.stringify(k).replace(/"/g,'&quot;')+',this.value)">'+esc(st.note)+'</textarea></label>';
    html+='</div>';
   }
   if(templates.length)html+='<details class="management-templates"><summary>Additional editable template statements ('+templates.length+')</summary>'+templates.map(makeBlock).join('')+'</details>';
