@@ -525,9 +525,9 @@ function treatmentPlanToggle(key,checked){const item=treatmentPlanState[key]||(t
 function treatmentPlanNote(key,value){treatmentPlanState[key].note=value;preview();}
 function treatmentPlanLines(){return treatmentPlanGroups.flatMap(([group,items])=>items.filter(([key])=>treatmentPlanState[key]?.on).map(([key,statement])=>statement+(treatmentPlanState[key].note.trim()?' '+treatmentPlanState[key].note.trim():'')));}
 function treatmentPlanUI(){
- let html='<div class="history-group treatment-plan"><h3>Treatment Plan and Advice</h3><p class="muted">Options transcribed from the supplied template. Select only actions actually undertaken or agreed. Doses and monitoring schedules are historical template wording, not prescribing recommendations; verify drug, dose, contraindications, monitoring and local guidance before signing.</p>';
+ let html='<div class="history-group treatment-plan" id="treatment-plan"><h3>Treatment Plan and Advice — 66 selectable options</h3><p class="muted">Options transcribed from the supplied template. Select only actions actually undertaken or agreed. Doses and monitoring schedules are historical template wording, not prescribing recommendations; verify drug, dose, contraindications, monitoring and local guidance before signing.</p>';
  for(const [group,items] of treatmentPlanGroups){
- html+='<details class="treatment-category"><summary>'+esc(group)+'</summary>';
+ html+='<details class="treatment-category"><summary>'+esc(group)+' ('+items.length+' options)</summary>';
  for(const [key,statement] of items){const state=treatmentPlanState[key]||{on:false,note:''};html+='<div class="line treatment-row '+(state.on?'active':'')+'" data-treatment-key="'+esc(key)+'"><label class="choice-option"><input type="checkbox" '+(state.on?'checked':'')+' onchange="treatmentPlanToggle('+JSON.stringify(key).replace(/"/g,'&quot;')+',this.checked)"> '+esc(key)+'</label><p class="treatment-statement">'+esc(statement)+'</p><div class="treatment-detail" '+(state.on?'':'hidden')+'><label>Additional information<textarea rows="3" placeholder="Add details or dictate into this field" oninput="treatmentPlanNote('+JSON.stringify(key).replace(/"/g,'&quot;')+',this.value)">'+esc(state.note)+'</textarea></label></div></div>';}
  html+='</details>';
  }
@@ -550,7 +550,7 @@ function managementGroup(label){return managementGroups.find(([name,re])=>re.tes
 function managementToggle(key,on){extraState[key].on=on;render();}
 function managementUI(sectionBlocks,makeBlock,addUI){
  const choices=extended.Management||[];
- let html='<p class="muted">Select only interventions actually requested or provided. Each selected item can have additional typed or dictated details.</p>';
+ let html=treatmentPlanUI()+'<h3>Other management interventions</h3><p class="muted">Select only interventions actually requested or provided. Each selected item can have additional typed or dictated details.</p>';
  for(const [heading] of managementGroups){
   const entries=choices.filter(([id,label])=>managementGroup(id+' '+label)===heading);
   const templates=sectionBlocks.filter(b=>managementGroup(b.text)===heading);
@@ -566,13 +566,14 @@ function managementUI(sectionBlocks,makeBlock,addUI){
   if(heading==='Other management')html+=addUI;
   html+='</div>';
  }
- return html+treatmentPlanUI();
+ return html;
 }
 
+function openTreatmentPlan(){const el=[...document.querySelectorAll('#sections details')].find(d=>d.dataset.section==='Management');if(el){el.open=true;requestAnimationFrame(()=>document.getElementById('treatment-plan')?.scrollIntoView({behavior:'smooth',block:'start'}));}}
 function openClinicalTab(name){const el=[...document.querySelectorAll('#sections details')].find(d=>d.dataset.section===name);if(el){el.open=true;el.scrollIntoView({behavior:'smooth',block:'start'});}}
 function render(){
  const opened=[...document.querySelectorAll('#sections details')].filter(d=>d.open).map(d=>d.dataset.section);
- let html='<nav class="clinical-tabs" aria-label="Clinical sections"><button type="button" class="secondary" onclick="openClinicalTab(\'History\')">History</button><button type="button" class="secondary" onclick="openClinicalTab(\'Interval History\')">Interval History</button><button type="button" class="secondary" onclick="openClinicalTab(\'Examination\')">Examination</button></nav>';
+ let html='<nav class="clinical-tabs" aria-label="Clinical sections"><button type="button" onclick="openTreatmentPlan()">Treatment Plan and Advice (66)</button><button type="button" class="secondary" onclick="openClinicalTab(\'History\')">History</button><button type="button" class="secondary" onclick="openClinicalTab(\'Interval History\')">Interval History</button><button type="button" class="secondary" onclick="openClinicalTab(\'Examination\')">Examination</button></nav>';
  for(const section of Object.keys(data[$('mode').value])){
   html+='<details data-section="'+esc(section)+'" '+(opened.includes(section)?'open':'')+'><summary>'+esc(section)+'</summary><div>'+
   (section==='Medications'?'<div class="medication-editor">'+medicationUI()+'</div>':section==='Investigations'?investigationScanUI():'');
