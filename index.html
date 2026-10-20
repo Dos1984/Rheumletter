@@ -436,36 +436,45 @@ function updateJointSummary(){
  }
 }
 function jointMap(kind){
- // Responsive vector mannequin: all selectable points retain their stable anatomical keys.
- const points=[['Shoulder',104,130,11],['Elbow',76,202,10],['Wrist',49,259,10],['Hip',140,283,11],['Knee',140,407,12],['Ankle',129,539,11],
- ['CMC thumb',21,275,6],['MCP 1',13,291,6],['MCP 2',26,291,6],['MCP 3',36,291,6],['MCP 4',46,291,6],['MCP 5',54,290,6],
- ['PIP 1',9,303,5],['PIP 2',23,309,5],['PIP 3',33,312,5],['PIP 4',43,313,5],['PIP 5',52,309,5],
- ['DIP 2',23,329,5],['DIP 3',33,332,5],['DIP 4',43,331,5],['DIP 5',52,324,5],
- ['MTP 1',83,557,7],['MTP 2',95,561,6],['MTP 3',106,562,6],['MTP 4',117,563,6],['MTP 5',128,562,6]];
+ // Joint centres and anatomical drawing use the SAME 320 x 600 SVG coordinate system.
+ // Patient right is displayed on the viewer's left.
+ const points=[
+ ['Shoulder',100,126,9],['Elbow',79,196,8],['Wrist',55,256,8],
+ ['Hip',144,293,9],['Knee',142,407,9],['Ankle',132,528,8],
+ ['CMC thumb',44,275,5],['MCP 1',35,287,4.6],
+ ['MCP 2',49,287,4.6],['MCP 3',57,290,4.6],['MCP 4',65,291,4.6],['MCP 5',73,287,4.6],
+ ['PIP 1',25,301,4.5],['PIP 2',47,307,4.5],['PIP 3',55,312,4.5],['PIP 4',63,312,4.5],['PIP 5',72,304,4.5],
+ ['DIP 2',45,321,4.5],['DIP 3',53,328,4.5],['DIP 4',62,327,4.5],['DIP 5',72,316,4.5],
+ ['MTP 1',113,555,5],['MTP 2',103,555,5],['MTP 3',94,555,5],['MTP 4',85,554,5],['MTP 5',77,553,5]];
  const label=kind==='tender'?'Tender':'Swollen';
- let html='<div class="joint-map" data-joint-kind="'+kind+'"><p class="muted">Select joints on the anatomical diagram. Select again to deselect. Left and right are the patient’s sides.</p><div class="joint-map-canvas"><svg viewBox="0 0 320 600" role="group" aria-label="'+label+' joint interactive anatomical body map">';
- html+='<defs><linearGradient id="anatomy-'+kind+'" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#eaf1f8"/><stop offset=".5" stop-color="#ffffff"/><stop offset="1" stop-color="#e3edf7"/></linearGradient></defs>';
- html+='<g class="anatomy-figure" fill="url(#anatomy-'+kind+')" stroke="#667b90" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">';
- html+='<path d="M143 82 L142 98 Q128 104 112 110 Q95 118 97 153 L105 218 Q107 245 129 265 L137 286 L183 286 L191 265 Q213 245 215 218 L223 153 Q225 118 208 110 Q192 104 178 98 L177 82 Z"/>';
- html+='<path d="M111 112 Q91 117 85 137 L67 194 Q60 215 52 239 L40 260 L54 269 L70 248 Q83 221 91 198 L111 151 Z"/>';
- html+='<path d="M209 112 Q229 117 235 137 L253 194 Q260 215 268 239 L280 260 L266 269 L250 248 Q237 221 229 198 L209 151 Z"/>';
- html+='<path d="M137 278 Q126 305 130 340 L136 407 L130 520 L119 545 L137 549 L146 523 L153 409 L157 344 L160 300 Z"/>';
- html+='<path d="M183 278 Q194 305 190 340 L184 407 L190 520 L201 545 L183 549 L174 523 L167 409 L163 344 L160 300 Z"/>';
- html+='<ellipse cx="160" cy="47" rx="24" ry="35"/><path d="M145 74 Q160 83 175 74" fill="none"/>';
- html+='</g><g fill="none" stroke="#a9bacb" stroke-width="1.2"><path d="M160 111 L160 273 M115 128 Q160 143 205 128 M133 278 Q160 290 187 278 M139 409 L150 411 M170 411 L181 409 M146 37 Q151 34 155 37 M165 37 Q170 34 174 37 M156 54 Q160 57 164 54"/></g>';
- // Fingers and toes are drawn individually, retaining an uncluttered, usable joint target layer.
- for(const mirror of [false,true]){
-  const transform=mirror?'translate(320 0) scale(-1 1)':'';
-  html+='<g transform="'+transform+'" fill="none" stroke="#8297ac" stroke-width="2" stroke-linecap="round">';
-  html+='<path d="M40 259 Q23 261 14 275 L3 299 L8 308 L22 291 L18 315 L24 341 L31 339 L31 311 L37 341 L44 340 L43 311 L49 334 L55 330 L51 300 L57 312 L63 307 L54 267 Z"/>';
-  html+='<path d="M119 544 Q101 550 74 550 Q68 554 69 564 Q79 573 91 571 L101 573 L113 571 L124 575 L136 572 L138 552"/>';
+ let html='<div class="joint-map" data-joint-kind="'+kind+'"><p class="muted">Select the joint directly on the diagram; select again to deselect. Right and left refer to the patient.</p><div class="joint-map-canvas"><svg viewBox="0 0 320 600" role="group" aria-label="'+label+' joint interactive anatomical body map">';
+ html+='<defs><linearGradient id="anatomy-'+kind+'" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#eaf1f8"/><stop offset=".52" stop-color="#ffffff"/><stop offset="1" stop-color="#e5eef6"/></linearGradient></defs>';
+ html+='<g fill="url(#anatomy-'+kind+')" stroke="#718599" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">';
+ // Head and neck, shoulders and torso
+ html+='<ellipse cx="160" cy="47" rx="22" ry="33"/><path d="M150 77 L149 91 L122 102 Q105 108 99 122 L112 150 L116 215 Q118 244 136 262 L141 285 Q160 297 179 285 L184 262 Q202 244 204 215 L208 150 L221 122 Q215 108 198 102 L171 91 L170 77 Z"/>';
+ // Arm and forearm; wrist terminates at y=256
+ html+='<path d="M99 122 Q88 123 84 142 L70 184 Q66 195 73 204 L83 210 L99 166 L112 150 Z"/>';
+ html+='<path d="M73 204 L60 242 Q57 250 51 256 L60 264 L71 252 L83 210 Z"/>';
+ html+='<path d="M221 122 Q232 123 236 142 L250 184 Q254 195 247 204 L237 210 L221 166 L208 150 Z"/>';
+ html+='<path d="M247 204 L260 242 Q263 250 269 256 L260 264 L249 252 L237 210 Z"/>';
+ // Legs, knees and ankles
+ html+='<path d="M141 283 Q131 306 134 340 L136 402 Q135 412 138 421 L136 518 L126 544 L141 547 L150 520 L152 421 L155 339 L160 299 Z"/>';
+ html+='<path d="M179 283 Q189 306 186 340 L184 402 Q185 412 182 421 L184 518 L194 544 L179 547 L170 520 L168 421 L165 339 L160 299 Z"/>';
+ html+='</g>';
+ html+='<g fill="none" stroke="#a8b9c9" stroke-width="1.1" stroke-linecap="round"><path d="M160 103 L160 275 M124 129 Q160 143 196 129 M141 284 Q160 290 179 284 M140 406 L150 409 M170 409 L180 406 M149 38 Q154 34 157 38 M163 38 Q168 34 171 38 M156 54 Q160 57 164 54"/></g>';
+ // Hand contours and individual fingers; mirror precisely about centre x=160.
+ for(const mirrored of [false,true]){
+  const transform=mirrored?'translate(320 0) scale(-1 1)':'';
+  html+='<g transform="'+transform+'" fill="url(#anatomy-'+kind+')" stroke="#718599" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">';
+  html+='<path d="M51 256 Q44 260 42 270 L34 280 L23 296 Q19 301 23 305 Q27 309 32 303 L43 290 L42 306 L40 324 Q40 329 45 330 Q50 330 50 325 L52 309 L50 329 Q50 334 55 334 Q60 334 60 329 L60 311 L60 328 Q61 333 66 332 Q70 331 70 326 L69 305 L72 316 Q75 321 79 318 Q82 315 79 310 L75 283 Q71 269 60 263 Z"/>';
+  html+='<path d="M126 543 Q111 548 94 548 L77 548 Q72 548 71 553 Q70 558 77 560 L86 561 L95 562 L104 563 L114 563 L130 561 L141 548 Z"/>';
   html+='</g>';
  }
- html+='<text x="78" y="19" class="joint-side-label">Patient right</text><text x="242" y="19" class="joint-side-label">Patient left</text>';
- for(const side of ['Left','Right']){
+ html+='<text x="80" y="16" class="joint-side-label">Patient right</text><text x="240" y="16" class="joint-side-label">Patient left</text>';
+ for(const side of ['Right','Left']){
   for(const [joint,x,y,r] of points){
    const px=side==='Right'?x:320-x,key=side+' '+joint,selected=examJoints[kind].has(key);
-   html+='<circle class="joint-dot '+(selected?'selected-joint':'')+'" data-joint="'+key+'" role="button" tabindex="0" aria-label="'+key+'" aria-pressed="'+selected+'" cx="'+px+'" cy="'+y+'" r="'+Math.max(r,6)+'" onclick="toggleExamJoint(\''+kind+'\',\''+key+'\')" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();toggleExamJoint(\''+kind+'\',\''+key+'\')}"><title>'+key+'</title></circle>';
+   html+='<circle class="joint-dot '+(selected?'selected-joint':'')+'" data-joint="'+key+'" role="button" tabindex="0" aria-label="'+key+'" aria-pressed="'+selected+'" cx="'+px+'" cy="'+y+'" r="'+r+'" onclick="toggleExamJoint(\''+kind+'\',\''+key+'\')" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();toggleExamJoint(\''+kind+'\',\''+key+'\')}"><title>'+key+'</title></circle>';
   }
  }
  html+='</svg></div><div class="joint-summary" id="joint-summary-'+kind+'" aria-live="polite">'+examJoints[kind].size+' '+kind+' joints: '+(examJoints[kind].size?[...examJoints[kind]].join(', '):'None selected')+'</div><button type="button" class="secondary" onclick="clearExamJoints(\''+kind+'\')">Clear '+kind+' joints</button></div>';
