@@ -517,6 +517,41 @@ function examinationLines(){
  return result;
 }
 
+
+const managementGroups=[
+ ['Blood tests and laboratory screening',/blood|quantiferon|fibromyalgia|calcium|phosphate|vitamin|pth|ck$|cholesterol|glucose|hba1c|prolactin|tfts|ferritin|iron|b12|folate|iga|ttg|hla|anca|ana$|rheumatoid factor|anti-ccp|urate|bnp|immunoglobulin|c3$|c4$|anticardiolipin|glycoprotein|lyme|hiv|hsv|ca-125|psa|vzv|hepatitis|anti-hbc|parvovirus|ebv|cmv|cardiovascular risk|random lipid/i],
+ ['Urinalysis and urine studies',/urine|urinary|urinalysis/i],
+ ['Radiology and imaging',/x-ray|dxa|isotope|mri|ultrasound|ct$|scan|radiology|imaging/i],
+ ['Other diagnostic investigations',/echo|24-hour bp|pft|dlco|neurophysiology|cardiopulmonary/i],
+ ['Aids, splints and orthotics',/splint|heel pad|orthotic/i],
+ ['Allied health and specialist referrals',/physiotherapy|occupational therapy|orthopaedic|pain service|referral|referred/i],
+ ['Patient advice and education',/advice|counselling|monitoring|information booklet|handout/i],
+ ['Treatment plans – analgesia, steroids and DMARDs',/pain management|analges|steroid|dmard|disease-modifying|medication|treatment|commenced|adjusted|continue|change treatment/i],
+ ['Follow-up and discharge',/review|follow-up|discharg/i],
+ ['Other management',/.*/]
+];
+function managementGroup(label){return managementGroups.find(([name,re])=>re.test(label))[0]}
+function managementUI(sectionBlocks,makeBlock,addUI){
+ const choices=extended.Management||[];
+ let html='<p class="muted">Select only interventions actually requested or provided. Each selected item can have additional typed or dictated details.</p>';
+ for(const [heading] of managementGroups){
+  const entries=choices.filter(([id,label])=>managementGroup(id+' '+label)===heading);
+  const templates=sectionBlocks.filter(b=>managementGroup(b.text)===heading);
+  if(!entries.length&&!templates.length&&heading!=='Other management')continue;
+  html+='<div class="history-group management-group"><h4>'+esc(heading)+'</h4>';
+  for(const [id,label] of entries){
+   const k='Management::'+id,st=extraState[k]||{on:false,note:''};
+   html+='<div class="line management-item"><label class="choice-option '+(st.on?'selected':'')+'"><input type="checkbox" '+(st.on?'checked':'')+' onchange="extraToggle('+JSON.stringify(k).replace(/"/g,'&quot;')+',this.checked,this)"> '+esc(label)+'</label>';
+   if(st.on)html+='<textarea placeholder="Optional clinical details" oninput="extraNote('+JSON.stringify(k).replace(/"/g,'&quot;')+',this.value)">'+esc(st.note)+'</textarea>';
+   html+='</div>';
+  }
+  if(templates.length)html+='<details class="management-templates"><summary>Additional editable template statements ('+templates.length+')</summary>'+templates.map(makeBlock).join('')+'</details>';
+  if(heading==='Other management')html+=addUI;
+  html+='</div>';
+ }
+ return html;
+}
+
 function openClinicalTab(name){const el=[...document.querySelectorAll('#sections details')].find(d=>d.dataset.section===name);if(el){el.open=true;el.scrollIntoView({behavior:'smooth',block:'start'});}}
 function render(){
  const opened=[...document.querySelectorAll('#sections details')].filter(d=>d.open).map(d=>d.dataset.section);
@@ -536,6 +571,8 @@ function render(){
    html+=renderChoices(section);
    html+='<div class="history-group"><h4>Additional history</h4>'+remaining.map(makeBlock).join('')+addUI+extendedUI(section)+'</div>';
 
+  }else if(section==='Management'){
+   html+=managementUI(sectionBlocks,makeBlock,addUI);
   }else if(section==='Examination'){
    html+=examinationUI();
    html+='<div class="history-group"><h4>Additional examination findings</h4>'+sectionBlocks.map(makeBlock).join('')+addUI+'</div>';
