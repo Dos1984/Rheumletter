@@ -63,7 +63,7 @@ const extended={
 "Management":[
 ["Routine blood tests","I have ordered routine blood tests including FBC, U&E, eGFR, LFTs, CRP and ESR"],
 ["Quantiferon","I have ordered a Quantiferon test"],
-["Fibromyalgia mimic screen","I have ordered a fibromyalgia mimic screen"],["FBC","FBC"],["U&E","U&E"],["eGFR","eGFR"],["LFTs","LFTs"],["CRP","CRP"],["ESR","ESR"],["ENA","ENA"],["ASOT","ASOT"],
+["Fibromyalgia mimic screen","I have ordered a fibromyalgia mimic screen"],["Inflammatory arthritis screen","I have ordered an inflammatory arthritis screen"],["CTD screen","I have ordered a CTD screen"],["Anti-dsDNA","Anti-double-stranded DNA (anti-dsDNA)"],["BESPep","BESPep (confirm test name)"],["FBC","FBC"],["U&E","U&E"],["eGFR","eGFR"],["LFTs","LFTs"],["CRP","CRP"],["ESR","ESR"],["ENA","ENA"],["ASOT","ASOT"],
 ["Calcium","Calcium"],["Phosphate","Phosphate"],["Vitamin D","Vitamin D"],["PTH","PTH"],["CK","CK"],["Cholesterol","Cholesterol"],["Glucose","Glucose"],["HbA1c","HbA1c"],["Prolactin","Prolactin"],["TFTs","TFTs"],["Ferritin","Ferritin"],["Iron studies","Iron studies"],["B12","Vitamin B12"],["Folate","Folate"],["IgA tTG","IgA tTG"],["HLA-B27","HLA-B27"],["ANCA","ANCA"],["ANA","ANA"],["Rheumatoid factor","Rheumatoid factor"],["Anti-CCP","Anti-CCP"],["Serum urate","Serum urate"],["BNP","BNP"],["Immunoglobulins","Immunoglobulins"],["C3","C3"],["C4","C4"],["Anticardiolipin antibodies","Anticardiolipin antibodies"],["Beta-2 glycoprotein I","Beta-2 glycoprotein I antibodies"],["Lyme disease","Lyme disease serology"],["HIV","HIV test"],["HSV","HSV test"],["CA-125","CA-125"],["PSA","PSA"],["VZV immune status","VZV immune status"],["Hepatitis B","Hepatitis B serology"],["Hepatitis C","Hepatitis C serology"],["Anti-HBc","Anti-hepatitis B core antibody"],["Parvovirus IgM","Parvovirus IgM"],["EBV IgM","EBV IgM"],["CMV IgM","CMV IgM"],["Cardiovascular risk profile","Cardiovascular risk profile"],["Random lipids","Random lipid profile"],
 ["Bilateral hands X-ray","I have ordered bilateral hand X-rays"],["Bilateral feet X-ray","I have ordered bilateral foot X-rays"],["Pelvis X-ray","I have ordered a pelvis X-ray"],["Chest X-ray","I have ordered a chest X-ray"],
 ["DXA","I have ordered a DXA scan to assess bone mineral density from Regional Hospital Mullingar (estimated waiting time up to 12 months; verify locally)"],
@@ -176,7 +176,7 @@ return html;
 }
 function extraToggle(key,on,input){extraState[key].on=on;let el=input.closest('.line').querySelector('textarea');el.hidden=!on;preview()}
 function extraNote(key,value){extraState[key].note=value;preview()}
-function extraLines(section){const base=(extended[section]||[]).filter(([id])=>extraState[section+'::'+id]?.on).map(([id,label])=>label+(extraState[section+'::'+id].note.trim()?': '+extraState[section+'::'+id].note.trim():''));return section==='Management'?base.concat(treatmentPlanLines()):base}
+function extraLines(section){const base=(extended[section]||[]).filter(([id])=>extraState[section+'::'+id]?.on).map(([id,label])=>section==='Management'&&isBloodManagementOption(id)?(bloodScreenPanels[id]?label:'I have ordered '+label):label+(extraState[section+'::'+id].note.trim()?': '+extraState[section+'::'+id].note.trim():''));return section==='Management'?base.concat(treatmentPlanLines()):base}
 
 const frequencyOptions=[['','Select frequency'],['once daily','Once daily (OD)'],['twice daily','Twice daily (BD)'],['three times daily','Three times daily (TDS)'],['four times daily','Four times daily (QDS)'],['at night','At night (ON / nocte)'],['once weekly','Once weekly'],['as required','As required (PRN)'],['other','Other — specify']];
 let medicationAllergyState={allergy:'',allergyNote:'',reaction:'',reactionNote:''};
@@ -546,25 +546,43 @@ const managementGroups=[
  ['Follow-up and discharge',/review|follow-up|discharg/i],
  ['Other management',/.*/]
 ];
-function managementGroup(label){if(/^(?:FBC|U&E|eGFR|LFTs|CRP|ESR|ENA|ASOT|IgA tTG)\b/i.test(label))return 'Blood tests and laboratory screening';if(/24-hour\s*(?:bp|blood pressure)|ambulatory blood pressure monitoring/i.test(label))return 'Other diagnostic investigations';return managementGroups.find(([name,re])=>re.test(label))[0]}
+function managementGroup(label){if(/^(?:Inflammatory arthritis screen|CTD screen|Anti-dsDNA|BESPep)\b/i.test(label))return 'Blood tests and laboratory screening';if(/^(?:FBC|U&E|eGFR|LFTs|CRP|ESR|ENA|ASOT|IgA tTG)\b/i.test(label))return 'Blood tests and laboratory screening';if(/24-hour\s*(?:bp|blood pressure)|ambulatory blood pressure monitoring/i.test(label))return 'Other diagnostic investigations';return managementGroups.find(([name,re])=>re.test(label))[0]}
 const fibromyalgiaMimicTests=["FBC","U&E","eGFR","LFTs","CRP","ESR","Calcium","Phosphate","Vitamin D","PTH","CK","Glucose","HbA1c","Prolactin","TFTs","Ferritin","Iron studies","B12","Folate","IgA tTG","HLA-B27","ANA","ENA","Rheumatoid factor","Anti-CCP","Serum urate","BNP","Immunoglobulins","ANCA","C3","C4","Anticardiolipin antibodies","Beta-2 glycoprotein I","Lyme disease","HIV","ASOT","CA-125","PSA","VZV immune status","Hepatitis B","Hepatitis C","Anti-HBc","Parvovirus IgM","EBV IgM","CMV IgM"];
+const inflammatoryArthritisTests=['Anti-CCP','Rheumatoid factor','ANCA','HLA-B27','Serum urate','CK','FBC','U&E','LFTs','CRP','ESR','CTD screen'];
+const ctdScreenTests=['Anti-dsDNA','ANCA','C3','C4','BESPep'];
+const bloodScreenPanels={
+ 'Fibromyalgia mimic screen':fibromyalgiaMimicTests,
+ 'Inflammatory arthritis screen':inflammatoryArthritisTests,
+ 'CTD screen':ctdScreenTests
+};
+function isBloodManagementOption(id){return managementGroup(id+' '+(extended.Management.find(([key])=>key===id)?.[1]||''))==='Blood tests and laboratory screening';}
 function managementToggle(key,on){
- const affected=key==='Management::Fibromyalgia mimic screen'?[key,...fibromyalgiaMimicTests.map(id=>'Management::'+id)]:[key];
+ const id=key.slice('Management::'.length);
+ const affected=new Set([key]);
+ function includePanel(panelId){
+  for(const test of bloodScreenPanels[panelId]||[]){
+   affected.add('Management::'+test);
+   if(bloodScreenPanels[test])includePanel(test);
+  }
+ }
+ if(on&&bloodScreenPanels[id])includePanel(id);
  for(const testKey of affected){
   if(!extraState[testKey])extraState[testKey]={on:false,note:''};
   extraState[testKey].on=on;
  }
  document.querySelectorAll('.management-item').forEach(row=>{
   const checkbox=row.querySelector('input[type="checkbox"][data-management-key]');
-  if(!checkbox||!affected.includes(checkbox.dataset.managementKey))return;
+  if(!checkbox||!affected.has(checkbox.dataset.managementKey))return;
   checkbox.checked=on;
   checkbox.closest('.choice-option')?.classList.toggle('selected',on);
+  if(isBloodManagementOption(checkbox.dataset.managementKey.slice('Management::'.length))){
+   row.querySelector('.management-detail-label')?.remove();
+   return;
+  }
   let detail=row.querySelector('.management-detail-label');
   if(on&&!detail){
-   detail=document.createElement('label');detail.className='management-detail-label';
-   detail.textContent='Additional information';
-   const field=document.createElement('textarea');field.rows=3;
-   field.placeholder='Type additional clinical information or select Dictate';
+   detail=document.createElement('label');detail.className='management-detail-label';detail.textContent='Additional information';
+   const field=document.createElement('textarea');field.rows=3;field.placeholder='Type additional clinical information or select Dictate';
    field.value=extraState[checkbox.dataset.managementKey].note||'';
    field.addEventListener('input',()=>extraNote(checkbox.dataset.managementKey,field.value));
    detail.appendChild(field);row.appendChild(detail);
@@ -587,7 +605,7 @@ function managementUI(sectionBlocks,makeBlock,addUI){
   for(const [id,label] of entries){
    const k='Management::'+id,st=extraState[k]||{on:false,note:''};
    html+='<div class="line management-item"><label class="choice-option '+(st.on?'selected':'')+'"><input type="checkbox" data-management-key="'+esc(k)+'" '+(st.on?'checked':'')+' onchange="managementToggle('+JSON.stringify(k).replace(/"/g,'&quot;')+',this.checked)"> '+esc(label)+'</label>';
-   if(st.on)html+='<label class="management-detail-label">Additional information<textarea rows="3" aria-label="Additional information for '+esc(id)+'" placeholder="Type additional clinical information or select Dictate" oninput="extraNote('+JSON.stringify(k).replace(/"/g,'&quot;')+',this.value)">'+esc(st.note)+'</textarea></label>';
+   if(st.on&&!isBloodManagementOption(id))html+='<label class="management-detail-label">Additional information<textarea rows="3" aria-label="Additional information for '+esc(id)+'" placeholder="Type additional clinical information or select Dictate" oninput="extraNote('+JSON.stringify(k).replace(/"/g,'&quot;')+',this.value)">'+esc(st.note)+'</textarea></label>';
    html+='</div>';
   }
   if(templates.length)html+='<details class="management-templates"><summary>Additional editable template statements ('+templates.length+')</summary>'+templates.map(makeBlock).join('')+'</details>';
