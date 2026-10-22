@@ -650,6 +650,8 @@ async function importPatientReport(input){
   const lines=['Patient self-reported information (not clinician verified)'];
   const fields=[['concerns','Main concerns'],['duration','Symptom duration'],['stiffness','Morning stiffness (minutes)'],['pain','Pain NRS (0–10)'],['impact','Daily activity impact (0–10; non-validated)'],['other','Other symptoms'],['medications','Medications reported by patient'],['goals','Patient goals']];
   for(const [key,label] of fields){const value=String(p.answers[key]||'').slice(0,3000).trim();if(value)lines.push(label+': '+value);}
+  const patternLabels={onset:'Symptom onset',course:'Symptom course',activity:'Effect of activity',nightPain:'Night pain',dailyFunction:'Daily function affected'};
+  for(const [key,label] of Object.entries(patternLabels)){const item=p.patterns?.[key];if(!item||typeof item!=='object')continue;const answer=String(item.answer||'').slice(0,100),detail=String(item.detail||'').slice(0,3000).trim();if(answer||detail)lines.push(label+': '+(answer||'Not answered')+(detail?' — '+detail:''));}
   for(const [key,label] of Object.entries(patientQuestionLabels)){
    const item=p.history[key];if(!item||typeof item!=='object')continue;
    const answer=String(item.answer||'').slice(0,30),detail=String(item.detail||'').slice(0,3000).trim();
