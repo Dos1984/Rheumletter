@@ -320,9 +320,9 @@ const items=choices.map((c,i)=>({...c,i})).filter(c=>c.section===section);
 const renderItem=c=>'<div class="line clinical-choice" data-choice-index="'+c.i+'"><strong>'+esc(c.name)+'</strong><div class="row">'+
 [['yes',c.positive],['no',c.negative]].map(([value,label])=>'<label class="choice-option '+(c.selection===value?'selected':'')+' '+(c.selection&&c.selection!==value?'unselected':'')+'"><input type="radio" value="'+value+'" name="choice_'+c.i+'" '+(c.selection===value?'checked':'')+' '+' onchange="setChoice('+c.i+',\''+value+'\')"> '+esc(label)+'</label>').join('')+
 '</div>'+
-'<textarea class="choice-detail" '+(c.selection?'':'hidden')+' placeholder="'+(c.name==='Renal impairment'?'Urea:    Creatinine:    eGFR:    Date:    Additional findings:':c.name==='Diabetes'?'Type, treatment, HbA1c, complications or other details (if relevant)':'Optional additional information for the selected statement')+'" oninput="choiceDetail('+c.i+',this.value)">'+esc(c.detail)+'</textarea>'+
+'<textarea class="choice-detail" '+(c.selection==='yes'?'':'hidden')+' placeholder="'+(c.name==='Renal impairment'?'Urea:    Creatinine:    eGFR:    Date:    Additional findings:':c.name==='Diabetes'?'Type, treatment, HbA1c, complications or other details (if relevant)':'Optional additional information for the selected statement')+'" oninput="choiceDetail('+c.i+',this.value)">'+esc(c.detail)+'</textarea>'+
 (c.name==='Chest pain'?'<div class="chest-pain-prompt" '+(c.selection==='yes'?'':'hidden')+'>'+chestPainPrompt()+'</div>':'')+'</div>';
-let html='<div class="choiceArea"><h4>History and alternative statements</h4><p class="muted">Select either answer directly. You can change your selection with one click; details appear after selecting an answer.</p>';
+let html='<div class="choiceArea"><h4>History and alternative statements</h4><p class="muted">Select either answer directly. You can change your selection with one click; details appear only for a positive answer.</p>';
 if(section==='History'){
  const risks=['Psoriasis','Inflammatory bowel disease','Inflammatory eye disease','Inflammatory back pain'];
  const respiratory=['Shortness of breath at rest','Shortness of breath on exertion'];
@@ -341,7 +341,7 @@ function setChoice(i,value){
  if(area){
    area.querySelectorAll('input[type="radio"]').forEach(r=>{r.checked=r.value===value;r.disabled=false;r.closest('.choice-option')?.classList.toggle('selected',r.checked);r.closest('.choice-option')?.classList.toggle('unselected',!!value&&!r.checked);});
    const detail=area.querySelector('.choice-detail');
-   if(detail){detail.hidden=!value;if(!value)detail.value='';}const chest=area.querySelector('.chest-pain-prompt');if(chest)chest.hidden=value!=='yes';
+   if(detail){detail.hidden=value!=='yes';if(!value)detail.value='';}const chest=area.querySelector('.chest-pain-prompt');if(chest)chest.hidden=value!=='yes';
  }
  preview();
 }
