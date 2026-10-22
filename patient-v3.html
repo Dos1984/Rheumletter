@@ -1,0 +1,86 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Rheumletter — patient questionnaire</title><style>body{font:16px/1.5 system-ui;background:#f2f6fa;color:#173047;margin:0}main{max-width:780px;margin:auto;padding:20px}h1{color:#154365}.card{background:white;border:1px solid #ccdbe7;border-radius:12px;padding:16px;margin:14px 0}label{display:block;margin:10px 0}textarea,input[type=text],select{box-sizing:border-box;width:100%;padding:10px;border:1px solid #a9bfce;border-radius:6px;font:inherit}textarea{min-height:65px}button{background:#154365;color:white;border:0;border-radius:7px;padding:12px 16px;font:inherit;cursor:pointer}.muted{color:#536779}.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}@media(max-width:650px){.grid{grid-template-columns:1fr}}.range{width:100%}fieldset{border:0;padding:0}legend{font-weight:700} .voice-tools{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 12px}.voice-tools button{font-size:14px;padding:7px 11px}.voice-tools button.secondary{background:#e6eff5;color:#173047}.voice-tools button.recording{background:#a32626}.voice-status{font-size:13px;color:#526578;min-height:1.4em}.voice-notice{background:#eaf2f8;padding:12px;border-radius:8px} .wizard-bar{background:#fff;border:1px solid #d2e0ea;border-radius:12px;padding:14px;margin:16px 0}.wizard-bar nav{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.wizard-bar nav button{flex:1;min-width:110px;background:#e6eef5;color:#163d59;padding:8px}.wizard-bar nav button.active{background:#154365;color:white}#wizard-progress-track{height:7px;background:#e6eef5;border-radius:20px;overflow:hidden;margin-top:9px}#wizard-progress-fill{height:100%;width:20%;background:#276f9c;transition:width .2s}.wizard-page[hidden],.history-details[hidden]{display:none!important}.history-question{border-bottom:1px solid #dbe5ed;padding:12px 0}.history-question select{max-width:320px}.wizard-controls{display:flex;gap:8px;justify-content:space-between;flex-wrap:wrap;margin:14px 0}.wizard-controls button:disabled{opacity:.45}.wizard-review-line{padding:6px 0;border-bottom:1px solid #e1e9f0;white-space:pre-wrap} </style><main><h1>Pre-appointment rheumatology questionnaire · Version 3</h1><p>Complete what you can. You can leave any question unanswered. Your answers are self-reported and will be reviewed by your clinical team.</p><div class="card"><strong>Privacy and return instructions</strong><p>This form does not transmit your answers to a server. Selecting “Prepare response” downloads a questionnaire file to your device. Return it only through a secure method approved by your clinic. Do not send medical details by ordinary email or public messaging. Do not include your name, date of birth or hospital number in the form.</p></div><div class="voice-notice"><strong>Voice assistance</strong><p>Use <strong>🎙 Dictate</strong> beside a text field to speak your answer, or <strong>🔊 Read question</strong> to hear it aloud. Review dictated text for errors before returning the form. Speech recognition availability varies by browser and may use your browser provider's speech service; do not use voice input if you do not consent to that processing.</p><p id="voice-status" class="voice-status" role="status" aria-live="polite"></p></div><div class="wizard-bar"><strong id="wizard-progress">Step 1 of 5</strong><div id="wizard-progress-track"><div id="wizard-progress-fill"></div></div><nav id="wizard-steps" aria-label="Questionnaire sections"></nav></div><form id="patient-form"><div class="card wizard-page" data-wizard-page="0"><h2>1. Symptoms and daily impact</h2><label>Reason for appointment / main concerns<textarea name="concerns"></textarea></label><label>When did symptoms start?<input type="text" name="duration"></label><div id="patient-pattern-questions"></div><label>Morning stiffness (minutes, if known)<input type="text" name="stiffness"></label><label>Pain over the past week: <strong id="pain-value">Not answered</strong>/10 (0 = no pain; 10 = worst imaginable pain)<input class="range" type="range" min="0" max="10" value="5" name="pain" data-unanswered="true" oninput="this.dataset.unanswered='false';document.getElementById('pain-value').textContent=this.value"></label><label>Impact of symptoms on daily activities over the past week: <strong id="impact-value">Not answered</strong>/10 (0 = no impact; 10 = unable to do usual activities)<input class="range" type="range" min="0" max="10" value="5" name="impact" data-unanswered="true" oninput="this.dataset.unanswered='false';document.getElementById('impact-value').textContent=this.value"></label><label>Other symptoms or concerns<textarea name="other"></textarea></label></div><div class="card wizard-page" data-wizard-page="1"><h2>2. Medical history</h2><div id="questions"></div></div><div class="card wizard-page" data-wizard-page="2"><h2>3. Joints you feel are tender or swollen</h2><p class="muted">These are your own observations, not a clinical joint examination.</p><div class="grid"><fieldset><legend>Tender or painful joints</legend><div id="tender"></div></fieldset><fieldset><legend>Joints that look or feel swollen</legend><div id="swollen"></div></fieldset></div></div><div class="card wizard-page" data-wizard-page="3"><h2>4. Medicines and other information</h2><label>Current medications (if known)<textarea name="medications"></textarea></label><label>What would you most like to discuss at your appointment?<textarea name="goals"></textarea></label></div><div class="card wizard-page" data-wizard-page="4"><h2>5. Review your answers</h2><p>Check your responses below. Use Back to make corrections. Your answers will be downloaded as a file and are not transmitted by this website.</p><div id="wizard-review"></div></div><div class="wizard-controls"><button type="button" id="wizard-back">← Back</button><button type="button" id="wizard-next">Next →</button><button type="submit" id="wizard-submit">Prepare response file</button></div><p id="status" role="status"></p></form></main><script>
+const patientPatternQuestions=[["onset","Did your symptoms start suddenly or gradually?",["Suddenly","Gradually","Not sure"]],["course","How have symptoms changed over time?",["Persistent","Come and go","Move between joints","Spread to more joints","Not sure"]],["activity","How does activity affect your symptoms?",["Improves symptoms","Worsens symptoms","No clear effect","Not sure"]],["nightPain","Do joint symptoms wake you from sleep?",["Yes","No","Not sure"]],["dailyFunction","Are symptoms affecting your usual daily activities?",["Yes","No","Not sure"]]];
+const questions=[["psoriasis","Personal history of psoriasis"],["familyPsoriasis","Family history of psoriasis"],["cardiovascular","History of cardiovascular disease"],["diabetes","History of diabetes"],["hypertension","History of high blood pressure"],["highCholesterol","History of high cholesterol"],["smoking","Current or previous smoking"],["inflammatoryBowel","Inflammatory bowel disease"],["uveitis","Previous eye inflammation (uveitis/iritis)"],["raynaud","Fingers changing colour in the cold (Raynaud's)"],["dryEyes","Persistent dry eyes or dry mouth"],["oralUlcers","Recurrent mouth ulcers"],["rashes","Unexplained skin rashes"],["backPain","Persistent back pain"],["morningStiffness","Morning stiffness"],["familyArthritis","Family history of arthritis or autoimmune disease"],["gout","Previous gout"],["allergies","Medication allergies or reactions"]];
+const joints=["Shoulder","Elbow","Wrist","CMC thumb","MCP 1","MCP 2","MCP 3","MCP 4","MCP 5","PIP 1","PIP 2","PIP 3","PIP 4","PIP 5","DIP 2","DIP 3","DIP 4","DIP 5","Hip","Knee","Ankle","MTP 1","MTP 2","MTP 3","MTP 4","MTP 5"];
+const escapeHTML=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+document.getElementById('patient-pattern-questions').innerHTML=patientPatternQuestions.map(([id,label,options])=>'<div class="history-question"><label><strong>'+escapeHTML(label)+'</strong><select name="pattern_'+id+'"><option value="">Not answered</option>'+options.map(o=>'<option>'+escapeHTML(o)+'</option>').join('')+'</select></label><label class="history-details" hidden>Details (optional)<textarea name="patternDetail_'+id+'"></textarea></label></div>').join('');
+document.getElementById('questions').innerHTML=questions.map(([id,label])=>'<div class="history-question"><label><strong>'+escapeHTML(label)+'</strong><select name="q_'+id+'"><option value="">Not answered</option><option>Yes</option><option>No</option><option>Not sure</option></select></label><label class="history-details" hidden>Details (optional)<textarea name="d_'+id+'"></textarea></label></div>').join('');
+for(const kind of ['tender','swollen'])document.getElementById(kind).innerHTML=['Right','Left'].map(side=>'<details><summary>'+side+' side</summary>'+joints.map(j=>'<label><input type="checkbox" name="'+kind+'" value="'+side+' '+j+'"> '+side+' '+j+'</label>').join('')+'</details>').join('');
+
+let activeRecognition=null,activeButton=null;
+function voiceStatus(message){document.getElementById('voice-status').textContent=message;}
+function stopDictation(){if(activeRecognition){activeRecognition.stop();activeRecognition=null;}if(activeButton){activeButton.textContent='🎙 Dictate';activeButton.classList.remove('recording');activeButton=null;}}
+function dictateTo(field,button){
+ if(activeRecognition){stopDictation();return;}
+ const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+ if(!SR){voiceStatus('Speech-to-text is not supported by this browser. You can use your device keyboard microphone or type instead.');return;}
+ if(!window.confirm('Your browser may send speech to its speech-recognition provider. Continue with voice dictation?'))return;
+ try{
+  const rec=new SR();rec.lang='en-IE';rec.continuous=true;rec.interimResults=false;
+  activeRecognition=rec;activeButton=button;button.textContent='■ Stop dictation';button.classList.add('recording');
+  rec.onresult=event=>{
+   let words='';
+   for(let i=event.resultIndex;i<event.results.length;i++)if(event.results[i].isFinal)words+=' '+event.results[i][0].transcript;
+   if(words){field.value=(field.value.trim()?field.value.trim()+' ':'')+words.trim();field.dispatchEvent(new Event('input',{bubbles:true}));}
+  };
+  rec.onerror=event=>voiceStatus('Dictation error: '+event.error+'. You can still type your answer.');
+  rec.onend=()=>{if(activeRecognition===rec){activeRecognition=null;activeButton=null;button.textContent='🎙 Dictate';button.classList.remove('recording');voiceStatus('Dictation stopped. Please review the transcribed answer.');}};
+  rec.start();voiceStatus('Listening. Speak your answer, then select Stop dictation.');
+ }catch(e){stopDictation();voiceStatus('Unable to start dictation: '+e.message);}
+}
+function readQuestion(field){
+ if(!('speechSynthesis' in window)){voiceStatus('Read-aloud is unavailable in this browser.');return;}
+ speechSynthesis.cancel();
+ const label=field.closest('label');const text=label?label.textContent.trim().replace(/🎙 Dictate|■ Stop dictation|🔊 Read question/g,'').trim():'Please provide your answer';
+ const utterance=new SpeechSynthesisUtterance(text);utterance.lang='en-IE';utterance.rate=.9;speechSynthesis.speak(utterance);
+}
+function installVoiceTools(){
+ document.querySelectorAll('#patient-form textarea, #patient-form input[type="text"]').forEach(field=>{
+  if(field.dataset.voiceReady)return;field.dataset.voiceReady='true';
+  const tools=document.createElement('div');tools.className='voice-tools';
+  const dictate=document.createElement('button');dictate.type='button';dictate.textContent='🎙 Dictate';dictate.setAttribute('aria-label','Dictate answer');dictate.addEventListener('click',()=>dictateTo(field,dictate));
+  const read=document.createElement('button');read.type='button';read.className='secondary';read.textContent='🔊 Read question';read.addEventListener('click',()=>readQuestion(field));
+  tools.append(dictate,read);field.insertAdjacentElement('afterend',tools);
+ });
+}
+
+installVoiceTools();
+
+let wizardStep=0;
+const wizardNames=['Symptoms','Medical history','Joints','Medicines','Review'];
+function wizardReview(){
+ const data=new FormData(document.getElementById('patient-form'));
+ const lines=[];
+ for(const [key,label] of [['concerns','Main concerns'],['duration','Symptom duration'],['stiffness','Morning stiffness'],['other','Other symptoms'],['medications','Medications'],['goals','Goals']])if(String(data.get(key)||'').trim())lines.push(label+': '+data.get(key));
+ for(const key of ['pain','impact'])if(document.getElementById('patient-form').elements[key].dataset.unanswered!=='true')lines.push((key==='pain'?'Pain':'Daily activity impact')+': '+data.get(key)+'/10');
+ for(const [id,label] of patientPatternQuestions){const answer=data.get('pattern_'+id),detail=data.get('patternDetail_'+id);if(answer||detail)lines.push(label+': '+(answer||'Not answered')+(detail?' — '+detail:''));}
+ for(const [id,label] of questions){const answer=data.get('q_'+id),detail=data.get('d_'+id);if(answer||detail)lines.push(label+': '+(answer||'Not answered')+(detail?' — '+detail:''));}
+ for(const kind of ['tender','swollen']){const joints=data.getAll(kind);lines.push('Self-reported '+kind+' joints ('+joints.length+'): '+(joints.join(', ')||'None selected'));}
+ const target=document.getElementById('wizard-review');target.replaceChildren();
+ for(const line of lines){const p=document.createElement('div');p.className='wizard-review-line';p.textContent=line;target.appendChild(p);}
+ if(!lines.length)target.textContent='No answers entered yet.';
+}
+function wizardGo(step){
+ wizardStep=Math.max(0,Math.min(4,step));
+ document.querySelectorAll('.wizard-page').forEach(el=>el.hidden=Number(el.dataset.wizardPage)!==wizardStep);
+ document.getElementById('wizard-progress').textContent='Step '+(wizardStep+1)+' of 5 — '+wizardNames[wizardStep];
+ document.getElementById('wizard-progress-fill').style.width=((wizardStep+1)*20)+'%';
+ document.getElementById('wizard-steps').innerHTML=wizardNames.map((name,i)=>'<button type="button" class="'+(i===wizardStep?'active':'')+'" '+(i===wizardStep?'aria-current="step"':'')+' data-step="'+i+'">'+(i+1)+'. '+name+'</button>').join('');
+ document.querySelectorAll('#wizard-steps button').forEach(btn=>btn.addEventListener('click',()=>wizardGo(Number(btn.dataset.step))));
+ document.getElementById('wizard-back').disabled=wizardStep===0;
+ document.getElementById('wizard-next').hidden=wizardStep===4;
+ document.getElementById('wizard-submit').hidden=wizardStep!==4;
+ if(wizardStep===4)wizardReview();
+ document.getElementById('wizard-progress').scrollIntoView({block:'start'});
+}
+document.getElementById('wizard-back').addEventListener('click',()=>wizardGo(wizardStep-1));
+document.getElementById('wizard-next').addEventListener('click',()=>wizardGo(wizardStep+1));
+document.querySelectorAll('.history-question').forEach(row=>{
+ const select=row.querySelector('select'),detail=row.querySelector('.history-details');
+ function sync(){detail.hidden=select.value!=='Yes'&&select.value!=='Not sure'&&select.value!=='Suddenly'&&select.value!=='Gradually'&&select.value!=='Persistent'&&select.value!=='Come and go'&&select.value!=='Move between joints'&&select.value!=='Spread to more joints'&&select.value!=='Improves symptoms'&&select.value!=='Worsens symptoms'&&!detail.querySelector('textarea').value.trim();}
+ select.addEventListener('change',sync);sync();
+});
+wizardGo(0);
+
+document.getElementById('patient-form').addEventListener('submit',event=>{event.preventDefault();const f=event.target;const data=new FormData(f);const payload={type:'rheumletter-patient-v1',version:1,created:new Date().toISOString(),answers:{},history:{},patterns:{},joints:{tender:data.getAll('tender'),swollen:data.getAll('swollen')}};for(const k of ['concerns','duration','stiffness','pain','impact','other','medications','goals'])payload.answers[k]=String((k==='pain'||k==='impact')&&f.elements[k].dataset.unanswered==='true'?'':data.get(k)||'').slice(0,3000);for(const [id] of patientPatternQuestions)payload.patterns[id]={answer:String(data.get('pattern_'+id)||''),detail:String(data.get('patternDetail_'+id)||'').slice(0,3000)};for(const [id] of questions)payload.history[id]={answer:String(data.get('q_'+id)||''),detail:String(data.get('d_'+id)||'').slice(0,3000)};const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='rheumletter-patient-response.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);document.getElementById('status').textContent='Response prepared. Return the downloaded file using the secure method provided by your clinic.'});
+</script></html>
