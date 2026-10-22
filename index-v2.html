@@ -675,7 +675,7 @@ function v2Go(index){
  const start=document.getElementById('v2-start-panel'),source=document.getElementById('v2-source-panel'),edit=document.getElementById('v2-edit-panel'),letterPanel=document.getElementById('v2-letter-panel');
  start.classList.toggle('v2-hidden',stage!=='Start');
  source.classList.toggle('v2-hidden',stage!=='Start');
- edit.classList.toggle('v2-hidden',stage==='Start'||stage==='Review');
+ edit.classList.toggle('v2-hidden',stage==='Review');
  letterPanel.classList.toggle('v2-hidden',stage!=='Review');
  const patient=document.querySelector('#sections .patient-report');
  if(patient)patient.classList.toggle('v2-hidden',stage!=='Start');
@@ -684,6 +684,7 @@ function v2Go(index){
   el.classList.toggle('v2-hidden',!belongs);
   if(belongs)el.open=true;
  });
+ const sectionIntro=document.querySelector('#v2-edit-panel>p.muted');if(sectionIntro)sectionIntro.classList.toggle('v2-hidden',stage==='Start');
  const nav=document.querySelector('#sections .clinical-tabs');if(nav)nav.classList.add('v2-hidden');
  document.getElementById('v2-stages').innerHTML=v2Stages.map(([id,name],i)=>'<button type="button" class="'+(i===index?'active':'')+'" aria-current="'+(i===index?'step':'false')+'" onclick="v2Go('+i+')">'+(i+1)+'. '+name+'</button>').join('');
  document.getElementById('v2-progress').textContent='Step '+(index+1)+' of '+v2Stages.length;
