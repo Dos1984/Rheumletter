@@ -320,7 +320,7 @@ const items=choices.map((c,i)=>({...c,i})).filter(c=>c.section===section);
 const renderItem=c=>'<div class="line clinical-choice" data-choice-index="'+c.i+'"><strong>'+esc(c.name)+'</strong><div class="row">'+
 [['yes',c.positive],['no',c.negative]].map(([value,label])=>'<label class="choice-option '+(c.selection===value?'selected':'')+' '+(c.selection&&c.selection!==value?'unselected':'')+'"><input type="radio" value="'+value+'" name="choice_'+c.i+'" '+(c.selection===value?'checked':'')+' '+' onchange="setChoice('+c.i+',\''+value+'\')"> '+esc(label)+'</label>').join('')+
 '</div>'+
-'<textarea class="choice-detail" '+(c.selection?'':'hidden')+' placeholder="'+(c.name==='Renal impairment'?'Urea:    Creatinine:    eGFR:    Date:    Additional findings:':c.name==='Diabetes'?'Type, treatment, HbA1c, complications or other details (if relevant)':'Optional additional information for the selected statement')+'" oninput="choiceDetail('+c.i+',this.value)">'+esc(c.detail)+'</textarea>'+
+'<textarea class="choice-detail" '+(c.selection==='yes'?'':'hidden')+' placeholder="'+(c.name==='Renal impairment'?'Urea:    Creatinine:    eGFR:    Date:    Additional findings:':c.name==='Diabetes'?'Type, treatment, HbA1c, complications or other details (if relevant)':'Optional additional information for the selected statement')+'" oninput="choiceDetail('+c.i+',this.value)">'+esc(c.detail)+'</textarea>'+
 (c.name==='Chest pain'?'<div class="chest-pain-prompt" '+(c.selection==='yes'?'':'hidden')+'>'+chestPainPrompt()+'</div>':'')+'</div>';
 let html='<div class="choiceArea"><h4>History and alternative statements</h4><p class="muted">Select either option directly, including to change an earlier answer. Details appear when a statement is selected; the other option remains available.</p>';
 if(section==='History'){
@@ -341,7 +341,7 @@ function setChoice(i,value){
  if(area){
    area.querySelectorAll('input[type="radio"]').forEach(r=>{r.checked=r.value===value;r.disabled=false;r.closest('.choice-option')?.classList.toggle('selected',r.checked);r.closest('.choice-option')?.classList.toggle('unselected',!!value&&!r.checked);});
    const detail=area.querySelector('.choice-detail');
-   if(detail){detail.hidden=!value;if(!value)detail.value='';}const chest=area.querySelector('.chest-pain-prompt');if(chest)chest.hidden=value!=='yes';
+   if(detail){detail.hidden=value!=='yes';if(!value)detail.value='';}const chest=area.querySelector('.chest-pain-prompt');if(chest)chest.hidden=value!=='yes';
  }
  preview();
 }
