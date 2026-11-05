@@ -1,0 +1,1113 @@
+{
+ "type": "rheumletter-fields",
+ "v": 1,
+ "note": "Generated from Rheumletter v3. Choice items: pick the option index whose sentence matches what was said. Management items: tick only actions the clinician states were done or advised.",
+ "choices": [
+  {
+   "section": "dx",
+   "id": "ijd",
+   "name": "Inflammatory joint disease",
+   "options": [
+    "Evidence of an inflammatory joint disease noted on {date}",
+    "No definite evidence of an inflammatory joint disease noted on {date}"
+   ]
+  },
+  {
+   "section": "dx",
+   "id": "fh_ra",
+   "name": "Family history of rheumatoid arthritis",
+   "options": [
+    "Family history of rheumatoid arthritis",
+    "No family history of rheumatoid arthritis"
+   ]
+  },
+  {
+   "section": "dx",
+   "id": "fh_psa",
+   "name": "Family history of psoriatic arthritis",
+   "options": [
+    "Family history of psoriatic arthritis",
+    "No family history of psoriatic arthritis"
+   ]
+  },
+  {
+   "section": "dx",
+   "id": "fh_ctd",
+   "name": "Family history of connective tissue disease",
+   "options": [
+    "Family history of connective tissue disease",
+    "No family history of connective tissue disease"
+   ]
+  },
+  {
+   "section": "dx",
+   "id": "fh_vasc",
+   "name": "Family history of vasculitis",
+   "options": [
+    "Family history of vasculitis",
+    "No family history of vasculitis"
+   ]
+  },
+  {
+   "section": "dx",
+   "id": "fh_gout",
+   "name": "Family history of gout",
+   "options": [
+    "Family history of gout",
+    "No family history of gout"
+   ]
+  },
+  {
+   "section": "dx",
+   "id": "px_pso",
+   "name": "Personal history of psoriasis",
+   "options": [
+    "Personal history of psoriasis",
+    "No personal history of psoriasis"
+   ]
+  },
+  {
+   "section": "dx",
+   "id": "fh_pso",
+   "name": "Family history of psoriasis",
+   "options": [
+    "Family history of psoriasis",
+    "No family history of psoriasis"
+   ]
+  },
+  {
+   "section": "dx",
+   "id": "px_ibd",
+   "name": "Personal history of ulcerative colitis / Crohn's disease",
+   "options": [
+    "Personal history of ulcerative colitis / Crohn's disease",
+    "No history of ulcerative colitis / Crohn's disease"
+   ]
+  },
+  {
+   "section": "dx",
+   "id": "fh_ibd",
+   "name": "Family history of ulcerative colitis / Crohn's disease",
+   "options": [
+    "Family history of ulcerative colitis / Crohn's disease",
+    "No family history of ulcerative colitis / Crohn's disease"
+   ]
+  },
+  {
+   "section": "dx",
+   "id": "oa",
+   "name": "Osteoarthritis",
+   "options": [
+    "Osteoarthritis of {detail}",
+    "No osteoarthritis"
+   ]
+  },
+  {
+   "section": "dx",
+   "id": "fx",
+   "name": "Personal history of fracture",
+   "options": [
+    "History of fracture",
+    "No personal history of fracture"
+   ]
+  },
+  {
+   "section": "dx",
+   "id": "fh_op",
+   "name": "Family history of osteoporosis",
+   "options": [
+    "Family history of osteoporosis",
+    "No family history of osteoporosis"
+   ]
+  },
+  {
+   "section": "dx",
+   "id": "fh_haem",
+   "name": "Family history of haemochromatosis",
+   "options": [
+    "Family history of haemochromatosis",
+    "No family history of haemochromatosis"
+   ]
+  },
+  {
+   "section": "dx",
+   "id": "par_fx",
+   "name": "Maternal or paternal fracture",
+   "options": [
+    "History of maternal or paternal fracture",
+    "No history of maternal or paternal fracture"
+   ]
+  },
+  {
+   "section": "dx",
+   "id": "cvd",
+   "name": "Personal history of cardiovascular disease",
+   "options": [
+    "Personal history of cardiovascular disease",
+    "No history of cardiovascular disease"
+   ]
+  },
+  {
+   "section": "dx",
+   "id": "fh_cvd",
+   "name": "Family history of cardiovascular disease",
+   "options": [
+    "Family history of cardiovascular disease",
+    "No family history of cardiovascular disease"
+   ]
+  },
+  {
+   "section": "dx",
+   "id": "chol",
+   "name": "Hypercholesterolaemia",
+   "options": [
+    "History of hypercholesterolaemia",
+    "No history of hypercholesterolaemia"
+   ]
+  },
+  {
+   "section": "dx",
+   "id": "htn",
+   "name": "Hypertension",
+   "options": [
+    "History of hypertension",
+    "No history of hypertension"
+   ]
+  },
+  {
+   "section": "dx",
+   "id": "dm",
+   "name": "Diabetes",
+   "options": [
+    "History of diabetes",
+    "No history of diabetes"
+   ]
+  },
+  {
+   "section": "dx",
+   "id": "smoke",
+   "name": "Smoking status",
+   "options": [
+    "Smoker",
+    "Non-smoker",
+    "Ex-smoker. Smoking cessation advice given on {date}"
+   ]
+  },
+  {
+   "section": "dx",
+   "id": "bmi",
+   "name": "Body mass index",
+   "options": [
+    "Normal body mass index (BMI {bmi}) noted on {date}",
+    "Increased body mass index (BMI {bmi}) noted on {date}",
+    "Decreased body mass index (BMI {bmi}) noted on {date}"
+   ]
+  },
+  {
+   "section": "dx",
+   "id": "renal",
+   "name": "Renal function",
+   "options": [
+    "Normal renal function",
+    "Renal dysfunction (Urea {urea}, creat {creat}, eGFR {egfr} on {date})"
+   ]
+  },
+  {
+   "section": "dx",
+   "id": "tb",
+   "name": "Personal history of tuberculosis",
+   "options": [
+    "Personal history of tuberculosis (Chest X-ray on {cxr})",
+    "No personal history of tuberculosis (Chest X-ray on {cxr})"
+   ]
+  },
+  {
+   "section": "dx",
+   "id": "tb_contact",
+   "name": "Contact with tuberculosis",
+   "options": [
+    "History of contact with a person with tuberculosis",
+    "No history of contact with a person with tuberculosis"
+   ]
+  },
+  {
+   "section": "dx",
+   "id": "fh_ca",
+   "name": "Family history of cancer",
+   "options": [
+    "Family history of cancer",
+    "No family history of cancer"
+   ]
+  },
+  {
+   "section": "dx",
+   "id": "allergy",
+   "name": "Drug allergies",
+   "options": [
+    "Known drug allergies noted at consultation on {date}",
+    "No known drug allergies noted at consultation on {date}"
+   ]
+  },
+  {
+   "section": "dx",
+   "id": "tmp_mtx",
+   "name": "Trimethoprim warning (methotrexate)",
+   "options": [
+    "Trimethoprim antibiotics contraindicated while taking Methotrexate (due to the potential for a significant drug interaction)"
+   ]
+  },
+  {
+   "section": "dx",
+   "id": "vac_flu",
+   "name": "Flu vaccination",
+   "options": [
+    "Flu vaccination yearly – advised on {date}"
+   ]
+  },
+  {
+   "section": "dx",
+   "id": "vac_pneumo",
+   "name": "Pneumococcal vaccination",
+   "options": [
+    "Pneumovax vaccination – advised on {date}"
+   ]
+  },
+  {
+   "section": "dx",
+   "id": "vac_covid",
+   "name": "Covid-19 vaccination",
+   "options": [
+    "Covid-19 vaccination advised on {date}"
+   ]
+  },
+  {
+   "section": "dx",
+   "id": "vac_zoster",
+   "name": "Shingles vaccination",
+   "options": [
+    "Shingles (recombinant zoster) vaccination advised on {date}"
+   ]
+  },
+  {
+   "section": "dx",
+   "id": "s_app",
+   "name": "Appendectomy",
+   "options": [
+    "Appendectomy performed in {year}"
+   ]
+  },
+  {
+   "section": "dx",
+   "id": "s_ton",
+   "name": "Tonsillectomy",
+   "options": [
+    "Tonsillectomy performed in {year}"
+   ]
+  },
+  {
+   "section": "dx",
+   "id": "s_chol",
+   "name": "Cholecystectomy",
+   "options": [
+    "Cholecystectomy performed in {year}"
+   ]
+  },
+  {
+   "section": "dx",
+   "id": "s_hyst",
+   "name": "Hysterectomy",
+   "options": [
+    "Hysterectomy performed in {year}"
+   ]
+  },
+  {
+   "section": "hx",
+   "id": "h_ems",
+   "name": "Early morning stiffness",
+   "options": [
+    "Early morning stiffness (lasting {ems})",
+    "No early morning stiffness"
+   ]
+  },
+  {
+   "section": "hx",
+   "id": "h_wx",
+   "name": "Arthralgia associated with changes in weather",
+   "options": [
+    "Arthralgia associated with changes in weather (worse with {wx})",
+    "No association between arthralgia and changes in weather"
+   ]
+  },
+  {
+   "section": "hx",
+   "id": "h_pso",
+   "name": "Psoriasis",
+   "options": [
+    "Psoriasis",
+    "No history of psoriasis"
+   ]
+  },
+  {
+   "section": "hx",
+   "id": "h_ibd",
+   "name": "Inflammatory bowel disease – ulcerative colitis / Crohn's disease",
+   "options": [
+    "Inflammatory bowel disease – ulcerative colitis / Crohn's disease",
+    "No history of inflammatory bowel disease"
+   ]
+  },
+  {
+   "section": "hx",
+   "id": "h_eye",
+   "name": "Inflammatory eye symptoms or disease – requiring steroid drops or ophthalmology review",
+   "options": [
+    "Inflammatory eye symptoms or disease – requiring steroid drops or ophthalmology review",
+    "No history of inflammatory eye symptoms or disease"
+   ]
+  },
+  {
+   "section": "hx",
+   "id": "h_ibp",
+   "name": "Inflammatory back pain",
+   "options": [
+    "Inflammatory back pain",
+    "No history of inflammatory back pain"
+   ]
+  },
+  {
+   "section": "hx",
+   "id": "h_mouth",
+   "name": "Mouth ulcers",
+   "options": [
+    "Mouth ulcers",
+    "No history of mouth ulcers"
+   ]
+  },
+  {
+   "section": "hx",
+   "id": "h_skin",
+   "name": "Skin ulcers",
+   "options": [
+    "Skin ulcers",
+    "No history of skin ulcers"
+   ]
+  },
+  {
+   "section": "hx",
+   "id": "h_gen",
+   "name": "Genital ulcers",
+   "options": [
+    "Genital ulcers",
+    "No history of genital ulcers"
+   ]
+  },
+  {
+   "section": "hx",
+   "id": "h_rayn",
+   "name": "Raynaud's symptoms",
+   "options": [
+    "Raynaud's symptoms",
+    "No history of Raynaud's symptoms"
+   ]
+  },
+  {
+   "section": "hx",
+   "id": "h_bald",
+   "name": "Bald patches",
+   "options": [
+    "Bald patches",
+    "No history of bald patches"
+   ]
+  },
+  {
+   "section": "hx",
+   "id": "h_rash",
+   "name": "Rashes",
+   "options": [
+    "Rashes",
+    "No history of rashes"
+   ]
+  },
+  {
+   "section": "hx",
+   "id": "h_photo",
+   "name": "Photosensitive rashes",
+   "options": [
+    "Photosensitive rashes",
+    "No history of photosensitive rashes"
+   ]
+  },
+  {
+   "section": "hx",
+   "id": "h_wl",
+   "name": "Weight loss",
+   "options": [
+    "Weight loss",
+    "No history of weight loss"
+   ]
+  },
+  {
+   "section": "hx",
+   "id": "h_ns",
+   "name": "Night sweats",
+   "options": [
+    "Night sweats",
+    "No history of night sweats"
+   ]
+  },
+  {
+   "section": "hx",
+   "id": "h_sicca",
+   "name": "Dry eyes / dry mouth (sicca symptoms)",
+   "options": [
+    "Dry eyes / dry mouth (sicca symptoms)",
+    "No history of dry eyes / dry mouth (sicca symptoms)"
+   ]
+  },
+  {
+   "section": "rom",
+   "id": "rom_dip",
+   "name": "DIP joints of the hands",
+   "options": [
+    "Normal range of motion of the DIP joints of the hands",
+    "Reduced range of motion of the DIP joints of the hands"
+   ]
+  },
+  {
+   "section": "rom",
+   "id": "rom_pip",
+   "name": "PIP joints of the hands",
+   "options": [
+    "Normal range of motion of the PIP joints of the hands",
+    "Reduced range of motion of the PIP joints of the hands"
+   ]
+  },
+  {
+   "section": "rom",
+   "id": "rom_mcp",
+   "name": "MCP joints of the hands",
+   "options": [
+    "Normal range of motion of the MCP joints of the hands",
+    "Reduced range of motion of the MCP joints of the hands"
+   ]
+  },
+  {
+   "section": "rom",
+   "id": "rom_cmc",
+   "name": "CMC joints of the thumbs",
+   "options": [
+    "Normal range of motion of the CMC joints of the thumbs",
+    "Reduced range of motion of the CMC joints of the thumbs"
+   ]
+  },
+  {
+   "section": "rom",
+   "id": "rom_ip",
+   "name": "IP joints of the thumbs",
+   "options": [
+    "Normal range of motion of the IP joints of the thumbs",
+    "Reduced range of motion of the IP joints of the thumbs"
+   ]
+  },
+  {
+   "section": "rom",
+   "id": "rom_wri",
+   "name": "Wrist joints",
+   "options": [
+    "Normal range of motion of the wrist joints",
+    "Reduced range of motion of the wrist joints"
+   ]
+  },
+  {
+   "section": "rom",
+   "id": "rom_elb",
+   "name": "Elbow joints",
+   "options": [
+    "Normal range of motion of the elbow joints",
+    "Reduced range of motion of the elbow joints"
+   ]
+  },
+  {
+   "section": "rom",
+   "id": "rom_sho",
+   "name": "Shoulder joints",
+   "options": [
+    "Normal range of motion of the shoulder joints",
+    "Reduced range of motion of the shoulder joints"
+   ]
+  },
+  {
+   "section": "rom",
+   "id": "rom_ank",
+   "name": "Ankle joints",
+   "options": [
+    "Normal range of motion of the ankle joints",
+    "Reduced range of motion of the ankle joints"
+   ]
+  },
+  {
+   "section": "rom",
+   "id": "rom_kne",
+   "name": "Knee joints",
+   "options": [
+    "Normal range of motion of the knee joints",
+    "Reduced range of motion of the knee joints"
+   ]
+  },
+  {
+   "section": "rom",
+   "id": "rom_hip",
+   "name": "Hip joints",
+   "options": [
+    "Normal range of motion of the hip joints",
+    "Reduced range of motion of the hip joints"
+   ]
+  },
+  {
+   "section": "rom",
+   "id": "rom_lsp",
+   "name": "Lumbar spine",
+   "options": [
+    "Normal range of motion of the lumbar spine",
+    "Reduced range of motion of the lumbar spine"
+   ]
+  },
+  {
+   "section": "rom",
+   "id": "rom_csp",
+   "name": "Cervical spine",
+   "options": [
+    "Normal range of motion of the cervical spine",
+    "Reduced range of motion of the cervical spine"
+   ]
+  }
+ ],
+ "management": [
+  {
+   "id": "m_routine",
+   "template_no": 1,
+   "name": "Routine tests",
+   "default_wording": "I have ordered routine tests to include: FBC, U&E, eGFR, LFTs, CRP and ESR."
+  },
+  {
+   "id": "m_quant",
+   "template_no": 2,
+   "name": "Quantiferon test",
+   "default_wording": "I have ordered a Quantiferon test."
+  },
+  {
+   "id": "m_screen",
+   "template_no": 3,
+   "name": "Blood screen (fibromyalgia mimicker / other panels)",
+   "default_wording": "I have ordered a Fibromyalgia mimicker screen to include: FBC, U&E, eGFR, LFTs, CRP, ESR, Ca, PO4, Vit D, PTH, CK, Glucose, HbA1c, Prolactin, TFTs, Ferritin, Iron studies, B12, Folate, IgA tTG, HLA-B27, ANA, ENA, RF, ant"
+  },
+  {
+   "id": "m_cvrisk",
+   "template_no": 4,
+   "name": "Cardiovascular risk profile",
+   "default_wording": "I have ordered a cardiovascular risk profile: random lipid profile and random glucose."
+  },
+  {
+   "id": "m_xray",
+   "template_no": 5,
+   "name": "X-rays",
+   "default_wording": "I have ordered X-rays of: Bilateral hands and bilateral feet."
+  },
+  {
+   "id": "m_dxa",
+   "template_no": 6,
+   "name": "DEXA scan",
+   "default_wording": "I have ordered a DEXA scan to assess bone mineral density (from [hospital])."
+  },
+  {
+   "id": "m_bone",
+   "template_no": 7,
+   "name": "Isotope bone scan",
+   "default_wording": "I have ordered an isotope bone scan with dedicated views of the hands and feet from the Nuclear Medicine Department of [hospital]."
+  },
+  {
+   "id": "m_mri",
+   "template_no": 8,
+   "name": "MRI scan",
+   "default_wording": "I have ordered an MRI scan of [region] (from [hospital])."
+  },
+  {
+   "id": "m_us",
+   "template_no": 9,
+   "name": "Ultrasound scan",
+   "default_wording": "I have ordered an ultrasound scan of [region] (from [hospital])."
+  },
+  {
+   "id": "m_ct",
+   "template_no": 10,
+   "name": "CT scan",
+   "default_wording": "I have ordered a CT scan (with IV and oral contrast) of [region] (from [hospital])."
+  },
+  {
+   "id": "m_echo",
+   "template_no": 11,
+   "name": "Echocardiogram",
+   "default_wording": "I have ordered an echocardiogram (from [hospital])."
+  },
+  {
+   "id": "m_abpm",
+   "template_no": 12,
+   "name": "24-hour blood pressure monitor",
+   "default_wording": "I have ordered a 24-hour blood pressure monitor (from [hospital])."
+  },
+  {
+   "id": "m_pft",
+   "template_no": 13,
+   "name": "PFTs and DLCO",
+   "default_wording": "I have ordered PFTs and DLCO (from the Department of Respiratory Medicine, [hospital])."
+  },
+  {
+   "id": "m_neuro",
+   "template_no": 14,
+   "name": "Neurophysiological studies",
+   "default_wording": "I have ordered neurophysiological studies (of the upper limbs) from the Neurophysiology Department, [hospital]."
+  },
+  {
+   "id": "m_urine1",
+   "template_no": 15,
+   "name": "Urine: urinalysis, ACR, microalbumin",
+   "default_wording": "I have checked urine for urinalysis, urinary ACR and urinary microalbumin."
+  },
+  {
+   "id": "m_urine2",
+   "template_no": 16,
+   "name": "Urine: O&S and casts",
+   "default_wording": "I have checked urine for O&S and casts."
+  },
+  {
+   "id": "m_physio",
+   "template_no": 17,
+   "name": "Physiotherapy referral",
+   "default_wording": "I have referred the patient for a course of physiotherapy to [location]."
+  },
+  {
+   "id": "m_ot",
+   "template_no": 18,
+   "name": "Occupational therapy referral",
+   "default_wording": "I have referred the patient to occupational therapy for [reason]."
+  },
+  {
+   "id": "m_thumb",
+   "template_no": 19,
+   "name": "Thumb splint handout",
+   "default_wording": "I have given {her} a handout that contains information and images with regards to thumb splints that can be ordered from the internet for 10–120 euro."
+  },
+  {
+   "id": "m_wrist",
+   "template_no": 20,
+   "name": "Wrist splints fitted",
+   "default_wording": "I have fitted this patient with bilateral wrist splints, to be used at night for 6 weeks and with heavy lifting and strenuous activities of daily living."
+  },
+  {
+   "id": "m_tennis",
+   "template_no": 21,
+   "name": "Tennis elbow compression splint",
+   "default_wording": "I have advised the patient to obtain a tennis elbow compression splint from their pharmacy (I have shown the patient a picture of this device)."
+  },
+  {
+   "id": "m_heel",
+   "template_no": 22,
+   "name": "Heel pad",
+   "default_wording": "I have advised the patient to purchase a gel or foam heel pad to insert into the shoe to decrease biomechanical stress at {her} heel. This costs approximately five euro."
+  },
+  {
+   "id": "m_orth",
+   "template_no": 23,
+   "name": "Orthotics (Elverys)",
+   "default_wording": "I have advised that the patient is fitted with orthotics. I have given the patient an information leaflet on Elverys Orthotic service (available in Athlone or Portlaoise). They have a footplate machine that will calculat"
+  },
+  {
+   "id": "m_ortho",
+   "template_no": 24,
+   "name": "Orthopaedic referral",
+   "default_wording": "I have referred this patient to a Consultant Orthopaedic Surgeon, [hospital], for consideration of [procedure]."
+  },
+  {
+   "id": "m_painref",
+   "template_no": 25,
+   "name": "Pain consultant referral (suggested to GP)",
+   "default_wording": "You could consider referral to a Consultant in Pain and Anaesthesia."
+  },
+  {
+   "id": "m_booklets",
+   "template_no": 26,
+   "name": "Patient information booklets",
+   "default_wording": "I have given the patient the following patient information booklets: [booklets]."
+  },
+  {
+   "id": "m_topical",
+   "template_no": 28,
+   "name": "Topical preparations",
+   "default_wording": "I have commenced topical preparations:"
+  },
+  {
+   "id": "m_para",
+   "template_no": 29,
+   "name": "Paracetamol / Solphadeine",
+   "default_wording": "I have advised that paracetamol could be maximised to 1 g four times per day as required."
+  },
+  {
+   "id": "m_nsaid",
+   "template_no": 30,
+   "name": "Oral NSAIDs",
+   "default_wording": "I have commenced oral NSAIDs:"
+  },
+  {
+   "id": "m_otheroral",
+   "template_no": 31,
+   "name": "Other oral pain medications",
+   "default_wording": "Other oral treatment medications that could be used for pain, in addition or as alternatives, include:"
+  },
+  {
+   "id": "m_butrans",
+   "template_no": 32,
+   "name": "Butrans patch",
+   "default_wording": "I have commenced patch therapy: Butrans topical patch, commencing at 5 mcg, to be changed once per week for 1 month."
+  },
+  {
+   "id": "m_tens",
+   "template_no": 33,
+   "name": "TENS machine",
+   "default_wording": "I have advised the patient to purchase a TENS machine, and have given the patient an information leaflet about this medical device. It can be purchased from Argos / pharmacists for approximately 50 euro."
+  },
+  {
+   "id": "m_course",
+   "template_no": 34,
+   "name": "Pain management courses",
+   "default_wording": "I have advised about available pain management courses (Arthritis Ireland / Chronic Pain Ireland) and given the patient an information leaflet in this regard."
+  },
+  {
+   "id": "m_ami",
+   "template_no": 35,
+   "name": "Amitriptyline",
+   "default_wording": "I have commenced amitriptyline at a dose of 10 mg at night for 1 month. This can be increased fortnightly as tolerated."
+  },
+  {
+   "id": "m_dulox",
+   "template_no": 36,
+   "name": "Duloxetine",
+   "default_wording": "I have commenced duloxetine commencing at a dose of 30 mg once per day for 1 month. This can be escalated fortnightly as tolerated to a maximum of 120 mg once per day."
+  },
+  {
+   "id": "m_inject",
+   "template_no": 37,
+   "name": "Joint / soft tissue injections",
+   "default_wording": "I have injected the following joints / soft tissue areas:"
+  },
+  {
+   "id": "m_im",
+   "template_no": 38,
+   "name": "IM Depo-Medrone 80 mg",
+   "default_wording": "I have given the patient an IM injection of 80 mg Depo-Medrone into the right lateral midpoint of thigh."
+  },
+  {
+   "id": "m_rayn",
+   "template_no": 39,
+   "name": "Raynaud's",
+   "default_wording": "For Raynaud's, I have given the patient:"
+  },
+  {
+   "id": "m_pred",
+   "template_no": 40,
+   "name": "Oral prednisolone",
+   "default_wording": "I have prescribed a course of oral prednisolone commencing at a dose of: 40 mg once per day for 1 week, 30 mg once per day for 1 week, 20 mg once per day for 1 week, 10 mg once per day for 1 week, 5 mg once per day for 1"
+  },
+  {
+   "id": "m_ult",
+   "template_no": 41,
+   "name": "Urate-lowering treatment",
+   "default_wording": "I have commenced the following for urate-lowering effect:"
+  },
+  {
+   "id": "m_mtx_po",
+   "template_no": 42,
+   "name": "Oral methotrexate",
+   "default_wording": "I have commenced oral methotrexate, commencing at 10 mg once per week for the first month, then 20 mg once per week for the next month, then 25 mg once per week thereafter. I have commenced folic acid 5 mg, which is to b"
+  },
+  {
+   "id": "m_mtx_sc",
+   "template_no": 43,
+   "name": "Subcutaneous methotrexate (Metoject)",
+   "default_wording": "I have commenced subcutaneous methotrexate (Metoject), commencing at 10 mg once per week for the first month. The necessary paperwork has been completed for the initiation of this medication. I have commenced folic acid "
+  },
+  {
+   "id": "m_mtx_preg",
+   "template_no": 44,
+   "name": "Methotrexate pregnancy and contraception advice",
+   "default_wording": "I have explained that female patients in their child-bearing years are advised not to become pregnant while on this medication. They should take contraceptive measures while taking methotrexate. If they wish to conceive "
+  },
+  {
+   "id": "m_ssz",
+   "template_no": 45,
+   "name": "Sulphasalazine",
+   "default_wording": "I have commenced sulphasalazine, commencing at 500 mg once per day for the 1st week, 500 mg twice per day the next week, 500 mg three times per day the next week, 1 g twice per day the next week and then 1.5 g twice per "
+  },
+  {
+   "id": "m_hcq",
+   "template_no": 46,
+   "name": "Hydroxychloroquine (Plaquenil)",
+   "default_wording": "I have commenced Plaquenil (hydroxychloroquine) 200 mg twice per day. I have advised the patient about possible side effects e.g. nausea, rash, decreased vision with long-term usage, and the need to contact their doctor "
+  },
+  {
+   "id": "m_lef",
+   "template_no": 47,
+   "name": "Leflunomide (Arava)",
+   "default_wording": "I have commenced leflunomide (Arava) commencing at 10 mg once per day for the first month, then 20 mg once per day thereafter. This requires a blood pressure check at the time of blood monitoring (due to the risk of deve"
+  },
+  {
+   "id": "m_bio",
+   "template_no": 48,
+   "name": "Subcutaneous biologic agent",
+   "default_wording": "I decided to commence this patient on a subcutaneous biologic agent."
+  },
+  {
+   "id": "m_dmardmon",
+   "template_no": 49,
+   "name": "DMARD side effects and blood monitoring",
+   "default_wording": "I have warned the patient about potential side effects:"
+  },
+  {
+   "id": "m_vacc",
+   "template_no": 50,
+   "name": "Vaccination advice (flu and pneumococcal)",
+   "default_wording": "I have advised about vaccination (flu vaccination yearly and Pneumovax vaccination as required)."
+  },
+  {
+   "id": "m_covid",
+   "template_no": 51,
+   "name": "Covid-19 booster advice",
+   "default_wording": "I have advised about Covid-19 booster vaccination as required."
+  },
+  {
+   "id": "m_cmc",
+   "template_no": 52,
+   "name": "1st CMC joint — hand surgery referral",
+   "default_wording": "For the patient's 1st CMC joint symptoms, if conservative measures fail, please consider referral to a Consultant Orthopaedic Surgeon with an interest in hand and wrist surgery for consideration of a partial trapeziectom"
+  },
+  {
+   "id": "m_spine",
+   "template_no": 53,
+   "name": "Persistent spinal pain — pain procedure referral",
+   "default_wording": "For patients with persistent spinal pain (with or without radiculopathy), if conservative measures fail, please consider referral for: An epidural / Facet joint injection / Nerve root block to a Consultant in Pain and An"
+  },
+  {
+   "id": "m_discharge",
+   "template_no": 54,
+   "name": "Discharge to GP care",
+   "default_wording": "I have discharged the patient back into your care, but if any of the investigations show something I don't expect, I will let you know how to proceed."
+  },
+  {
+   "id": "m_review",
+   "template_no": 55,
+   "name": "Review",
+   "default_wording": "I will review the patient in 11 months."
+  }
+ ],
+ "joints": [
+  {
+   "id": "R_SHO",
+   "name": "Right shoulder"
+  },
+  {
+   "id": "R_ELB",
+   "name": "Right elbow"
+  },
+  {
+   "id": "R_WRI",
+   "name": "Right wrist"
+  },
+  {
+   "id": "R_HIP",
+   "name": "Right hip"
+  },
+  {
+   "id": "R_KNE",
+   "name": "Right knee"
+  },
+  {
+   "id": "R_ANK",
+   "name": "Right ankle"
+  },
+  {
+   "id": "R_MCP2",
+   "name": "Right MCP 2"
+  },
+  {
+   "id": "R_PIP2",
+   "name": "Right PIP 2"
+  },
+  {
+   "id": "R_DIP2",
+   "name": "Right DIP 2"
+  },
+  {
+   "id": "R_MCP3",
+   "name": "Right MCP 3"
+  },
+  {
+   "id": "R_PIP3",
+   "name": "Right PIP 3"
+  },
+  {
+   "id": "R_DIP3",
+   "name": "Right DIP 3"
+  },
+  {
+   "id": "R_MCP4",
+   "name": "Right MCP 4"
+  },
+  {
+   "id": "R_PIP4",
+   "name": "Right PIP 4"
+  },
+  {
+   "id": "R_DIP4",
+   "name": "Right DIP 4"
+  },
+  {
+   "id": "R_MCP5",
+   "name": "Right MCP 5"
+  },
+  {
+   "id": "R_PIP5",
+   "name": "Right PIP 5"
+  },
+  {
+   "id": "R_DIP5",
+   "name": "Right DIP 5"
+  },
+  {
+   "id": "R_MCP1",
+   "name": "Right MCP 1"
+  },
+  {
+   "id": "R_IP1",
+   "name": "Right thumb IP"
+  },
+  {
+   "id": "R_MTP1",
+   "name": "Right MTP 1"
+  },
+  {
+   "id": "R_MTP2",
+   "name": "Right MTP 2"
+  },
+  {
+   "id": "R_MTP3",
+   "name": "Right MTP 3"
+  },
+  {
+   "id": "R_MTP4",
+   "name": "Right MTP 4"
+  },
+  {
+   "id": "R_MTP5",
+   "name": "Right MTP 5"
+  },
+  {
+   "id": "L_SHO",
+   "name": "Left shoulder"
+  },
+  {
+   "id": "L_ELB",
+   "name": "Left elbow"
+  },
+  {
+   "id": "L_WRI",
+   "name": "Left wrist"
+  },
+  {
+   "id": "L_HIP",
+   "name": "Left hip"
+  },
+  {
+   "id": "L_KNE",
+   "name": "Left knee"
+  },
+  {
+   "id": "L_ANK",
+   "name": "Left ankle"
+  },
+  {
+   "id": "L_MCP2",
+   "name": "Left MCP 2"
+  },
+  {
+   "id": "L_PIP2",
+   "name": "Left PIP 2"
+  },
+  {
+   "id": "L_DIP2",
+   "name": "Left DIP 2"
+  },
+  {
+   "id": "L_MCP3",
+   "name": "Left MCP 3"
+  },
+  {
+   "id": "L_PIP3",
+   "name": "Left PIP 3"
+  },
+  {
+   "id": "L_DIP3",
+   "name": "Left DIP 3"
+  },
+  {
+   "id": "L_MCP4",
+   "name": "Left MCP 4"
+  },
+  {
+   "id": "L_PIP4",
+   "name": "Left PIP 4"
+  },
+  {
+   "id": "L_DIP4",
+   "name": "Left DIP 4"
+  },
+  {
+   "id": "L_MCP5",
+   "name": "Left MCP 5"
+  },
+  {
+   "id": "L_PIP5",
+   "name": "Left PIP 5"
+  },
+  {
+   "id": "L_DIP5",
+   "name": "Left DIP 5"
+  },
+  {
+   "id": "L_MCP1",
+   "name": "Left MCP 1"
+  },
+  {
+   "id": "L_IP1",
+   "name": "Left thumb IP"
+  },
+  {
+   "id": "L_MTP1",
+   "name": "Left MTP 1"
+  },
+  {
+   "id": "L_MTP2",
+   "name": "Left MTP 2"
+  },
+  {
+   "id": "L_MTP3",
+   "name": "Left MTP 3"
+  },
+  {
+   "id": "L_MTP4",
+   "name": "Left MTP 4"
+  },
+  {
+   "id": "L_MTP5",
+   "name": "Left MTP 5"
+  }
+ ]
+}
