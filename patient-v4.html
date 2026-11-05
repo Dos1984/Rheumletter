@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="en-IE">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Rheumatology Questionnaire</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: one calm column, one section at a time, progress pinned at the top. */
+:root{
+ --bg:#f1f5f4; --surface:#ffffff; --surface-2:#f6f9f9; --line:#d3dddd; --line-strong:#9fb3b3;
+ --fg:#132629; --muted:#506467; --accent:#0d6466; --accent-fg:#ffffff; --accent-soft:#dcefee;
+ --neg:#3d4f63; --warn:#9a5b00; --warn-soft:#fff2db; --tender:#e09a1b; --swollen:#c8372f;
+ --f-ui:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif; --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --bg:#0f1819; --surface:#162224; --surface-2:#1c2b2d; --line:#2b3d40; --line-strong:#4b6467;
+ --fg:#e3eeee; --muted:#9db1b3; --accent:#4fb3b0; --accent-fg:#06201f; --accent-soft:#183a3a;
+ --neg:#a9b9cc; --warn:#f0b452; --warn-soft:#3a2c12; --tender:#f0b04a; --swollen:#f06a60; color-scheme:dark}}
+:root[data-theme="dark"]{
+ --bg:#0f1819; --surface:#162224; --surface-2:#1c2b2d; --line:#2b3d40; --line-strong:#4b6467;
+ --fg:#e3eeee; --muted:#9db1b3; --accent:#4fb3b0; --accent-fg:#06201f; --accent-soft:#183a3a;
+ --neg:#a9b9cc; --warn:#f0b452; --warn-soft:#3a2c12; --tender:#f0b04a; --swollen:#f06a60; color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.55 var(--f-ui)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--surface)}
+h1,h2,h3{text-wrap:balance;margin:0;line-height:1.25}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.wrap{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--line)}
+.bar-inner{max-width:760px;margin:0 auto;padding-block:10px;display:grid;gap:6px}
+.bar-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.bar-top b{font-size:15px}
+.bar-top span{font:500 13px var(--f-mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.track{height:6px;background:var(--accent-soft);border-radius:4px;overflow:hidden}
+.fill{height:100%;background:var(--accent);transition:width .2s}
+main{max-width:760px;margin:0 auto;padding-block:18px 60px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:grid;gap:16px}
+.card>h2{font-size:24px}
+.lede{color:var(--muted);margin:0}
+.q{display:grid;gap:8px;padding-block:12px;border-top:1px solid var(--line)}
+.q:first-of-type{border-top:0}
+.q>.qt{font-weight:600}
+.q>.qt small{display:block;font-weight:400;color:var(--muted);font-size:14px}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opts button{border:1.5px solid var(--line-strong);background:var(--surface);border-radius:10px;padding:10px 18px;min-height:46px;min-width:76px;cursor:pointer;font-weight:500}
+.opts button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-fg)}
+.opts button.no[aria-pressed="true"]{background:var(--neg);border-color:var(--neg);color:var(--surface)}
+.scale{display:grid;grid-template-columns:repeat(11,minmax(0,1fr));gap:4px}
+.scale button{border:1.5px solid var(--line-strong);background:var(--surface);border-radius:8px;min-height:46px;cursor:pointer;font:600 15px var(--f-mono);padding:0}
+.scale button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-fg)}
+@media (max-width:480px){.scale{grid-template-columns:repeat(6,minmax(0,1fr))}}
+.ends{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);gap:10px}
+label.f{display:grid;gap:6px;font-weight:600}
+label.f small{font-weight:400;color:var(--muted);font-size:14px}
+input[type=text],input[type=number],textarea,select{width:100%;border:1.5px solid var(--line-strong);border-radius:8px;background:var(--surface);padding:10px 12px;min-width:0}
+textarea{min-height:80px;resize:vertical}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.btn{border:1.5px solid var(--line-strong);background:var(--surface-2);border-radius:10px;padding:10px 16px;min-height:46px;cursor:pointer;font-weight:600}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-fg)}
+.btn.small{min-height:36px;padding:6px 12px;font-size:14px;font-weight:500}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.nav{display:flex;justify-content:space-between;gap:10px;margin-top:16px}
+.note{background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:15px}
+.note.warn{background:var(--warn-soft)}
+.tools{display:flex;gap:8px;flex-wrap:wrap}
+.tools button{border:1px solid var(--line);background:var(--surface-2);border-radius:7px;padding:4px 10px;font-size:13px;cursor:pointer;color:var(--muted)}
+.tools button[aria-pressed="true"]{background:#a32626;color:#fff;border-color:#a32626}
+.whatis{border:0;background:none;padding:2px 0;color:var(--accent);font-weight:600;font-size:15px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.info{background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:14px;display:grid;gap:10px}
+.info p{margin:0}.info .tiny,.hint{font-size:13.5px;color:var(--muted);margin:0}.info a{color:var(--accent)}
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:10px}
+.gallery figure{margin:0;display:grid;gap:4px;min-width:0}
+.gallery img{width:100%;max-width:100%;height:130px;object-fit:contain;background:var(--surface);border:1px solid var(--line);border-radius:8px;display:block}
+.gallery figcaption{font-size:13px;color:var(--muted)}
+.imgfail{display:grid;place-items:center;height:130px;border:1px dashed var(--line-strong);border-radius:8px;font-size:13px;text-align:center;padding:8px;color:var(--accent)}
+.med{border:1px solid var(--line);border-radius:10px;padding:12px;display:grid;gap:10px}
+.jm svg{width:100%;height:auto;display:block;background:var(--surface-2);border:1px solid var(--line);border-radius:12px;touch-action:manipulation}
+.sil{fill:var(--surface);stroke:var(--line-strong);stroke-width:1.5}
+.bone{stroke:var(--line-strong);stroke-linecap:round;fill:none}
+.jt{fill:var(--surface);stroke:var(--muted);stroke-width:1.6;cursor:pointer}
+.jt.t{fill:var(--tender)}.jt.s{stroke:var(--swollen);stroke-width:4}
+.jt:hover,.jt:focus{stroke:var(--accent);stroke-width:3;outline:none}
+.jlbl{fill:var(--muted);font:600 10px var(--f-ui);text-anchor:middle;pointer-events:none}
+.legend{display:flex;gap:14px;font-size:14px;color:var(--muted);flex-wrap:wrap}
+.dot{display:inline-block;width:14px;height:14px;border-radius:50%;border:1.6px solid var(--muted);vertical-align:-2px;margin-right:5px;background:var(--surface)}
+.dot.t{background:var(--tender)}.dot.s{border:3px solid var(--swollen)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-size:14px;background:var(--surface-2)}
+.review{display:grid;gap:4px;font-size:15px}
+.review div{padding:6px 0;border-bottom:1px solid var(--line)}
+.review b{font-weight:600}
+.code{font:500 12px/1.4 var(--f-mono);word-break:break-all;background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:10px;max-height:140px;overflow:auto}
+.qr{background:#fff;padding:12px;border-radius:12px;justify-self:center;max-width:100%}
+.qr svg,.qr img{display:block;width:min(320px,100%);height:auto}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:10px;z-index:50;font-size:15px}
+@media (prefers-reduced-motion:reduce){.fill{transition:none}}
+@media print{.bar,.nav,.tools,.no-print,body::before{display:none!important}.card{border:0}}
+</style>
+</head>
+<body>
+<div class="bar wrap"><div class="bar-inner"><div class="bar-top"><b id="step-name">Welcome</b><span id="step-count">1 / 8</span></div><div class="track" aria-hidden="true"><div class="fill" id="fill"></div></div></div></div>
+<main class="wrap"><form class="card" id="card" novalidate></form><div class="nav no-print"><button class="btn" type="button" id="back">← Back</button><button class="btn primary" type="button" id="next">Next →</button></div></main>
+<script>
+"use strict";
+const QR_LIB='https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js';
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function toast(m){const t=document.createElement('div');t.className='toast';t.setAttribute('role','status');t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.remove(),2600)}
+
+/* Question keys match the clinician app's template items (see PT_MAP in index-v4.html). */
+const HEALTH=[
+ ['pso','Psoriasis','A skin condition with red, scaly patches'],
+ ['ibd',"Crohn's disease or ulcerative colitis",'Inflammatory bowel disease'],
+ ['eye','Eye inflammation needing steroid eye drops or an eye specialist','For example iritis or uveitis'],
+ ['mouth','Mouth ulcers that keep coming back'],
+ ['skinulc','Skin ulcers','Open sores on the skin that are slow to heal'],
+ ['genital','Genital ulcers'],
+ ['rayn','Fingers or toes turning white or blue in the cold',"Raynaud's"],
+ ['bald','Bald patches or patchy hair loss'],
+ ['rash','Skin rashes'],
+ ['photo','Rashes brought on by sunlight'],
+ ['wl',"Weight loss you can't explain"],
+ ['ns','Drenching sweats at night'],
+ ['sicca','Dry eyes or a dry mouth most days'],
+ ['backpain','Back pain that has lasted more than 3 months']
+];
+const IBP=[['under40','Did the back pain start before you were 40?'],['gradual','Did it come on gradually?'],['exercise','Does it get better with exercise?'],['rest','Does it stay the same or get worse with rest?'],['night','Does it wake you in the second half of the night?']];
+const CONDITIONS=[
+ ['cvd','Heart disease, heart attack or stroke'],['chol','High cholesterol'],['htn','High blood pressure'],['dm','Diabetes'],
+ ['oa',"Osteoarthritis ('wear and tear' arthritis)",'Which joints?'],['fx','A broken bone as an adult','Which bone, and when?'],
+ ['tb','Tuberculosis (TB)'],['tbc','Close contact with someone who had TB']
+];
+const FAMILY=[
+ ['ra','Rheumatoid arthritis'],['psa','Psoriatic arthritis'],['ctd',"Lupus, Sjögren's, scleroderma or another connective tissue disease"],['vasc','Vasculitis (inflamed blood vessels)'],['gout','Gout'],
+ ['pso','Psoriasis'],['ibd',"Crohn's disease or ulcerative colitis"],['op','Osteoporosis (thin bones)'],['parfx','A parent who broke a hip'],['haem','Haemochromatosis (iron overload)'],['cvd','Heart disease or stroke'],['ca','Cancer']
+];
+const SURG=[['app','Appendix removed'],['ton','Tonsils removed'],['chol','Gallbladder removed'],['hyst','Hysterectomy (womb removed)']];
+const VACC=[['flu','Flu vaccine in the last 12 months'],['pneumo','Pneumonia vaccine (ever)'],['covid','Covid-19 vaccine in the last 12 months'],['zoster','Shingles vaccine (ever)']];
+
+/* ---------- "What is this?" explanations ----------
+   Plain-language summaries written for this form, based on the linked patient information.
+   Pictures are DermNet watermarked images, shown unaltered with credit and a link back
+   (DermNet image licence: CC BY-NC-ND 4.0, non-commercial use). They load only when opened. */
+const AUK='https://www.arthritis-uk.org/information-and-support/understanding-arthritis/conditions/';
+const DN='https://dermnetnz.org/topics/',DNA='https://dermnetnz.org/assets/';
+const HSE='https://www2.hse.ie/conditions/';
+const SRC={
+ dnPso:['DermNet: Psoriasis',DN+'psoriasis'],hsePso:['HSE: Psoriasis',HSE+'psoriasis/'],
+ hseCrohn:["HSE: Crohn's disease",HSE+'crohns-disease/'],
+ aukUveitis:['Arthritis UK: Uveitis',AUK+'uveitis/'],
+ dnAphth:['DermNet: Aphthous (mouth) ulcers',DN+'aphthous-ulcer'],hseMouth:['HSE: Mouth ulcers',HSE+'mouth-ulcers/'],
+ dnLeg:['DermNet: Leg ulcers',DN+'leg-ulcer'],
+ dnRayn:["DermNet: Raynaud's phenomenon",DN+'raynaud-phenomenon'],aukRayn:["Arthritis UK: Raynaud's phenomenon",AUK+'raynauds-phenomenon/'],
+ dnAA:['DermNet: Alopecia areata',DN+'alopecia-areata'],
+ dnCLE:['DermNet: Cutaneous lupus',DN+'cutaneous-lupus-erythematosus'],dnVasc:['DermNet: Cutaneous vasculitis',DN+'cutaneous-vasculitis'],
+ dnPhoto:['DermNet: Photosensitivity',DN+'photosensitivity'],
+ aukSjo:["Arthritis UK: Sjögren's disease",AUK+'sjoegren-disease/'],
+ aukAxSpA:['Arthritis UK: Axial spondyloarthritis',AUK+'axial-spondyloarthritis/'],
+ hseCHD:['HSE: Coronary heart disease',HSE+'coronary-heart-disease-chd/'],hseChol:['HSE: High cholesterol',HSE+'high-cholesterol/'],
+ hseBP:['HSE: High blood pressure',HSE+'high-blood-pressure-hypertension/'],hseDM:['HSE: Diabetes',HSE+'diabetes/'],
+ aukOA:['Arthritis UK: Osteoarthritis',AUK+'osteoarthritis/'],aukOP:['Arthritis UK: Osteoporosis',AUK+'osteoporosis/'],
+ hpscTB:['HPSC: TB factsheets','https://hpsc.ie/a-z/tuberculosistb/tbfactsheets'],
+ aukRA:['Arthritis UK: Rheumatoid arthritis',AUK+'rheumatoid-arthritis/'],aukPsA:['Arthritis UK: Psoriatic arthritis',AUK+'psoriatic-arthritis/'],
+ aukLupus:['Arthritis UK: Lupus',AUK+'lupus-sle/'],aukSSc:['Arthritis UK: Systemic sclerosis',AUK+'systemic-sclerosis-scleroderma/'],
+ aukVasc:['Arthritis UK: Vasculitis',AUK+'vasculitis/'],aukGout:['Arthritis UK: Gout',AUK+'gout/'],hseGout:['HSE: Gout',HSE+'gout/'],
+ hseHaem:['HSE: Haemochromatosis',HSE+'haemochromatosis/']
+};
+const IMG=(path,cap,src)=>({u:DNA+path,c:cap,s:src});
+const INFO={
+ 'hx.pso':{t:"Psoriasis is a common, long-lasting skin condition. It causes raised patches of skin covered in silvery-white scale, most often on the elbows, knees, scalp and lower back. On white skin the patches look red or pink; on brown or black skin they can look purple, dark brown or grey. It can also cause tiny dents in the nails or make nails lift away from the skin. It is not catching.",
+  src:['dnPso','hsePso'],img:[IMG('Uploads/scaly/ps3.jpg','Raised patches with silvery scale','dnPso'),IMG('Uploads/scaly/ps6.jpg','Thick scale over the elbow','dnPso'),IMG('Uploads/scaly/w/scalp-psoriasis-01.jpg','Scalp psoriasis spreading past the hairline','dnPso'),IMG('Uploads/hair-nails-sweat/a/nail-psoriasis-pitting-oil-spots.jpg','Nail psoriasis: small pits and the nail lifting','dnPso'),IMG('collection-O/Psoriasis-in-skin-of-colour/plaque-psoriasis-skin-of-colour-00001.jpg','Psoriasis on darker skin','dnPso')]},
+ 'hx.ibd':{t:"Crohn's disease and ulcerative colitis are long-term conditions where the gut becomes inflamed. They cause diarrhoea (sometimes with blood), tummy pain, tiredness and weight loss, and tend to come and go in flare-ups. They are diagnosed by a specialist after tests such as a colonoscopy, so if you have one of them you will usually have been told.",src:['hseCrohn']},
+ 'hx.eye':{t:"This means inflammation inside the eye, called uveitis or iritis. The eye becomes red and painful, light hurts, and vision may be blurred. It usually affects one eye at a time and is treated by an eye specialist with steroid eye drops. It is different from conjunctivitis, where the eye is sticky or gritty but not usually painful in bright light.",src:['aukUveitis']},
+ 'hx.mouth':{t:"Mouth ulcers are small, painful, round or oval sores inside the mouth, on the cheeks, lips, gums or tongue. They usually have a white or yellow centre with a red edge, and heal by themselves in one to two weeks. Answer Yes if they keep coming back, for example several times a year.",
+  src:['dnAphth','hseMouth'],img:[IMG('Uploads/site-age-specific/aphth.jpg','A mouth ulcer','dnAphth'),IMG('Uploads/site-age-specific/s/aphth1.jpg','Mouth ulcers','dnAphth')]},
+ 'hx.skinulc':{t:"A skin ulcer is an open sore where the skin has broken down and does not heal in the normal way, often taking weeks or longer. They are most common on the lower leg, ankle or foot. A cut or graze that heals normally doesn't count.",
+  src:['dnLeg'],img:[IMG('Uploads/site-age-specific/ulcer-ven1.jpg','An ulcer on the lower leg','dnLeg'),IMG('Uploads/site-age-specific/ulcer-ven2.jpg','A leg ulcer','dnLeg')]},
+ 'hx.genital':{t:"These are painful sores on or around the genitals, similar to mouth ulcers. Some conditions cause both mouth and genital ulcers, which is why we ask. Pictures are not shown for this question. If you're not sure, your doctor can talk it through with you in private.",src:['dnAphth']},
+ 'hx.rayn':{t:"In Raynaud's, the fingers or toes change colour when you are cold or stressed. They usually turn white, then blue, then red as the blood comes back, and can feel numb, tingly or painful. Simply having cold hands doesn't count; look for a clear colour change.",
+  src:['dnRayn','aukRayn'],img:[IMG('Uploads/immune/raynaud1.jpg',"Fingers turned white in Raynaud's",'dnRayn'),IMG('Uploads/immune/raynaud2.jpg',"Colour change in Raynaud's",'dnRayn')]},
+ 'hx.bald':{t:"This means smooth, round or oval patches where the hair has fallen out completely, often on the scalp but sometimes in the beard or eyebrows. It is called alopecia areata. The hair often grows back. General thinning of the hair as you get older doesn't count.",
+  src:['dnAA'],img:[IMG('collection/Alopecia-areata/alopecia-areata-00004.jpg','A single bald patch','dnAA'),IMG('collection/Alopecia-areata/alopecia-areata-00001.jpg','Several bald patches','dnAA')]},
+ 'hx.rash':{t:"Tell us about any rash that keeps coming back or won't go away. Rashes of particular interest are: a red rash across the cheeks and nose (a 'butterfly' rash); round, scaly or scarring patches on the face, ears or scalp; and small purple or red spots on the legs that don't fade when pressed. Common rashes such as eczema are worth mentioning too.",
+  src:['dnCLE','dnVasc'],img:[IMG('Uploads/immune/sle-03.jpg',"'Butterfly' rash across the cheeks and nose (lupus)",'dnCLE'),IMG('Uploads/immune/w/sle-10.jpg','Butterfly rash on darker skin','dnCLE'),IMG('Uploads/vascular/vasc7.jpg','Spots from inflamed blood vessels (vasculitis)','dnVasc')]},
+ 'hx.photo':{t:"This is a rash that appears on skin exposed to the sun (the face, the V of the neck, the backs of the hands and the arms), sometimes after only a short time outdoors. It is more than ordinary sunburn, and it may last for days or weeks.",
+  src:['dnPhoto','dnCLE'],img:[IMG('Uploads/reactions/sle-photosensitivity.jpg','Rash on sun-exposed skin','dnPhoto'),IMG('Uploads/subacute-lupus-08.jpg','Lupus rash brought on by the sun','dnCLE')]},
+ 'hx.wl':{t:"Losing weight without dieting or trying to, for example losing 3 to 4 kg (about half a stone) or more over 6 to 12 months."},
+ 'hx.ns':{t:"Sweating so heavily at night that your nightclothes or sheets are damp and need changing, when the room isn't too warm."},
+ 'hx.sicca':{t:"Eyes that feel gritty, burning or dry most days, or a mouth so dry that you need water to swallow dry food such as crackers. These can be signs of Sjögren's disease, where the immune system affects the glands that make tears and saliva.",src:['aukSjo']},
+ 'hx.backpain':{t:"Some long-lasting back pain is caused by inflammation (axial spondyloarthritis, also called ankylosing spondylitis). This kind usually starts before age 40, comes on gradually, is worst in the morning or after rest, gets better when you move about, and may wake you in the second half of the night. The next questions help us tell it apart from ordinary back pain.",src:['aukAxSpA']},
+ 'hx.cvd':{t:"This includes angina (chest pain from the heart), a heart attack, heart failure, having had stents or a bypass operation, a stroke, or a 'mini-stroke' (TIA).",src:['hseCHD']},
+ 'hx.chol':{t:"A high level of fat (cholesterol) in the blood, found on a blood test. You may have been prescribed a statin for it.",src:['hseChol']},
+ 'hx.htn':{t:"High blood pressure (hypertension) that a doctor or nurse has told you about, or that you take tablets for.",src:['hseBP']},
+ 'hx.dm':{t:"Diabetes means the blood sugar level is too high. It may be treated with diet, tablets or insulin. Answer Yes for type 1 or type 2 diabetes, or if you were told you have 'pre-diabetes'.",src:['hseDM']},
+ 'hx.oa':{t:"Osteoarthritis is the most common type of arthritis. The smooth lining at the ends of the bones (cartilage) wears thin, causing pain and stiffness, usually in the knees, hips, the base of the thumb, or the end joints of the fingers, where hard bony lumps can form. It becomes more common with age.",src:['aukOA']},
+ 'hx.fx':{t:"A broken bone (fracture) since you were an adult. Breaks after a minor fall, for example from standing height, are especially important because they can be a sign of thin bones (osteoporosis).",src:['aukOP']},
+ 'hx.tb':{t:"Tuberculosis (TB) is a bacterial infection that most often affects the lungs, causing a long-lasting cough, fever, night sweats and weight loss. It is treated with several months of antibiotics. Answer Yes if you have ever had TB, or have been treated for 'latent' (sleeping) TB. We ask because some arthritis medicines can make TB active again.",src:['hpscTB']},
+ 'hx.tbc':{t:"Living with, or spending a lot of time close to, someone who had TB of the lungs, for example in your home, workplace or a hospital.",src:['hpscTB']},
+ 'fh.ra':{t:"Rheumatoid arthritis is a condition where the immune system attacks the lining of the joints, making them painful, swollen and stiff, especially in the morning. It often affects the small joints of the hands and feet on both sides. It is different from 'wear and tear' arthritis (osteoarthritis).",src:['aukRA']},
+ 'fh.psa':{t:"Psoriatic arthritis is a type of arthritis that can affect people with psoriasis. It causes swollen joints, sometimes a whole finger or toe swelling up like a sausage, heel pain, and sometimes back pain.",src:['aukPsA']},
+ 'fh.ctd':{t:"These are conditions where the immune system attacks different parts of the body. Lupus can cause joint pain, rashes, tiredness and sometimes kidney problems. Sjögren's mainly causes dry eyes and a dry mouth. Scleroderma (systemic sclerosis) causes thickening and tightening of the skin, often with Raynaud's.",src:['aukLupus','aukSjo','aukSSc']},
+ 'fh.vasc':{t:"Vasculitis means inflammation of the blood vessels. Depending on which vessels are affected it can involve the skin, nerves, kidneys, lungs or eyes. Examples include giant cell arteritis (temporal arteritis) and granulomatosis with polyangiitis.",src:['aukVasc']},
+ 'fh.gout':{t:"Gout happens when crystals of uric acid build up in a joint. It causes sudden attacks of severe pain with a hot, red, swollen joint, very often the big toe. The attacks come and go.",src:['aukGout','hseGout']},
+ 'fh.pso':{t:"Psoriasis is a common skin condition causing raised, scaly patches, often on the elbows, knees and scalp, and sometimes pitted nails.",src:['dnPso']},
+ 'fh.ibd':{t:"Crohn's disease and ulcerative colitis are long-term conditions where the gut becomes inflamed, causing diarrhoea, tummy pain and weight loss.",src:['hseCrohn']},
+ 'fh.op':{t:"Osteoporosis means the bones have become thin and weak, so they break more easily, often after a minor fall. It usually causes no symptoms until a bone breaks.",src:['aukOP']},
+ 'fh.parfx':{t:"Your mother or father broke a hip, especially after a minor fall. This raises your own chance of having thin bones (osteoporosis), so we include it when we assess your bone health.",src:['aukOP']},
+ 'fh.haem':{t:"In haemochromatosis the body absorbs too much iron from food. Over time the iron builds up and can damage the joints (often the knuckles), liver and heart. It runs in families and is especially common in Ireland.",src:['hseHaem']},
+ 'fh.cvd':{t:"Heart attack, angina, heart failure or stroke in a close relative. Tell us if it happened at a young age, for example before 55 in a man or 65 in a woman.",src:['hseCHD']},
+ 'fh.ca':{t:"Any type of cancer in a parent, brother, sister or child. If you can, tell us the type of cancer and which relative."}
+};
+
+/* ---------- Joints (same IDs and geometry as the clinician app) ---------- */
+const FINGER={1:'thumb',2:'index finger',3:'middle finger',4:'ring finger',5:'little finger'};
+const TOE={1:'big toe',2:'2nd toe',3:'3rd toe',4:'4th toe',5:'little toe'};
+const JOINTS=(()=>{const J=[];
+ const body=[['SHO','shoulder',108,70],['ELB','elbow',86,128],['WRI','wrist',72,184],['HIP','hip',128,190],['KNE','knee',127,262],['ANK','ankle',125,334]];
+ for(const [side,Side,mx] of [['R','Right',0],['L','Left',1]]){
+  for(const [c,n,x,y] of body)J.push({id:side+'_'+c,side:Side,plain:n,panel:'body',x:mx?300-x:x,y});
+  const fx={5:30,4:58,3:86,2:114},off={5:14,4:4,3:0,2:4};
+  for(const f of [2,3,4,5]){
+   J.push({id:`${side}_MCP${f}`,side:Side,plain:FINGER[f]+' knuckle',panel:'hand',x:mx?340-fx[f]:fx[f],y:116+off[f]/2});
+   J.push({id:`${side}_PIP${f}`,side:Side,plain:FINGER[f]+' middle joint',panel:'hand',x:mx?340-fx[f]:fx[f],y:76+off[f]});
+   J.push({id:`${side}_DIP${f}`,side:Side,plain:FINGER[f]+' end joint',panel:'hand',x:mx?340-fx[f]:fx[f],y:42+off[f]});
+  }
+  J.push({id:`${side}_MCP1`,side:Side,plain:'thumb knuckle',panel:'hand',x:mx?340-146:146,y:150});
+  J.push({id:`${side}_IP1`,side:Side,plain:'thumb end joint',panel:'hand',x:mx?340-160:160,y:118});
+  const tx={1:132,2:108,3:86,4:64,5:42},ty={1:46,2:42,3:44,4:48,5:54};
+  for(const t of [1,2,3,4,5])J.push({id:`${side}_MTP${t}`,side:Side,plain:TOE[t]+' (ball of foot)',panel:'foot',x:mx?340-tx[t]:tx[t],y:ty[t]+30});
+ }
+ return J})();
+const JB=Object.fromEntries(JOINTS.map(j=>[j.id,j]));
+function jointSvg(panel){
+ const T=A.joints.t,S=A.joints.s;
+ const dot=(j,r)=>`<circle class="jt ${T.includes(j.id)?'t':''} ${S.includes(j.id)?'s':''}" data-joint="${j.id}" cx="${j.x}" cy="${j.y}" r="${r}" tabindex="0" role="button" aria-pressed="${T.includes(j.id)||S.includes(j.id)}" aria-label="${j.side} ${j.plain}"><title>${j.side} ${j.plain}</title></circle>`;
+ if(panel==='body'){let s=`<svg viewBox="0 0 300 360" role="group" aria-label="Your body, seen from the front"><text class="jlbl" x="70" y="16">Your right</text><text class="jlbl" x="230" y="16">Your left</text><circle class="sil" cx="150" cy="38" r="20"/><rect class="sil" x="112" y="62" width="76" height="126" rx="22"/><g class="bone" stroke-width="13"><path d="M108 70 L86 128 L72 184"/><path d="M192 70 L214 128 L228 184"/><path d="M128 190 L127 262 L125 334"/><path d="M172 190 L173 262 L175 334"/></g>`;JOINTS.filter(j=>j.panel==='body').forEach(j=>s+=dot(j,12));return s+'</svg>'}
+ if(panel==='hand'){let s=`<svg viewBox="0 0 340 200" role="group" aria-label="Backs of your hands"><text class="jlbl" x="80" y="14">Right hand</text><text class="jlbl" x="260" y="14">Left hand</text>`;
+  for(const m of [0,1]){const X=x=>m?340-x:x;s+=`<path class="sil" d="M${X(18)} 104 Q${X(18)} 188 ${X(70)} 192 Q${X(122)} 194 ${X(134)} 168 L${X(150)} 132 L${X(130)} 104 Z"/><g class="bone" stroke-width="16">`;for(const [f,x,top] of [[5,30,34],[4,58,22],[3,86,18],[2,114,22]])s+=`<path d="M${X(x)} ${top} L${X(x)} 116"/>`;s+=`<path d="M${X(132)} 168 L${X(146)} 150 L${X(162)} 106"/></g>`}
+  JOINTS.filter(j=>j.panel==='hand').forEach(j=>s+=dot(j,10));return s+'</svg>'}
+ let s=`<svg viewBox="0 0 340 130" role="group" aria-label="Fronts of your feet"><text class="jlbl" x="86" y="14">Right foot</text><text class="jlbl" x="254" y="14">Left foot</text>`;
+ for(const m of [0,1]){const X=x=>m?340-x:x;s+=`<path class="sil" d="M${X(30)} 82 Q${X(26)} 124 ${X(70)} 126 L${X(130)} 126 Q${X(152)} 120 ${X(148)} 76 L${X(142)} 62 Q${X(90)} 56 ${X(34)} 70 Z"/><g class="bone" stroke-width="13">`;for(const t of [1,2,3,4,5]){const j=JB[(m?'L':'R')+'_MTP'+t];s+=`<path d="M${j.x} ${j.y} L${j.x} ${j.y-30+(t===1?0:6)}"/>`}s+='</g>'}
+ JOINTS.filter(j=>j.panel==='foot').forEach(j=>s+=dot(j,10));return s+'</svg>'}
+
+/* ---------- Answers, saved on this device only ---------- */
+function fresh(){return {step:0,ref:'',initials:'',fromLink:false,sym:{concerns:'',duration:'',stiffness:'',ems:'',emsDur:'',wx:'',wxType:[],wxD:'',pain:null,ptga:null,fatigue:null,backpain:'',ibp:{}},hx:{},fh:{},surg:{},vacc:{},life:{height:'',weight:'',smoking:'',alcohol:''},joints:{t:[],s:[]},meds:[],allergy:{a:'',d:''},goals:''}}
+let A=load();
+/* A link from the clinic carries the letter's reference and the patient's initials: ?ref=RL-XXXXXX&i=AB */
+(()=>{try{const q=new URLSearchParams(location.search);const ref=(q.get('ref')||'').toUpperCase().replace(/[^A-Z0-9-]/g,'').slice(0,20);const ini=(q.get('i')||'').toUpperCase().replace(/[^A-Z]/g,'').slice(0,4);
+ if(!ref)return;
+ if(A.ref&&A.ref!==ref)A=fresh();  // answers saved on this device for a different appointment are not mixed in
+ A.ref=ref;A.initials=ini;A.fromLink=true;try{localStorage.setItem('rl3-patient',JSON.stringify(A))}catch(e){}}catch(e){}})();
+function load(){try{const x=JSON.parse(localStorage.getItem('rl3-patient')||'null');if(x&&x.joints){const f=fresh();return {...f,...x,sym:{...f.sym,...(x.sym||{})}}}}catch(e){}return fresh()}
+let t0;function save(){clearTimeout(t0);t0=setTimeout(()=>{try{localStorage.setItem('rl3-patient',JSON.stringify(A))}catch(e){}},200)}
+
+/* ---------- Render helpers ---------- */
+function yn(group,key,label,hint,detailLabel){
+ const v=group==='allergy'?A.allergy:(A[group][key]||{});const id=group+'.'+key,info=INFO[id];
+ const open=info&&(openInfo.has(id)||(v.a==='unsure'&&!closedInfo.has(id)));
+ return `<div class="q" data-yn="${id}"><div class="qt">${esc(label)}${hint?`<small>${esc(hint)}</small>`:''}</div>
+ ${info?`<div><button type="button" class="whatis" data-info="${id}" aria-expanded="${!!open}" aria-controls="info-${id.replace('.','-')}">${open?'Hide explanation':(info.img?'What is this? See pictures':'What is this?')}</button></div>`:''}
+ ${open?infoPanel(id):''}
+ <div class="opts">${[['yes','Yes'],['no','No'],['unsure','Not sure']].map(([k,l])=>`<button type="button" class="${k==='no'?'no':''}" data-a="${k}" aria-pressed="${v.a===k}">${l}</button>`).join('')}</div>
+ ${v.a==='unsure'&&info?'<p class="hint">Have a look at the explanation'+(info.img?' and pictures':'')+' above. If it still isn\'t clear, leave it as Not sure and your doctor will ask you about it.</p>':''}
+ ${v.a==='yes'||v.a==='unsure'?`<label class="f"><small>${esc(detailLabel||'Anything to add? (optional)')}</small><input type="text" data-d value="${esc(v.d||'')}" data-voice></label>`:''}</div>`}
+const openInfo=new Set(),closedInfo=new Set();
+function infoPanel(id){const info=INFO[id];const srcs=(info.src||[]).map(k=>SRC[k]);const dn=(info.img||[]).length;
+ return `<div class="info" id="info-${id.replace('.','-')}"><p class="info-text">${esc(info.t)}</p><div class="tools"><button type="button" class="say-info">🔊 Read aloud</button></div>
+ ${dn?`<p class="tiny">Pictures of skin conditions, shown close up. Tap a picture to see more on DermNet.</p><div class="gallery">${info.img.map(im=>`<figure><a href="${SRC[im.s][1]}" target="_blank" rel="noopener"><img src="${im.u}" alt="${esc(im.c)}" loading="lazy" referrerpolicy="no-referrer" onerror="imgFail(this)"></a><figcaption>${esc(im.c)}</figcaption></figure>`).join('')}</div>`:''}
+ ${srcs.length?`<p class="tiny">${dn?'Images sourced from <a href="https://dermnetnz.org/" target="_blank" rel="noopener">DermNet</a> (CC BY-NC-ND 4.0). ':''}Read more: ${srcs.map(([n,u])=>`<a href="${u}" target="_blank" rel="noopener">${esc(n)}</a>`).join(' · ')}</p>`:''}</div>`}
+function imgFail(img){const fig=img.closest('figure');if(!fig||fig.dataset.failed)return;fig.dataset.failed='1';const a=img.closest('a');fig.innerHTML=`<a class="imgfail" href="${a.href}" target="_blank" rel="noopener">Picture couldn't load here. View it on DermNet ↗</a><figcaption>${esc(img.alt)}</figcaption>`}
+const EMS_DUR=[['<10','Less than 10 minutes'],['10-30','10 to 30 minutes'],['30-60','30 minutes to 1 hour'],['60-120','1 to 2 hours'],['allday','All day']];
+const WX_TYPES=[['cold','Cold weather'],['hot','Hot weather'],['damp','Damp or wet weather'],['any','Any change in the weather']];
+function symQ(){const s=A.sym;const opt=(grp,v,l,cls='')=>`<button type="button" class="${cls}" data-${grp}="${v}" aria-pressed="${grp==='wxt'?s.wxType.includes(v):(grp==='ems'?s.ems:grp==='emsd'?s.emsDur:s.wx)===v}">${l}</button>`;
+ return `<div class="q" id="q-ems"><div class="qt">Do you have stiffness in your joints first thing in the morning?</div>
+ <div class="opts">${opt('ems','yes','Yes')}${opt('ems','no','No','no')}</div>
+ ${s.ems==='yes'?`<div class="qt" style="margin-top:6px">How long does the stiffness usually last?</div><div class="opts">${EMS_DUR.map(([v,l])=>opt('emsd',v,l)).join('')}</div>`:''}</div>
+ <div class="q" id="q-wx"><div class="qt">Are your aches and pains worse with changes in the weather?</div>
+ <div class="opts">${opt('wx','yes','Yes')}${opt('wx','no','No','no')}${opt('wx','unsure','Not sure')}</div>
+ ${s.wx==='yes'?`<div class="qt" style="margin-top:6px">Which weather makes them worse? <small>Choose all that apply</small></div><div class="opts">${WX_TYPES.map(([v,l])=>opt('wxt',v,l)).join('')}</div><label class="f"><small>Anything to add? (optional)</small><input type="text" data-sym="wxD" data-voice value="${esc(s.wxD)}"></label>`:''}</div>`}
+function rerenderSymQ(){const a=$('#q-ems'),b=$('#q-wx');if(!a||!b)return;const t=document.createElement('div');t.innerHTML=symQ();a.replaceWith(t.children[0]);b.replaceWith(t.children[0]);addVoice();save()}
+function scale(key,label,lo,hi){
+ const v=A.sym[key];
+ return `<div class="q" data-scale="${key}"><div class="qt">${label}</div><div class="scale" role="group" aria-label="${esc(label)}">${[...Array(11).keys()].map(n=>`<button type="button" data-n="${n}" aria-pressed="${v===n}">${n}</button>`).join('')}</div><div class="ends"><span>0 = ${lo}</span><span>10 = ${hi}</span></div></div>`}
+
+const STEPS=[
+ ['Welcome',()=>`<h2>Before your rheumatology appointment</h2>
+  <p class="lede">This takes about 10 minutes. Answer what you can and skip anything you're unsure about. Your doctor will go through it with you at the appointment.</p>
+  <div class="note"><b>Your privacy.</b> Your answers stay on this device until you choose how to return them. Please don't write your name, date of birth or hospital number anywhere in the form.</div>
+  ${A.fromLink?`<div class="note"><b>Your reference:</b> <span style="font-family:var(--f-mono)">${esc(A.ref)}</span>${A.initials?` · initials <b>${esc(A.initials)}</b>`:''}<br><small>This links your answers to your appointment. If these aren't your initials, please contact the clinic before continuing.</small></div>`:`<label class="f">Reference code from the clinic <small>Optional. Only if the clinic gave you one, e.g. on your appointment letter.</small><input type="text" id="ref" maxlength="20" autocomplete="off" value="${esc(A.ref)}"></label>`}
+  <div class="note">You can tap <b>🔊 Read aloud</b> to hear a question, or <b>🎙 Speak</b> to say your answer instead of typing. Speaking uses your browser's speech service, which may send the recording to Google or Apple.</div>
+  ${hasAnswers()?`<div class="note warn">You have saved answers on this device from before. <button class="btn small" type="button" id="wipe">Start again</button></div>`:''}`],
+ ['Your symptoms',()=>`<h2>Your symptoms</h2>
+  <label class="f">What is the main problem you'd like help with?<textarea id="s-concerns" data-sym="concerns" data-voice>${esc(A.sym.concerns)}</textarea></label>
+  <label class="f">When did it start? <small>For example "about 6 months ago"</small><input type="text" data-sym="duration" data-voice value="${esc(A.sym.duration)}"></label>
+  ${symQ()}
+  ${scale('pain','How much pain have you had over the past week?','no pain','worst pain imaginable')}
+  ${scale('ptga','Considering everything your condition does to you, how have you been over the past week?','very well','very poorly')}
+  ${scale('fatigue','How tired have you felt over the past week?','not tired','extremely tired')}`],
+ ['Your health',()=>`<h2>Your health</h2><p class="lede">Have you ever had any of these?</p>
+  ${HEALTH.map(([k,l,h])=>yn('hx',k,l,h)+(k==='backpain'&&A.hx.backpain?.a==='yes'?`<div class="note"><b>About your back pain</b>${IBP.map(([ik,il])=>`<div class="q" data-ibp="${ik}"><div class="qt">${il}</div><div class="opts">${['yes','no'].map(v=>`<button type="button" class="${v==='no'?'no':''}" data-iv="${v}" aria-pressed="${A.sym.ibp[ik]===v}">${v==='yes'?'Yes':'No'}</button>`).join('')}</div></div>`).join('')}</div>`:'')).join('')}
+  <h3 style="font-size:18px;margin-top:8px">Other conditions</h3>
+  ${CONDITIONS.map(([k,l,dl])=>yn('hx',k,l,null,dl)).join('')}
+  <h3 style="font-size:18px;margin-top:8px">Operations</h3>
+  ${SURG.map(([k,l])=>{const v=A.surg[k]||{};return `<div class="q" data-surg="${k}"><div class="qt">${l}</div><div class="opts">${[['yes','Yes'],['no','No']].map(([a,t])=>`<button type="button" class="${a==='no'?'no':''}" data-a="${a}" aria-pressed="${v.a===a}">${t}</button>`).join('')}</div>${v.a==='yes'?`<label class="f"><small>Year (if you know)</small><input type="text" inputmode="numeric" maxlength="4" data-year value="${esc(v.year||'')}"></label>`:''}</div>`}).join('')}`],
+ ['Your family',()=>`<h2>Your family</h2><p class="lede">Has a parent, brother, sister or child had any of these?</p>${FAMILY.map(([k,l])=>yn('fh',k,l,null,'Who? (e.g. mother)')).join('')}`],
+ ['Lifestyle and vaccines',()=>{const bmi=calcBmi();return `<h2>Lifestyle and vaccines</h2>
+  <div class="two"><label class="f">Height (cm)<input type="number" inputmode="decimal" min="100" max="230" data-life="height" value="${esc(A.life.height)}"></label><label class="f">Weight (kg)<input type="number" inputmode="decimal" min="25" max="300" data-life="weight" value="${esc(A.life.weight)}"></label></div>
+  <p class="lede" id="bmi">${bmi?'Body mass index: <b>'+bmi.toFixed(1)+'</b>':''}</p>
+  <div class="q" data-life-opt="smoking"><div class="qt">Do you smoke?</div><div class="opts">${[['current','Yes, I smoke'],['ex','I used to'],['never','Never']].map(([k,l])=>`<button type="button" data-v="${k}" aria-pressed="${A.life.smoking===k}">${l}</button>`).join('')}</div></div>
+  <label class="f">About how many units of alcohol do you drink a week? <small>A pint of beer is about 2 units; a glass of wine about 1.5.</small><input type="number" inputmode="numeric" min="0" data-life="alcohol" value="${esc(A.life.alcohol)}"></label>
+  <h3 style="font-size:18px">Vaccines</h3>${VACC.map(([k,l])=>yn('vacc',k,l)).join('')}`}],
+ ['Your joints',()=>`<h2>Your joints</h2><p class="lede">Tap the joints that have been painful or swollen over the past week. The picture shows you from the front, as if someone were facing you, so <b>your right side is on the left</b> of the picture.</p>
+  <div class="q"><div class="qt">I am marking joints that are…</div><div class="opts" id="mode">${[['t','Painful'],['s','Swollen']].map(([k,l])=>`<button type="button" data-mode="${k}" aria-pressed="${mode===k}">${l}</button>`).join('')}</div></div>
+  <div class="legend"><span><i class="dot t"></i>Painful</span><span><i class="dot s"></i>Swollen</span></div>
+  <div class="jm" style="display:grid;gap:10px">${jointSvg('body')}${jointSvg('hand')}${jointSvg('foot')}</div>
+  <div id="jlist">${jointList()}</div>`],
+ ['Medicines',()=>`<h2>Medicines and allergies</h2><p class="lede">List the medicines you take regularly, including injections, creams and anything from the pharmacy. Your pharmacy printout or the boxes will help.</p>
+  ${A.meds.map((m,i)=>`<div class="med" data-med="${i}"><div class="two"><label class="f">Medicine<input type="text" data-mk="n" value="${esc(m.n)}" data-voice></label><label class="f">Strength / dose<input type="text" data-mk="d" placeholder="e.g. 500 mg" value="${esc(m.d)}"></label><label class="f">How often<select data-mk="f">${['','once daily','twice daily','three times daily','four times daily','at night','once weekly','as required','other'].map(o=>`<option ${m.f===o?'selected':''} value="${o}">${o?o[0].toUpperCase()+o.slice(1):'Choose…'}</option>`).join('')}</select></label></div><div><button class="btn small" type="button" data-rm="${i}">Remove</button></div></div>`).join('')}
+  <div><button class="btn" type="button" id="addmed">+ Add a medicine</button></div>
+  ${yn('allergy','_','Are you allergic to any medicines?',null,'Which medicine, and what happened?')}
+  <label class="f">Is there anything else you'd like to discuss at your appointment?<textarea data-goals data-voice>${esc(A.goals)}</textarea></label>`],
+ ['Check and return',()=>`<h2>Check your answers</h2><div class="review">${reviewLines().map(([k,v])=>`<div><b>${esc(k)}:</b> ${esc(v)}</div>`).join('')||'<div>No answers yet.</div>'}</div>
+  <h3 style="font-size:20px;margin-top:6px">Return your answers</h3>
+  <p class="lede">Use the method your clinic asked for. Don't send your answers by ordinary email.</p>
+  <div class="tools no-print" style="gap:10px"><button class="btn primary" type="button" id="dl">Save as a file</button><button class="btn" type="button" id="showqr">Show QR code to scan at clinic</button><button class="btn" type="button" id="copycode">Copy response code</button><button class="btn" type="button" id="print">Print</button></div>
+  <div id="ret" style="display:grid;gap:10px"></div>
+  <p class="lede no-print">When you're finished, you can <button class="btn small" type="button" id="wipe2">remove your answers from this device</button>.</p>`]
+];
+let mode='t';
+const hasAnswers=()=>JSON.stringify({...A,step:0})!==JSON.stringify({...fresh(),ref:A.ref,initials:A.initials,fromLink:A.fromLink});
+function calcBmi(){const h=parseFloat(A.life.height),w=parseFloat(A.life.weight);return h>100&&w>25?w/Math.pow(h/100,2):null}
+function jointList(){const out=[];for(const [k,l] of [['t','Painful'],['s','Swollen']]){const js=A.joints[k].map(id=>JB[id]).filter(Boolean);out.push(`<p class="lede" style="margin-top:8px"><b>${l} (${js.length}):</b></p><div class="chips">${js.map(j=>`<span class="chip">${esc(j.side+' '+j.plain)}</span>`).join('')||'<span class="lede">None marked</span>'}</div>`)}return out.join('')}
+
+function render(){
+ const [name,fn]=STEPS[A.step];
+ $('#card').innerHTML=fn();
+ $('#step-name').textContent=name;$('#step-count').textContent=(A.step+1)+' / '+STEPS.length;$('#fill').style.width=((A.step+1)/STEPS.length*100)+'%';
+ $('#back').disabled=A.step===0;$('#next').hidden=A.step===STEPS.length-1;$('#next').textContent=A.step===STEPS.length-2?'Check answers →':'Next →';
+ addVoice();save()}
+function go(n){A.step=Math.max(0,Math.min(STEPS.length-1,n));render();scrollTo({top:0})}
+$('#back').onclick=()=>go(A.step-1);$('#next').onclick=()=>go(A.step+1);
+
+/* ---------- Events ---------- */
+document.addEventListener('click',async e=>{
+ const b=e.target.closest('button,[data-joint]');if(!b)return;
+ if(b.dataset.info){const id=b.dataset.info;const isOpen=b.getAttribute('aria-expanded')==='true';if(isOpen){openInfo.delete(id);closedInfo.add(id)}else{openInfo.add(id);closedInfo.delete(id)}rerender(b.closest('[data-yn]'));return}
+ if(b.classList.contains('say-info')){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(b.closest('.info').querySelector('.info-text').textContent);u.lang='en-IE';u.rate=.92;speechSynthesis.speak(u);return}
+ const yq=b.closest('[data-yn]');
+ if(yq&&b.dataset.a){const [g,k]=yq.dataset.yn.split('.');const tgt=g==='allergy'?A.allergy:(A[g][k]=A[g][k]||{});
+  if(tgt.a===b.dataset.a)tgt.a='';else tgt.a=b.dataset.a;rerender(yq);return}
+ const ib=b.closest('[data-ibp]');if(ib&&b.dataset.iv){const k=ib.dataset.ibp;A.sym.ibp[k]=A.sym.ibp[k]===b.dataset.iv?'':b.dataset.iv;ib.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',A.sym.ibp[k]===x.dataset.iv));save();return}
+ const sq=b.closest('[data-surg]');if(sq&&b.dataset.a){const k=sq.dataset.surg;const v=A.surg[k]=A.surg[k]||{};v.a=v.a===b.dataset.a?'':b.dataset.a;render();return}
+ const sc=b.closest('[data-scale]');if(sc&&b.dataset.n){const k=sc.dataset.scale,n=+b.dataset.n;A.sym[k]=A.sym[k]===n?null:n;sc.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',A.sym[k]===+x.dataset.n));save();return}
+ if(b.dataset.ems){A.sym.ems=A.sym.ems===b.dataset.ems?'':b.dataset.ems;if(A.sym.ems!=='yes')A.sym.emsDur='';rerenderSymQ();return}
+ if(b.dataset.emsd){A.sym.emsDur=A.sym.emsDur===b.dataset.emsd?'':b.dataset.emsd;rerenderSymQ();return}
+ if(b.dataset.wx){A.sym.wx=A.sym.wx===b.dataset.wx?'':b.dataset.wx;if(A.sym.wx!=='yes'){A.sym.wxType=[];A.sym.wxD=''}rerenderSymQ();return}
+ if(b.dataset.wxt){const a=A.sym.wxType,i=a.indexOf(b.dataset.wxt);i>=0?a.splice(i,1):a.push(b.dataset.wxt);rerenderSymQ();return}
+ const lo=b.closest('[data-life-opt]');if(lo&&b.dataset.v){const k=lo.dataset.lifeOpt;A.life[k]=A.life[k]===b.dataset.v?'':b.dataset.v;lo.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',A.life[k]===x.dataset.v));save();return}
+ if(b.dataset.mode){mode=b.dataset.mode;document.querySelectorAll('[data-mode]').forEach(x=>x.setAttribute('aria-pressed',x.dataset.mode===mode));return}
+ if(b.dataset.joint){toggleJoint(b.dataset.joint);return}
+ if(b.id==='addmed'){A.meds.push({n:'',d:'',f:''});render();setTimeout(()=>document.querySelector(`[data-med="${A.meds.length-1}"] input`)?.focus(),0);return}
+ if(b.dataset.rm){A.meds.splice(+b.dataset.rm,1);render();return}
+ if(b.id==='wipe'||b.id==='wipe2'){if(b.dataset.armed){A={...fresh(),...(A.fromLink?{ref:A.ref,initials:A.initials,fromLink:true}:{})};try{localStorage.removeItem('rl3-patient')}catch(err){}render();toast('Your answers have been removed from this device')}else{b.dataset.armed='1';b.textContent='Tap again to confirm'}return}
+ if(b.id==='dl'){const blob=new Blob([JSON.stringify(payload(),null,1)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='rheumatology-questionnaire'+(A.ref?'-'+A.ref.replace(/[^A-Za-z0-9]/g,''):'')+'.json';document.body.appendChild(a);a.click();a.remove();$('#ret').innerHTML='<div class="note">File saved to your downloads. Return it using the method your clinic gave you.</div>';return}
+ if(b.id==='copycode'){const c=await responseCode();try{await navigator.clipboard.writeText(c);toast('Response code copied')}catch(err){toast('Select the code below and copy it')}$('#ret').innerHTML=`<div class="note">Paste this code where your clinic asked you to. It contains your answers.</div><div class="code" tabindex="0">${esc(c)}</div>`;return}
+ if(b.id==='showqr'){try{await showQR()}catch(err){$('#ret').innerHTML=`<div class="note warn">${esc(err.message)}</div>`}return}
+ if(b.id==='print'){window.print();return}
+ if(b.classList.contains('say'))return speak(b);
+ if(b.classList.contains('mic'))return dictate(b);
+});
+document.addEventListener('keydown',e=>{const j=e.target.closest?.('[data-joint]');if(j&&(e.key==='Enter'||e.key===' ')){e.preventDefault();toggleJoint(j.dataset.joint)}});
+document.addEventListener('input',e=>{const t=e.target;
+ if(t.id==='ref'){A.ref=t.value.replace(/[^A-Za-z0-9-]/g,'').slice(0,20);save();return}
+ if(t.dataset.sym){A.sym[t.dataset.sym]=t.value;save();return}
+ if(t.dataset.life){A.life[t.dataset.life]=t.value;const b=calcBmi();$('#bmi').innerHTML=b?'Body mass index: <b>'+b.toFixed(1)+'</b>':'';save();return}
+ const yq=t.closest('[data-yn]');if(yq&&t.dataset.d!=null){const [g,k]=yq.dataset.yn.split('.');(g==='allergy'?A.allergy:A[g][k]).d=t.value;save();return}
+ const sq=t.closest('[data-surg]');if(sq&&t.dataset.year!=null){A.surg[sq.dataset.surg].year=t.value.replace(/\D/g,'');save();return}
+ const md=t.closest('[data-med]');if(md&&t.dataset.mk){A.meds[+md.dataset.med][t.dataset.mk]=t.value;save();return}
+ if(t.dataset.goals!=null){A.goals=t.value;save();return}});
+function rerender(el){const [g,k]=el.dataset.yn.split('.');const tmp=document.createElement('div');
+ if(g==='hx'&&k==='backpain'){render();return}
+ const def=g==='hx'?[...HEALTH,...CONDITIONS].find(x=>x[0]===k):g==='fh'?FAMILY.find(x=>x[0]===k):g==='vacc'?VACC.find(x=>x[0]===k):null;
+ tmp.innerHTML=g==='allergy'?yn('allergy','_','Are you allergic to any medicines?',null,'Which medicine, and what happened?'):yn(g,k,def[1],g==='hx'&&HEALTH.find(x=>x[0]===k)?def[2]:null,g==='fh'?'Who? (e.g. mother)':(CONDITIONS.find(x=>x[0]===k)?.[2]));
+ el.replaceWith(tmp.firstElementChild);addVoice();save()}
+function toggleJoint(id){const a=A.joints[mode];const i=a.indexOf(id);i>=0?a.splice(i,1):a.push(id);
+ document.querySelectorAll(`[data-joint="${id}"]`).forEach(c=>{c.classList.toggle('t',A.joints.t.includes(id));c.classList.toggle('s',A.joints.s.includes(id));c.setAttribute('aria-pressed',A.joints.t.includes(id)||A.joints.s.includes(id))});
+ $('#jlist').innerHTML=jointList();save()}
+
+/* ---------- Output ---------- */
+function payload(){
+ const clean=o=>Object.fromEntries(Object.entries(o).filter(([,v])=>v&&v.a).map(([k,v])=>[k,{a:v.a==='unsure'?'unsure':v.a,...(v.d?{d:String(v.d).slice(0,500)}:{}),...(v.year?{year:v.year}:{})}]));
+ return {type:'rheumletter-patient',v:3,created:new Date().toISOString(),ref:A.ref,i:A.initials||'',
+  sym:{...A.sym,concerns:A.sym.concerns.slice(0,2000),backpain:A.hx.backpain?.a||''},
+  hx:clean(A.hx),fh:clean(A.fh),surg:clean(A.surg),vacc:clean(A.vacc),life:A.life,joints:A.joints,
+  meds:A.meds.filter(m=>m.n.trim()).map(m=>({n:m.n.trim().slice(0,80),d:m.d.slice(0,40),f:m.f})),allergy:{a:A.allergy.a,d:(A.allergy.d||'').slice(0,500)},goals:A.goals.slice(0,2000)}}
+async function responseCode(){
+ const json=JSON.stringify(payload());const enc=new TextEncoder().encode(json);
+ const b64=bytes=>{let s='';bytes.forEach(b=>s+=String.fromCharCode(b));return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')};
+ if('CompressionStream' in window){const cs=new CompressionStream('deflate-raw');const buf=new Uint8Array(await new Response(new Blob([enc]).stream().pipeThrough(cs)).arrayBuffer());return 'RL3Z:'+b64(buf)}
+ return 'RL3J:'+b64(enc)}
+async function showQR(){
+ const code=await responseCode();
+ await new Promise((res,rej)=>{if(window.qrcode)return res();const s=document.createElement('script');s.src=QR_LIB;s.onload=res;s.onerror=()=>rej(new Error('The QR code tool could not load. Use "Save as a file" or "Copy response code" instead.'));document.head.appendChild(s)});
+ if(code.length>2300)throw new Error('Your answers are too long for one QR code. Use "Save as a file" or "Copy response code" instead.');
+ const q=qrcode(0,'L');q.addData(code);q.make();
+ $('#ret').innerHTML=`<div class="note">Show this to the clinic team at your appointment. Turn your screen brightness up.</div><div class="qr">${q.createSvgTag({cellSize:4,margin:2,scalable:true})}</div>`}
+function reviewLines(){
+ const L=[];const s=A.sym;const lab={yes:'Yes',no:'No',unsure:'Not sure'};
+ if(A.ref)L.push(['Reference',A.ref+(A.initials?' · '+A.initials:'')]);
+ if(s.concerns)L.push(['Main problem',s.concerns]);if(s.duration)L.push(['Started',s.duration]);if(s.ems)L.push(['Morning stiffness',s.ems==='yes'?'Yes'+(s.emsDur?', '+EMS_DUR.find(x=>x[0]===s.emsDur)[1].toLowerCase():''):'No']);if(s.wx)L.push(['Worse with weather changes',{yes:'Yes',no:'No',unsure:'Not sure'}[s.wx]+(s.wxType.length?' — '+s.wxType.map(v=>WX_TYPES.find(x=>x[0]===v)[1].toLowerCase()).join(', '):'')+(s.wxD?' — '+s.wxD:'')]);
+ for(const [k,l] of [['pain','Pain'],['ptga','Overall'],['fatigue','Tiredness']])if(s[k]!=null)L.push([l,s[k]+'/10']);
+ for(const [k,l] of [...HEALTH,...CONDITIONS])if(A.hx[k]?.a)L.push([l,lab[A.hx[k].a]+(A.hx[k].d?' — '+A.hx[k].d:'')]);
+ for(const [k,l] of SURG)if(A.surg[k]?.a)L.push([l,(A.surg[k].a==='yes'?'Yes':'No')+(A.surg[k].year?' ('+A.surg[k].year+')':'')]);
+ for(const [k,l] of FAMILY)if(A.fh[k]?.a)L.push(['Family: '+l,lab[A.fh[k].a]+(A.fh[k].d?' — '+A.fh[k].d:'')]);
+ const bmi=calcBmi();if(bmi)L.push(['Height / weight',`${A.life.height} cm, ${A.life.weight} kg (BMI ${bmi.toFixed(1)})`]);
+ if(A.life.smoking)L.push(['Smoking',{current:'Smokes',ex:'Used to smoke',never:'Never smoked'}[A.life.smoking]]);if(A.life.alcohol!=='')L.push(['Alcohol',A.life.alcohol+' units a week']);
+ for(const [k,l] of VACC)if(A.vacc[k]?.a)L.push([l,lab[A.vacc[k].a]]);
+ for(const [k,l] of [['t','Painful joints'],['s','Swollen joints']])if(A.joints[k].length)L.push([l,A.joints[k].map(id=>JB[id]?JB[id].side+' '+JB[id].plain:id).join(', ')]);
+ A.meds.filter(m=>m.n.trim()).forEach((m,i)=>L.push(['Medicine '+(i+1),[m.n,m.d,m.f].filter(Boolean).join(', ')]));
+ if(A.allergy.a)L.push(['Medicine allergies',lab[A.allergy.a]+(A.allergy.d?' — '+A.allergy.d:'')]);
+ if(A.goals)L.push(['To discuss',A.goals]);
+ return L}
+
+/* ---------- Voice ---------- */
+let rec=null,recBtn=null;
+function addVoice(){
+ const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+ document.querySelectorAll('#card .q>.qt').forEach(q=>{if(q.querySelector('.say')||!('speechSynthesis' in window))return;const b=document.createElement('button');b.type='button';b.className='say tools';b.style.cssText='margin-left:8px;border:1px solid var(--line);background:var(--surface-2);border-radius:7px;padding:2px 8px;font-size:12px;color:var(--muted);cursor:pointer';b.textContent='🔊 Read aloud';q.appendChild(b)});
+ if(!SR)return;
+ document.querySelectorAll('#card [data-voice]').forEach(f=>{if(f.nextElementSibling?.classList?.contains('tools'))return;const w=document.createElement('div');w.className='tools';w.innerHTML='<button type="button" class="mic" aria-pressed="false">🎙 Speak</button>';f.insertAdjacentElement('afterend',w)})}
+function speak(b){speechSynthesis.cancel();const q=b.closest('.qt');const t=q.cloneNode(true);t.querySelectorAll('button').forEach(x=>x.remove());const u=new SpeechSynthesisUtterance(t.textContent.trim());u.lang='en-IE';u.rate=.92;speechSynthesis.speak(u)}
+function dictate(b){
+ if(rec){const same=recBtn===b;rec.stop();if(same)return}
+ const field=b.parentElement.previousElementSibling;const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+ const r=new SR();r.lang='en-IE';r.continuous=true;r.interimResults=false;rec=r;recBtn=b;b.textContent='■ Stop';b.setAttribute('aria-pressed','true');
+ r.onresult=ev=>{for(let i=ev.resultIndex;i<ev.results.length;i++)if(ev.results[i].isFinal){const w=ev.results[i][0].transcript.trim();if(w){field.value=(field.value.trim()?field.value.trim()+' ':'')+w;field.dispatchEvent(new Event('input',{bubbles:true}))}}};
+ r.onerror=ev=>{if(ev.error!=='aborted'&&ev.error!=='no-speech')toast("Speaking didn't work ("+ev.error+'). You can type instead.')};
+ r.onend=()=>{b.textContent='🎙 Speak';b.setAttribute('aria-pressed','false');if(rec===r){rec=null;recBtn=null}};
+ try{r.start()}catch(err){toast('Could not start: '+err.message)}}
+
+render();
+</script>
+</body>
+</html>

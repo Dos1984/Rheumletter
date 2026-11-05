@@ -1,0 +1,169 @@
+{
+ "type": "rheumletter-scribe",
+ "v": 1,
+ "created": "2026-10-22T12:26:07+00:00",
+ "backend": "replay",
+ "model": "",
+ "transcript": "[00:00] So what's been happening with your hands?\n[00:04] For about six months now my knuckles and my wrists have been swollen and sore, and in the mornings they're stiff for about an hour and a half.\n[00:15] Okay. Any psoriasis, scaly patches on the skin, elbows, scalp?\n[00:19] No, nothing like that.\n[00:21] Any bowel problems, Crohn's or colitis?\n[00:24] No.\n[00:25] Does anyone in the family have arthritis?\n[00:28] My mother had rheumatoid arthritis, she was on injections for it.\n[00:33] Any gout in the family? No? And do your fingers go white in the cold?\n[00:38] No, not really.\n[00:40] Do you smoke?\n[00:41] I gave up about five years ago.\n[00:44] What are you taking at the moment?\n[00:46] Just the naproxen, 500 milligrams twice a day, and an omeprazole in the morning, 20.\n[00:53] Any allergies to medicines?\n[00:55] Penicillin, I came out in a rash.\n[01:20] Right, examining you now. Tender and swollen right second and third MCPs, swollen left wrist, tender left wrist too. Knees are fine. Range of movement at the shoulders is normal.\n[01:41] Your bloods from the GP showed a CRP of 24 and the rheumatoid factor was positive.\n[01:50] So I'm going to order an anti-CCP and the routine bloods, and X-rays of both hands and feet.\n[01:58] I'd like to start you on methotrexate, starting at ten milligrams once a week, with folic acid, and I'll give you the leaflet about pregnancy and contraception.\n[02:10] I'll also give you an injection of Depo-Medrone into the thigh today to settle things down.\n[02:16] We'll see you back in three months.\n",
+ "summary": "Six-month history of pain and swelling of the knuckles and wrists with approximately 90 minutes of early morning stiffness.",
+ "findings": [
+  {
+   "id": "px_pso",
+   "option": 1,
+   "detail": "",
+   "evidence": "Any psoriasis, scaly patches on the skin, elbows, scalp? No, nothing like that.",
+   "section": "dx",
+   "sentence": "No personal history of psoriasis"
+  },
+  {
+   "id": "h_pso",
+   "option": 1,
+   "detail": "",
+   "evidence": "No, nothing like that.",
+   "section": "hx",
+   "sentence": "No history of psoriasis"
+  },
+  {
+   "id": "h_ibd",
+   "option": 1,
+   "detail": "",
+   "evidence": "Any bowel problems, Crohn's or colitis? No.",
+   "section": "hx",
+   "sentence": "No history of inflammatory bowel disease"
+  },
+  {
+   "id": "fh_ra",
+   "option": 0,
+   "detail": "mother",
+   "evidence": "My mother had rheumatoid arthritis, she was on injections for it.",
+   "section": "dx",
+   "sentence": "Family history of rheumatoid arthritis"
+  },
+  {
+   "id": "fh_gout",
+   "option": 1,
+   "detail": "",
+   "evidence": "Any gout in the family? No?",
+   "section": "dx",
+   "sentence": "No family history of gout"
+  },
+  {
+   "id": "h_rayn",
+   "option": 1,
+   "detail": "",
+   "evidence": "do your fingers go white in the cold? No, not really.",
+   "section": "hx",
+   "sentence": "No history of Raynaud's symptoms"
+  },
+  {
+   "id": "smoke",
+   "option": 2,
+   "detail": "stopped about five years ago",
+   "evidence": "I gave up about five years ago.",
+   "section": "dx",
+   "sentence": "Ex-smoker. Smoking cessation advice given on {date}"
+  },
+  {
+   "id": "allergy",
+   "option": 0,
+   "detail": "penicillin – rash",
+   "evidence": "Penicillin, I came out in a rash.",
+   "section": "dx",
+   "sentence": "Known drug allergies noted at consultation on {date}"
+  },
+  {
+   "id": "rom_sho",
+   "option": 0,
+   "detail": "",
+   "evidence": "Range of movement at the shoulders is normal.",
+   "section": "rom",
+   "sentence": "Normal range of motion of the shoulder joints"
+  }
+ ],
+ "medications": [
+  {
+   "name": "Naproxen",
+   "dose": "500 mg",
+   "frequency": "twice daily",
+   "route": "oral",
+   "status": "current",
+   "evidence": "Just the naproxen, 500 milligrams twice a day"
+  },
+  {
+   "name": "Omeprazole",
+   "dose": "20 mg",
+   "frequency": "once daily",
+   "route": "oral",
+   "status": "current",
+   "evidence": "an omeprazole in the morning, 20"
+  }
+ ],
+ "joints": {
+  "tender": [
+   "R_MCP2",
+   "R_MCP3",
+   "L_WRI"
+  ],
+  "swollen": [
+   "R_MCP2",
+   "R_MCP3",
+   "L_WRI"
+  ],
+  "evidence": "Tender and swollen right second and third MCPs, swollen left wrist, tender left wrist too."
+ },
+ "investigations": {
+  "bloods": "GP bloods: CRP 24, rheumatoid factor positive.",
+  "radiology": "",
+  "other": ""
+ },
+ "management": [
+  {
+   "id": "m_routine",
+   "detail": "",
+   "evidence": "I'm going to order an anti-CCP and the routine bloods"
+  },
+  {
+   "id": "m_screen",
+   "detail": "anti-CCP",
+   "evidence": "I'm going to order an anti-CCP"
+  },
+  {
+   "id": "m_xray",
+   "detail": "bilateral hands and feet",
+   "evidence": "X-rays of both hands and feet"
+  },
+  {
+   "id": "m_mtx_po",
+   "detail": "10 mg once weekly with folic acid",
+   "evidence": "start you on methotrexate, starting at ten milligrams once a week, with folic acid"
+  },
+  {
+   "id": "m_mtx_preg",
+   "detail": "",
+   "evidence": "I'll give you the leaflet about pregnancy and contraception"
+  },
+  {
+   "id": "m_im",
+   "detail": "",
+   "evidence": "an injection of Depo-Medrone into the thigh today"
+  },
+  {
+   "id": "m_review",
+   "detail": "3 months",
+   "evidence": "We'll see you back in three months."
+  }
+ ],
+ "exam_other": "Knees normal.",
+ "rejected": [
+  {
+   "kind": "finding",
+   "item": {
+    "id": "htn",
+    "option": 0,
+    "detail": "",
+    "evidence": "I was told my blood pressure is high."
+   },
+   "reason": "quote not found in transcript"
+  }
+ ]
+}

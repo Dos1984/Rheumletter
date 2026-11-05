@@ -1,0 +1,1513 @@
+<!doctype html>
+<html lang="en-IE">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Rheumletter v3</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: clinic workbench — stepped form on the left, the letter as a paper sheet pinned on the right. */
+:root{
+ --bg:#eef2f2; --surface:#ffffff; --surface-2:#f5f8f8; --line:#d3dddd; --line-strong:#a9bcbc;
+ --fg:#15282b; --muted:#56696c; --accent:#0d6466; --accent-fg:#ffffff; --accent-soft:#dcefee;
+ --neg:#3d4f63; --neg-soft:#e3e9f0; --warn:#9a5b00; --warn-soft:#fff2db; --danger:#b42c2c; --danger-soft:#fbe5e5;
+ --tender:#e09a1b; --swollen:#c8372f; --paper:#fffefb; --paper-fg:#1b1b1b;
+ --f-ui:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+ --f-letter:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+ --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+ --r:8px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --bg:#0f1819; --surface:#162224; --surface-2:#1c2b2d; --line:#2b3d40; --line-strong:#41595c;
+ --fg:#e3eeee; --muted:#93a8aa; --accent:#4fb3b0; --accent-fg:#06201f; --accent-soft:#183a3a;
+ --neg:#a9b9cc; --neg-soft:#233040; --warn:#f0b452; --warn-soft:#3a2c12; --danger:#f08a8a; --danger-soft:#3d1c1c;
+ --tender:#f0b04a; --swollen:#f06a60; --paper:#f4f1ea; --paper-fg:#1b1b1b; color-scheme:dark}}
+:root[data-theme="dark"]{
+ --bg:#0f1819; --surface:#162224; --surface-2:#1c2b2d; --line:#2b3d40; --line-strong:#41595c;
+ --fg:#e3eeee; --muted:#93a8aa; --accent:#4fb3b0; --accent-fg:#06201f; --accent-soft:#183a3a;
+ --neg:#a9b9cc; --neg-soft:#233040; --warn:#f0b452; --warn-soft:#3a2c12; --danger:#f08a8a; --danger-soft:#3d1c1c;
+ --tender:#f0b04a; --swollen:#f06a60; --paper:#f4f1ea; --paper-fg:#1b1b1b; color-scheme:dark}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 var(--f-ui)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--surface)}
+h1,h2,h3,h4{text-wrap:balance;margin:0;line-height:1.25}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.wrap{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* top bar */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--line)}
+.top-inner{max-width:1500px;margin:0 auto;padding-block:10px;display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center}
+.brand{display:flex;align-items:baseline;gap:10px;margin-right:auto}
+.brand h1{font-size:18px;font-weight:700;letter-spacing:-.01em}
+.brand span{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.steps{display:flex;gap:4px;overflow-x:auto;max-width:100%;scrollbar-width:thin}
+.steps button{border:1px solid var(--line);background:var(--surface-2);border-radius:999px;padding:6px 12px;white-space:nowrap;cursor:pointer;font-size:13px;color:var(--muted)}
+.steps button[aria-current="step"]{background:var(--accent);border-color:var(--accent);color:var(--accent-fg);font-weight:600}
+.steps button .ct{font-family:var(--f-mono);font-size:11px;margin-left:4px;opacity:.8}
+.notice{max-width:1500px;margin:12px auto 0;background:var(--warn-soft);color:var(--fg);border:1px solid var(--line);border-radius:var(--r);padding:8px 12px;font-size:13px}
+.notice b{color:var(--warn)}
+
+/* layout */
+.grid{max-width:1500px;margin:0 auto;padding-block:14px 80px;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:18px;align-items:start}
+@media (max-width:980px){.grid{grid-template-columns:minmax(0,1fr)}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;min-width:0}
+.panel>h2{font-size:20px;margin-bottom:4px}
+.lede{color:var(--muted);margin:0 0 14px;max-width:70ch;font-size:14px}
+.group{border-top:1px solid var(--line);padding-block:14px 6px}
+.group:first-of-type{border-top:0}
+.group-head{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;margin-bottom:8px}
+.group-head h3{font-size:15px;font-weight:600}
+.tiny{font-size:12px;color:var(--muted)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.stack{display:grid;gap:10px}
+label.f{display:grid;gap:4px;font-size:13px;color:var(--muted);font-weight:500}
+label.f>span{color:var(--fg)}
+input[type=text],input[type=date],input[type=number],select,textarea{width:100%;border:1px solid var(--line-strong);border-radius:6px;background:var(--surface);padding:7px 9px;min-width:0}
+textarea{min-height:64px;resize:vertical}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.btn{border:1px solid var(--line-strong);background:var(--surface-2);border-radius:6px;padding:7px 12px;cursor:pointer;font-size:13px;font-weight:500}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+.btn.ghost{background:transparent}
+.btn.danger{color:var(--danger)}
+.btn.small{padding:4px 9px;font-size:12px}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+
+/* choice item */
+.item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 12px;align-items:center;padding:6px 10px;border-radius:8px;border:1px solid transparent}
+.item:hover{background:var(--surface-2)}
+.item.on{background:var(--surface-2);border-color:var(--line)}
+.item .name{font-weight:500;min-width:0}
+.item .name small{display:block;font-weight:400;color:var(--muted);font-size:12px}
+.seg{display:inline-flex;border:1px solid var(--line-strong);border-radius:7px;overflow:hidden;flex-wrap:wrap}
+.seg button{border:0;border-left:1px solid var(--line-strong);background:var(--surface);padding:6px 12px;cursor:pointer;font-size:13px;min-width:44px;min-height:34px}
+.seg button:first-child{border-left:0}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-fg);font-weight:600}
+.seg button.no[aria-pressed="true"]{background:var(--neg);color:var(--surface)}
+.seg button.sugg{background:var(--warn-soft);outline:2px dashed var(--warn);outline-offset:-3px}
+.item .more{grid-column:1/-1;display:grid;gap:8px;padding-top:4px}
+.sentence{font-family:var(--f-letter);font-size:13px;color:var(--muted);border-left:3px solid var(--line);padding-left:8px}
+.tag{display:inline-block;font-family:var(--f-mono);font-size:10.5px;border:1px solid var(--line-strong);border-radius:4px;padding:0 4px;color:var(--muted);vertical-align:1px;margin-left:4px}
+.tag.new{border-color:var(--accent);color:var(--accent)}
+ .tag.link{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+.refbadge{font:600 12px var(--f-mono);background:var(--accent-soft);color:var(--accent);border-radius:6px;padding:3px 8px;letter-spacing:.03em;white-space:nowrap}
+.qrbox{background:#fff;padding:10px;border-radius:10px;justify-self:start;max-width:100%}.qrbox svg{display:block;width:min(240px,100%);height:auto}
+.cliniclist{width:100%;border-collapse:collapse;font-size:13px}.cliniclist th,.cliniclist td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line)}.cliniclist th{color:var(--muted);font-weight:500}.cliniclist tr.cur td{background:var(--accent-soft)}
+.tblwrap{overflow-x:auto}
+.tag.p{border-color:var(--warn);color:var(--warn);background:var(--warn-soft)}
+.check{background:var(--warn-soft);border-radius:6px;padding:6px 9px;font-size:12.5px;color:var(--fg)}
+.check b{color:var(--warn)}
+
+/* management */
+.mitem{border:1px solid var(--line);border-radius:10px;margin:8px 0;background:var(--surface)}
+.mitem>.mhead{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;cursor:pointer}
+.mitem>.mhead input{margin-top:3px;width:18px;height:18px;accent-color:var(--accent);flex:none}
+.mitem>.mhead .t{min-width:0;flex:1}
+.mitem>.mhead .t b{font-weight:600}
+.mitem.on{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.mitem.sugg{border-style:dashed;border-color:var(--warn);background:var(--warn-soft)}
+.evidence{font-size:12.5px;color:var(--muted);font-style:italic;border-left:3px solid var(--warn);padding-left:8px;margin:0}
+.scribe-box{background:var(--warn-soft);border:1px dashed var(--warn);border-radius:8px;padding:10px 12px;display:grid;gap:6px;margin-bottom:10px}
+.transcript{white-space:pre-wrap;font:12.5px/1.5 var(--f-mono);max-height:260px;overflow:auto;background:var(--surface-2);border:1px solid var(--line);border-radius:6px;padding:8px}
+.mbody{padding:0 12px 12px 40px;display:grid;gap:10px}
+.checks{display:flex;flex-wrap:wrap;gap:6px}
+.checks label{display:inline-flex;gap:6px;align-items:center;border:1px solid var(--line);border-radius:6px;padding:4px 8px;font-size:13px;cursor:pointer;background:var(--surface)}
+.checks label:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+.checks input{accent-color:var(--accent)}
+.suggest{background:var(--accent-soft);border-radius:8px;padding:10px 12px;display:grid;gap:6px;margin-bottom:10px}
+.suggest .row{justify-content:space-between}
+
+/* meds */
+.medrow{border:1px solid var(--line);border-radius:10px;padding:10px;display:grid;gap:8px;margin:8px 0}
+.medrow.sugg{border-style:dashed;border-color:var(--warn);background:var(--warn-soft)}
+.medgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px}
+
+/* joint map */
+.jm{display:grid;gap:10px}
+.jm svg{width:100%;height:auto;display:block;background:var(--surface-2);border:1px solid var(--line);border-radius:10px;touch-action:manipulation}
+.jm .panels{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:10px}
+@media (max-width:560px){.jm .panels{grid-template-columns:minmax(0,1fr)}}
+.sil{fill:var(--surface);stroke:var(--line-strong);stroke-width:1.5}
+.bone{stroke:var(--line-strong);stroke-linecap:round;fill:none}
+.jt{fill:var(--surface);stroke:var(--muted);stroke-width:1.6;cursor:pointer}
+.jt.t{fill:var(--tender)}
+.jt.s{stroke:var(--swollen);stroke-width:4}
+.jt.pr{stroke-dasharray:3 2;stroke:var(--warn);stroke-width:2.5}
+.jt:hover,.jt:focus{stroke:var(--accent);stroke-width:3;outline:none}
+.jlbl{fill:var(--muted);font:600 10px var(--f-ui);text-anchor:middle;pointer-events:none}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:12px;color:var(--muted);align-items:center}
+.dot{display:inline-block;width:12px;height:12px;border-radius:50%;border:1.6px solid var(--muted);vertical-align:-2px;margin-right:4px;background:var(--surface)}
+.dot.t{background:var(--tender)}.dot.s{border:3px solid var(--swollen)}.dot.pr{border:2px dashed var(--warn)}
+.counts{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px}
+.count{border:1px solid var(--line);border-radius:8px;padding:8px 10px;background:var(--surface)}
+.count b{display:block;font:600 22px var(--f-mono);font-variant-numeric:tabular-nums}
+.count span{font-size:12px;color:var(--muted)}
+
+/* preview */
+.preview{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--toph,64px) + 12px);max-height:calc(100vh - var(--toph,64px) - 24px);display:flex;flex-direction:column;gap:10px;min-width:0}
+@media (max-width:980px){.preview{position:static;max-height:none}}
+.preview-bar{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.preview-bar h2{font-size:15px;margin-right:auto}
+.paper{background:var(--paper);color:var(--paper-fg);border:1px solid var(--line);border-radius:4px;box-shadow:0 1px 0 var(--line),0 12px 28px -18px rgba(0,0,0,.35);padding:28px 32px;overflow:auto;font:13.5px/1.55 var(--f-letter);min-height:300px}
+@media (max-width:560px){.paper{padding:18px 16px}}
+.paper h4{font:600 14px var(--f-letter);margin:16px 0 6px;text-decoration:underline;text-underline-offset:3px}
+.paper p{margin:0 0 6px}
+.paper ol{margin:0 0 6px;padding-left:26px}
+.paper ol li{margin:0 0 4px;padding-left:2px}
+.paper ul{margin:2px 0 4px;padding-left:20px;list-style:"– "}
+.paper .sig{margin-top:18px;white-space:pre-line}
+.paper .empty{color:#8a8a8a;font-style:italic}
+.status{font-size:12.5px;color:var(--muted);min-height:1.2em}
+
+/* misc */
+.navbtns{display:flex;justify-content:space-between;gap:8px;margin-top:16px;border-top:1px solid var(--line);padding-top:14px}
+dialog{border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--fg);max-width:min(760px,calc(100vw - 32px));width:100%;padding:0}
+dialog::backdrop{background:rgba(10,20,22,.45)}
+dialog .dhead{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--surface)}
+dialog .dbody{padding:16px 18px;display:grid;gap:12px;max-height:70vh;overflow:auto}
+.mic{border:1px solid var(--line);background:var(--surface-2);border-radius:5px;font-size:11.5px;padding:2px 8px;cursor:pointer;justify-self:start;color:var(--muted)}
+.mic[aria-pressed="true"]{background:var(--danger);color:#fff;border-color:var(--danger)}
+.consent{background:var(--warn-soft);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:13px;display:grid;gap:8px}
+.flag{background:var(--danger-soft);border-radius:6px;padding:8px 10px;font-size:13px}
+.flag mark{background:transparent;color:var(--danger);font-weight:600}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));background:var(--fg);color:var(--bg);padding:8px 14px;border-radius:8px;font-size:13px;z-index:50}
+.jump{display:none}
+@media (max-width:980px){.jump{display:inline-block;position:fixed;right:calc(14px + env(safe-area-inset-right,0px));bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:25;box-shadow:0 6px 16px -6px rgba(0,0,0,.4)}}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+@media print{.top,.notice,#form,.preview-bar,.jump,body::before{display:none!important}.grid{display:block;padding:0}.paper{border:0;box-shadow:none;padding:0;max-height:none;overflow:visible}.preview{position:static;max-height:none}}
+</style>
+</head>
+<body>
+<header class="top wrap">
+ <div class="top-inner">
+  <div class="brand"><h1>Rheumletter</h1><span>v3 · IPMS template</span><b class="refbadge" id="cur-ref" title="This letter's initials and reference"></b></div>
+  <nav class="steps" id="steps" aria-label="Consultation steps"></nav>
+  <div class="row">
+   <button class="btn small ghost" id="btn-settings" type="button">Local settings</button>
+   <button class="btn small ghost danger" id="btn-clear" type="button">Clear consultation</button>
+  </div>
+ </div>
+</header>
+<div class="wrap"><p class="notice"><b>Test data only.</b> Do not enter identifiable patient information in this public prototype. Browser dictation can send audio to the browser's speech service. Template doses and schedules are reproduced from the 2023 template and must be checked before signing.</p></div>
+<main class="grid wrap">
+ <section class="panel" id="form" aria-live="polite"></section>
+ <aside class="preview" id="preview-col" aria-label="Letter preview">
+  <div class="preview-bar">
+   <h2>Letter</h2>
+   <button class="btn small primary" id="btn-docx" type="button">Download .docx</button>
+   <button class="btn small" id="btn-copy" type="button">Copy text</button>
+   <button class="btn small" id="btn-txt" type="button">Download .txt</button>
+  </div>
+  <div class="paper" id="paper"></div>
+  <p class="status" id="export-status"></p>
+ </aside>
+</main>
+<button class="btn primary jump" id="jump" type="button">View letter ↓</button>
+
+<dialog id="settings-dialog" aria-labelledby="settings-title">
+ <div class="dhead"><h2 id="settings-title" style="font-size:17px">Local settings</h2><button class="btn small" type="button" id="settings-close">Done</button></div>
+ <div class="dbody" id="settings-body"></div>
+</dialog>
+
+<script>
+"use strict";
+/* ============================================================
+   Rheumletter v3 — clinician letter builder
+   Single source of truth: the IPMS new-patient template (KOR, 2023).
+   Every printable sentence lives in the data below, in template order.
+   Clinician-only cautions live in `check` fields and are never printed.
+   ============================================================ */
+
+const LIBS={
+ qrgen:'https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js',
+ jszip:'https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js',
+ tesseract:'https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js',
+ pdfjs:'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js',
+ pdfworker:'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js',
+ mammoth:'https://cdn.jsdelivr.net/npm/mammoth@1.9.0/mammoth.browser.min.js',
+ jsqr:'https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js'
+};
+
+/* ---------- Signing clinician, hospital and local services ---------- */
+/* Hospitals grouped by HSE Health Region. Addresses are pre-filled for convenience; users can edit them. */
+const HOSPITALS=[
+ ['HSE Dublin and Midlands',[
+  ['sjh',"St James's Hospital","St James's Hospital","James's Street\nDublin 8"],
+  ['tuh','Tallaght University Hospital','Tallaght University Hospital','Tallaght\nDublin 24'],
+  ['mrht','Midland Regional Hospital Tullamore','MRH Tullamore','Arden Road\nTullamore\nCo. Offaly'],
+  ['mrhp','Midland Regional Hospital Portlaoise','MRH Portlaoise','Dublin Road\nPortlaoise\nCo. Laois'],
+  ['mrhm','Midland Regional Hospital Mullingar','MRH Mullingar','Longford Road\nMullingar\nCo. Westmeath'],
+  ['naas','Naas General Hospital','Naas General Hospital','Craddockstown Road\nNaas\nCo. Kildare'],
+  ['chic',"Children's Health Ireland at Crumlin",'CHI Crumlin','Cooley Road\nCrumlin\nDublin 12']]],
+ ['HSE Dublin and North East',[
+  ['bh','Beaumont Hospital','Beaumont Hospital','Beaumont Road\nDublin 9'],
+  ['mater','Mater Misericordiae University Hospital','the Mater Hospital','Eccles Street\nDublin 7'],
+  ['chb','Connolly Hospital Blanchardstown','Connolly Hospital','Blanchardstown\nDublin 15'],
+  ['olol','Our Lady of Lourdes Hospital Drogheda','OLOL Drogheda','Windmill Road\nDrogheda\nCo. Louth'],
+  ['lch','Louth County Hospital','Louth County Hospital','Dublin Road\nDundalk\nCo. Louth'],
+  ['navan',"Our Lady's Hospital Navan","Our Lady's Hospital Navan",'Navan\nCo. Meath'],
+  ['cavan','Cavan General Hospital','Cavan General Hospital','Lisdaragh\nCavan\nCo. Cavan'],
+  ['cappagh','Cappagh National Orthopaedic Hospital','Cappagh Hospital','Finglas\nDublin 11']]],
+ ['HSE Dublin and South East',[
+  ['svuh',"St Vincent's University Hospital","St Vincent's University Hospital",'Elm Park\nDublin 4'],
+  ['stmichael',"St Michael's Hospital Dún Laoghaire","St Michael's Hospital","Lower George's Street\nDún Laoghaire\nCo. Dublin"],
+  ['stcol',"St Columcille's Hospital","St Columcille's Hospital",'Loughlinstown\nCo. Dublin'],
+  ['uhw','University Hospital Waterford','UHW','Dunmore Road\nWaterford'],
+  ['wgh','Wexford General Hospital','Wexford General Hospital','Newtown Road\nWexford'],
+  ['slk',"St Luke's General Hospital Kilkenny","St Luke's Kilkenny",'Freshford Road\nKilkenny'],
+  ['tipp','Tipperary University Hospital','Tipperary University Hospital','Western Road\nClonmel\nCo. Tipperary']]],
+ ['HSE South West',[
+  ['cuh','Cork University Hospital','CUH','Wilton\nCork'],
+  ['mercy','Mercy University Hospital','the Mercy University Hospital','Grenville Place\nCork'],
+  ['sivuh','South Infirmary Victoria University Hospital','SIVUH','Old Blackrock Road\nCork'],
+  ['mallow','Mallow General Hospital','Mallow General Hospital','Mallow\nCo. Cork'],
+  ['bantry','Bantry General Hospital','Bantry General Hospital','Bantry\nCo. Cork'],
+  ['uhk','University Hospital Kerry','University Hospital Kerry','Tralee\nCo. Kerry']]],
+ ['HSE Mid West',[
+  ['uhl','University Hospital Limerick','UHL',"St Nessan's Road\nDooradoyle\nLimerick"],
+  ['croom','Croom Orthopaedic Hospital','Croom Orthopaedic Hospital','Croom\nCo. Limerick'],
+  ['sjl',"St John's Hospital Limerick","St John's Hospital","St John's Square\nLimerick"],
+  ['ennis','Ennis Hospital','Ennis Hospital','Gort Road\nEnnis\nCo. Clare'],
+  ['nenagh','Nenagh Hospital','Nenagh Hospital','Tyone\nNenagh\nCo. Tipperary']]],
+ ['HSE West and North West',[
+  ['uhg','University Hospital Galway','UHG','Newcastle Road\nGalway'],
+  ['merlin','Merlin Park University Hospital','Merlin Park University Hospital','Merlin Park\nGalway'],
+  ['portiuncula','Portiuncula University Hospital','Portiuncula University Hospital','Ballinasloe\nCo. Galway'],
+  ['mayo','Mayo University Hospital','Mayo University Hospital','Westport Road\nCastlebar\nCo. Mayo'],
+  ['roscommon','Roscommon University Hospital','Roscommon University Hospital','Athlone Road\nRoscommon'],
+  ['sligo','Sligo University Hospital','Sligo University Hospital','The Mall\nSligo'],
+  ['luh','Letterkenny University Hospital','Letterkenny University Hospital','Kilmacrennan Road\nLetterkenny\nCo. Donegal'],
+  ['manor',"Our Lady's Hospital Manorhamilton","Our Lady's Hospital Manorhamilton",'Manorhamilton\nCo. Leitrim']]],
+ ['Private hospitals',[
+  ['beacon','Beacon Hospital','Beacon Hospital','Beacon Court\nSandyford\nDublin 18'],
+  ['blackrock','Blackrock Clinic','Blackrock Clinic','Rock Road\nBlackrock\nCo. Dublin'],
+  ['bsd','Bon Secours Hospital Dublin','Bon Secours Hospital Dublin','Glasnevin\nDublin 9'],
+  ['hermitage','Hermitage Medical Clinic','Hermitage Medical Clinic','Old Lucan Road\nDublin 20'],
+  ['materpriv','Mater Private Hospital Dublin','Mater Private Hospital','Eccles Street\nDublin 7'],
+  ['svph',"St Vincent's Private Hospital","St Vincent's Private Hospital",'Merrion Road\nDublin 4'],
+  ['ssc','Sports Surgery Clinic','Sports Surgery Clinic','Northwood Avenue\nSantry\nDublin 9'],
+  ['bsc','Bon Secours Hospital Cork','Bon Secours Hospital Cork','College Road\nCork'],
+  ['materprivcork','Mater Private Hospital Cork','Mater Private Hospital Cork','Citygate\nMahon\nCork'],
+  ['bsg','Bon Secours Hospital Galway','Bon Secours Hospital Galway','Renmore\nGalway'],
+  ['galwayclinic','Galway Clinic','Galway Clinic','Doughiska\nGalway'],
+  ['bst','Bon Secours Hospital Tralee','Bon Secours Hospital Tralee','Strand Street\nTralee\nCo. Kerry'],
+  ['whitfield','UPMC Whitfield Hospital','UPMC Whitfield Hospital','Cork Road\nWaterford'],
+  ['auteven','UPMC Aut Even Hospital','UPMC Aut Even Hospital','Freshford Road\nKilkenny']]]
+];
+const HOSP_BY=Object.fromEntries(HOSPITALS.flatMap(([,hs])=>hs.map(([id,name,short,addr])=>[id,{id,name,short,addr}])));
+const ROLES=['Consultant Rheumatologist','Consultant Rheumatologist and General Physician','Specialist Registrar in Rheumatology','Registrar in Rheumatology','Senior House Officer in Rheumatology','Advanced Nurse Practitioner in Rheumatology','Clinical Nurse Specialist in Rheumatology','Other'];
+const TITLES=['Dr','Prof','Mr','Ms','Mrs','Miss',''];
+const SIGNER_DEFAULTS={title:'Dr',name:'',role:'Consultant Rheumatologist',roleOther:'',quals:'',regLabel:'IMC Reg No',reg:'',onBehalf:'',hospital:'',hospName:'',hospShort:'',hospAddr:'',showAddr:true,qUrl:''};
+/* Generic local services; {hospital} becomes the selected hospital's short name. */
+const GENERIC_SERVICES={dxa:'{hospital}|',bonescan:'{hospital}|',mri:'{hospital}|',us:'{hospital}|',ct:'{hospital}|',echo:'{hospital}|',abpm:'{hospital}|',
+ pft:'the Department of Respiratory Medicine, {hospital}|',neuro:'the Neurophysiology Department, {hospital}|',ortho:'a Consultant Orthopaedic Surgeon, {hospital}',
+ handsurgeon:'a Consultant Orthopaedic Surgeon with an interest in hand and wrist surgery',painConsultants:'',physio:''};
+/* Local presets from the 2023 IPMS template (Midland Regional Hospital Tullamore). */
+const SERVICE_PRESETS={mrht:{
+ dxa:"MRH Tullamore|12 months",bonescan:"MRH Tullamore|6 months",mri:"MRH Tullamore|10 months",us:"MRH Tullamore|6 months",ct:"MRH Tullamore|6 months",
+ echo:"MRH, Tullamore|6 months",abpm:"MRH Tullamore|6 months",pft:"the Department of Respiratory Medicine, MRH, Mullingar|6 months",
+ neuro:"Dr Conor O'Brien, Consultant Neurophysiologist, MRH Tullamore|6 months",ortho:"a Consultant Orthopaedic Surgeon, MRH Tullamore",
+ handsurgeon:"Mr Muiris Kennedy, Consultant Orthopaedic Surgeon, with an interest in hand and wrist surgery, MRH Tullamore",
+ painConsultants:"Dr Joe Fitzgerald, Consultant in Pain and Anaesthesia, St James's Hospital, Dublin\nDr David O'Flaherty, Consultant in Pain and Anaesthesia, Portiuncula Hospital, Ballinasloe\nDr Barry Warde, Consultant in Pain and Anaesthesia, Midlands Regional Hospital, Portlaoise",
+ physio:"Offaly: Tullamore (Midland Regional Hospital)\nOffaly: Birr (Community Nursing Unit)\nOffaly: Ferbane (Health Centre)\nOffaly: Edenderry (Community Nursing Unit)\nLaois: Portlaoise (Midland Regional Hospital)\nLaois: Portarlington (Primary Care Centre)\nLaois: Mountmellick (Primary Care Centre)\nLaois: Abbeyleix (Community Hospital)\nLaois: Graiguecullen (Health Centre)\nWestmeath: Mullingar (Midland Regional Hospital)\nWestmeath: Coole (Health Centre)\nWestmeath: Athlone (Hospital)\nWestmeath: Kinnegad (Primary Care Centre)\nLongford: St Joseph's Hospital"}};
+const SERVICE_LABELS={dxa:'DEXA: site | waiting time',bonescan:'Isotope bone scan: department site | waiting time',mri:'MRI: site | waiting time',us:'Ultrasound: site | waiting time',ct:'CT: site | waiting time',echo:'Echocardiogram: site | waiting time',abpm:'24-hour BP monitor: site | waiting time',pft:'PFTs and DLCO: provider | waiting time',neuro:'Neurophysiology: provider | waiting time',ortho:'Orthopaedic referral destination',handsurgeon:'Hand surgeon for 1st CMC referral',painConsultants:'Pain consultants (one per line: "Dr Name, Consultant in Pain and Anaesthesia, Hospital")',physio:'Physiotherapy locations (one per line)'};
+const DEFAULT_SETTINGS={...SIGNER_DEFAULTS,...GENERIC_SERVICES,servicesEdited:false};
+let S=loadSettings();
+function loadSettings(){try{const s=JSON.parse(localStorage.getItem('rl3-settings-v2')||'{}');return {...DEFAULT_SETTINGS,...s}}catch(e){return {...DEFAULT_SETTINGS}}}
+function saveSettings(){try{localStorage.setItem('rl3-settings-v2',JSON.stringify(S))}catch(e){}}
+const H=str=>String(str||'').replace(/\{hospital\}/g,S.hospShort||S.hospName||'[hospital]');
+const site=k=>H((S[k]||'').split('|')[0].trim());
+const wait=k=>(S[k]||'').split('|')[1]?.trim()||'';
+const lines=k=>(S[k]||'').split('\n').map(x=>x.trim()).filter(Boolean);
+function applyServices(id){Object.assign(S,GENERIC_SERVICES,SERVICE_PRESETS[id]||{});S.servicesEdited=false}
+function chooseHospital(id){
+ S.hospital=id;
+ if(HOSP_BY[id]){const h=HOSP_BY[id];S.hospName=h.name;S.hospShort=h.short;S.hospAddr=h.addr}
+ else if(id==='other'){S.hospShort=S.hospName}
+ if(!S.servicesEdited)applyServices(id);
+ saveSettings()}
+function signatureText(){
+ const role=S.role==='Other'?S.roleOther:S.role;
+ return [[S.title,S.name.trim()||'[Name]'].filter(Boolean).join(' '),role,S.onBehalf.trim()?'On behalf of '+S.onBehalf.trim():'',S.hospName,...(S.showAddr?S.hospAddr.split('\n'):[]),S.quals,S.reg.trim()?`${S.regLabel}: ${S.reg.trim()}`:'']
+  .map(x=>(x||'').trim()).filter(Boolean).join('\n')}
+function signerUI(){
+ const hosOpts=HOSPITALS.map(([region,hs])=>`<optgroup label="${esc(region)}">${hs.map(([id,name])=>`<option value="${id}" ${S.hospital===id?'selected':''}>${esc(name)}</option>`).join('')}</optgroup>`).join('');
+ return `<div class="group"><div class="group-head"><h3>Signing clinician</h3><span class="tiny">Saved in this browser for next time</span></div>
+ <div class="two">
+  <label class="f"><span>Title</span><select data-sign="title">${TITLES.map(t=>`<option value="${t}" ${S.title===t?'selected':''}>${t||'(none)'}</option>`).join('')}</select></label>
+  <label class="f"><span>Name</span><input type="text" id="sign-name" data-sign="name" placeholder="First name and surname" value="${esc(S.name)}"></label>
+  <label class="f"><span>Role</span><select data-sign="role">${ROLES.map(r=>`<option ${S.role===r?'selected':''}>${esc(r)}</option>`).join('')}</select></label>
+  ${S.role==='Other'?`<label class="f"><span>Role (as it should print)</span><input type="text" data-sign="roleOther" value="${esc(S.roleOther)}"></label>`:''}
+  <label class="f"><span>Hospital</span><select id="sign-hospital" data-sign-hospital><option value="">Choose hospital…</option>${hosOpts}<option value="other" ${S.hospital==='other'?'selected':''}>Other (type name and address)</option></select></label>
+ </div>
+ ${S.hospital?`<div class="two" style="margin-top:10px"><label class="f"><span>Hospital name as printed</span><input type="text" data-sign="hospName" value="${esc(S.hospName)}"></label><label class="f"><span>Address</span><textarea data-sign="hospAddr" rows="3">${esc(S.hospAddr)}</textarea></label></div>
+ <p class="tiny">Addresses are pre-filled for convenience. Check yours once and edit it here if needed.</p>`:''}
+ <div class="checks" style="margin-top:8px"><label><input type="checkbox" data-sign="showAddr" ${S.showAddr?'checked':''}> Show hospital address under the signature</label></div>
+ <details style="margin-top:8px" ${S.quals||S.reg||S.onBehalf?'open':''}><summary class="tiny" style="cursor:pointer">Qualifications, registration number, signing on behalf of a consultant</summary>
+ <div class="two" style="margin-top:8px">
+  <label class="f"><span>Qualifications (optional)</span><input type="text" data-sign="quals" placeholder="e.g. MB BCh BAO MRCPI" value="${esc(S.quals)}"></label>
+  <label class="f"><span>Registration</span><select data-sign="regLabel">${['IMC Reg No','NMBI PIN'].map(r=>`<option ${S.regLabel===r?'selected':''}>${r}</option>`).join('')}</select></label>
+  <label class="f"><span>Number (optional)</span><input type="text" data-sign="reg" value="${esc(S.reg)}"></label>
+  <label class="f"><span>On behalf of (optional)</span><input type="text" data-sign="onBehalf" placeholder="e.g. Dr A. Byrne, Consultant Rheumatologist" value="${esc(S.onBehalf)}"></label>
+ </div></details>
+ ${S.hospital&&S.servicesEdited?`<p class="tiny" style="margin-top:8px">You have edited the local service settings, so changing hospital won't overwrite them. <button class="btn small" type="button" id="load-services">Load defaults for this hospital</button></p>`:''}
+ </div>`}
+
+/* ---------- Helpers ---------- */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function fmtDate(iso){if(!iso)return '';const [y,m,d]=iso.split('-');return d&&m&&y?`${d}/${m}/${y}`:iso}
+function today(){const d=new Date();return d.toISOString().slice(0,10)}
+function listJoin(a){a=a.filter(Boolean);if(a.length<2)return a.join('');return a.slice(0,-1).join(', ')+' and '+a.at(-1)}
+function cap(s){return s?s[0].toUpperCase()+s.slice(1):s}
+function toast(msg){const t=document.createElement('div');t.className='toast';t.textContent=msg;t.setAttribute('role','status');document.body.appendChild(t);setTimeout(()=>t.remove(),2600)}
+async function loadScript(url){if(document.querySelector(`script[data-src="${url}"]`))return;await new Promise((res,rej)=>{const s=document.createElement('script');s.src=url;s.dataset.src=url;s.onload=res;s.onerror=()=>rej(new Error('Could not load '+url.split('/').pop()+' — check the network connection.'));document.head.appendChild(s)})}
+
+/* ============================================================
+   TEMPLATE DATA
+   ============================================================ */
+
+/* Diagnosis list — template items 1–63 in order.
+   o: printed options. Tokens: {date} (defaults to consultation date), {detail} (inline), {field}.
+   Parenthetical groups whose tokens are all empty are dropped, e.g. "(BMI {bmi})". */
+const DX=[
+ {g:'ijd',id:'ijd',name:'Inflammatory joint disease',n:'1–2',o:['Evidence of an inflammatory joint disease noted on {date}','No definite evidence of an inflammatory joint disease noted on {date}'],s:['Evidence','No definite evidence']},
+ {g:'fhr',id:'fh_ra',name:'Family history of rheumatoid arthritis',n:'3–4',o:['Family history of rheumatoid arthritis','No family history of rheumatoid arthritis']},
+ {g:'fhr',id:'fh_psa',name:'Family history of psoriatic arthritis',n:'5–6',o:['Family history of psoriatic arthritis','No family history of psoriatic arthritis']},
+ {g:'fhr',id:'fh_ctd',name:'Family history of connective tissue disease',n:'7–8',o:['Family history of connective tissue disease','No family history of connective tissue disease']},
+ {g:'fhr',id:'fh_vasc',name:'Family history of vasculitis',n:'9–10',o:['Family history of vasculitis','No family history of vasculitis']},
+ {g:'fhr',id:'fh_gout',name:'Family history of gout',n:'11–12',o:['Family history of gout','No family history of gout']},
+ {g:'pso',id:'px_pso',name:'Personal history of psoriasis',n:'13–14',o:['Personal history of psoriasis','No personal history of psoriasis'],fields:[{k:'dxdate',l:'Date of first diagnosis (optional, type e.g. 2015 or March 2019)',when:0,after:true,pre:'diagnosed'}]},
+ {g:'pso',id:'fh_pso',name:'Family history of psoriasis',n:'15–16',o:['Family history of psoriasis','No family history of psoriasis']},
+ {g:'pso',id:'px_ibd',name:"Personal history of ulcerative colitis / Crohn's disease",n:'17–18',o:["Personal history of ulcerative colitis / Crohn's disease","No history of ulcerative colitis / Crohn's disease"],fields:[{k:'dxdate',l:'Date of first diagnosis (optional, type e.g. 2015 or March 2019)',when:0,after:true,pre:'diagnosed'}]},
+ {g:'pso',id:'fh_ibd',name:"Family history of ulcerative colitis / Crohn's disease",n:'19–20',o:["Family history of ulcerative colitis / Crohn's disease","No family history of ulcerative colitis / Crohn's disease"]},
+ {g:'bone',id:'oa',name:'Osteoarthritis',n:'21–22',o:['Osteoarthritis of {detail}','No osteoarthritis'],dl:'Joints affected'},
+ {g:'bone',id:'fx',name:'Personal history of fracture',n:'23–24',o:['History of fracture','No personal history of fracture'],fields:[{k:'dxdate',l:'Date of fracture (optional, type e.g. 2015 or March 2019)',when:0,after:true,pre:''}]},
+ {g:'bone',id:'fh_op',name:'Family history of osteoporosis',n:'25–26',o:['Family history of osteoporosis','No family history of osteoporosis']},
+ {g:'bone',id:'fh_haem',name:'Family history of haemochromatosis',n:'27–28',o:['Family history of haemochromatosis','No family history of haemochromatosis']},
+ {g:'bone',id:'par_fx',name:'Maternal or paternal fracture',n:'29–30',o:['History of maternal or paternal fracture','No history of maternal or paternal fracture']},
+ {g:'cv',id:'cvd',name:'Personal history of cardiovascular disease',n:'31–32',o:['Personal history of cardiovascular disease','No history of cardiovascular disease'],fields:[{k:'dxdate',l:'Date of first diagnosis (optional, type e.g. 2015 or March 2019)',when:0,after:true,pre:'diagnosed'}]},
+ {g:'cv',id:'fh_cvd',name:'Family history of cardiovascular disease',n:'33–34',o:['Family history of cardiovascular disease','No family history of cardiovascular disease']},
+ {g:'cv',id:'chol',name:'Hypercholesterolaemia',n:'35–36',o:['History of hypercholesterolaemia','No history of hypercholesterolaemia'],fields:[{k:'dxdate',l:'Date of first diagnosis (optional, type e.g. 2015 or March 2019)',when:0,after:true,pre:'diagnosed'}]},
+ {g:'cv',id:'htn',name:'Hypertension',n:'37–38',o:['History of hypertension','No history of hypertension'],fields:[{k:'dxdate',l:'Date of first diagnosis (optional, type e.g. 2015 or March 2019)',when:0,after:true,pre:'diagnosed'}]},
+ {g:'cv',id:'dm',name:'Diabetes',n:'39–40',o:['History of diabetes','No history of diabetes'],fields:[{k:'dxdate',l:'Date of first diagnosis (optional, type e.g. 2015 or March 2019)',when:0,after:true,pre:'diagnosed'}]},
+ {g:'cv',id:'smoke',name:'Smoking status',n:'41–43',o:['Smoker','Non-smoker','Ex-smoker. Smoking cessation advice given on {date}'],s:['Smoker','Non-smoker','Ex-smoker'],noNeg:true},
+ {g:'cv',id:'bmi',name:'Body mass index',n:'44–46',o:['Normal body mass index (BMI {bmi}) noted on {date}','Increased body mass index (BMI {bmi}) noted on {date}','Decreased body mass index (BMI {bmi}) noted on {date}'],s:['Normal','Increased','Decreased'],fields:[{k:'bmi',l:'BMI (kg/m²)'}],noNeg:true},
+ {g:'cv',id:'renal',name:'Renal function',n:'47–48',o:['Normal renal function','Renal dysfunction (Urea {urea}, creat {creat}, eGFR {egfr} on {date})'],s:['Normal','Dysfunction'],fields:[{k:'urea',l:'Urea',when:1},{k:'creat',l:'Creatinine',when:1},{k:'egfr',l:'eGFR',when:1}],negIdx:0},
+ {g:'inf',id:'tb',name:'Personal history of tuberculosis',n:'49–50',o:['Personal history of tuberculosis (Chest X-ray on {cxr})','No personal history of tuberculosis (Chest X-ray on {cxr})'],fields:[{k:'dxdate',l:'Date of diagnosis (optional, type e.g. 2015 or March 2019)',when:0,after:true,pre:'diagnosed'},{k:'cxr',l:'Chest X-ray date (dd/mm/yyyy)'}]},
+ {g:'inf',id:'tb_contact',name:'Contact with tuberculosis',n:'51–52',o:['History of contact with a person with tuberculosis','No history of contact with a person with tuberculosis'],fields:[{k:'dxdate',l:'Date of contact (optional, type e.g. 2015 or March 2019)',when:0,after:true,pre:''}]},
+ {g:'inf',id:'fh_ca',name:'Family history of cancer',n:'53–54',o:['Family history of cancer','No family history of cancer']},
+ {g:'inf',id:'allergy',name:'Drug allergies',n:'55–56',o:['Known drug allergies noted at consultation on {date}','No known drug allergies noted at consultation on {date}'],s:['Known allergies','NKDA'],dl:'Drug and reaction'},
+ {g:'inf',id:'tmp_mtx',name:'Trimethoprim warning (methotrexate)',n:'57',o:['Trimethoprim antibiotics contraindicated while taking Methotrexate (due to the potential for a significant drug interaction)'],s:['Include'],single:true},
+ {g:'vac',id:'vac_flu',name:'Flu vaccination',n:'58.1',o:['Flu vaccination yearly – advised on {date}'],s:['Advised'],single:true},
+ {g:'vac',id:'vac_pneumo',name:'Pneumococcal vaccination',n:'58.2',o:['Pneumovax vaccination – advised on {date}'],s:['Advised'],single:true,check:'Template wording is "Pneumovax". Check the current NIAC immunisation guidelines for which pneumococcal vaccine is now recommended for immunosuppressed adults, and edit the wording if needed.'},
+ {g:'vac',id:'vac_covid',name:'Covid-19 vaccination',n:'59',o:['Covid-19 vaccination advised on {date}'],s:['Advised'],single:true},
+ {g:'vac',id:'vac_zoster',name:'Shingles vaccination',n:'new',isNew:true,o:['Shingles (recombinant zoster) vaccination advised on {date}'],s:['Advised'],single:true},
+ {g:'surg',id:'s_app',name:'Appendectomy',n:'60',o:['Appendectomy performed in {year}'],s:['Yes'],single:true,fields:[{k:'year',l:'Year'}]},
+ {g:'surg',id:'s_ton',name:'Tonsillectomy',n:'61',o:['Tonsillectomy performed in {year}'],s:['Yes'],single:true,fields:[{k:'year',l:'Year'}]},
+ {g:'surg',id:'s_chol',name:'Cholecystectomy',n:'62',o:['Cholecystectomy performed in {year}'],s:['Yes'],single:true,fields:[{k:'year',l:'Year'}]},
+ {g:'surg',id:'s_hyst',name:'Hysterectomy',n:'63',o:['Hysterectomy performed in {year}'],s:['Yes'],single:true,fields:[{k:'year',l:'Year'}]}
+];
+const DX_GROUPS=[['ijd','Inflammatory joint disease'],['fhr','Family history — rheumatic disease'],['pso','Psoriasis and inflammatory bowel disease'],['bone','Osteoarthritis and bone health'],['cv','Cardiovascular risk, BMI and renal function'],['inf','Tuberculosis, cancer and allergies'],['vac','Vaccinations'],['surg','Surgical history']];
+
+/* History — template "History of" list. */
+const HX=[
+ ['h_pso','Psoriasis'],['h_ibd',"Inflammatory bowel disease – ulcerative colitis / Crohn's disease"],
+ ['h_eye','Inflammatory eye symptoms or disease – requiring steroid drops or ophthalmology review','inflammatory eye symptoms or disease'],
+ ['h_ibp','Inflammatory back pain'],['h_mouth','Mouth ulcers'],['h_skin','Skin ulcers'],['h_gen','Genital ulcers'],
+ ["h_rayn","Raynaud's symptoms"],['h_bald','Bald patches'],['h_rash','Rashes'],['h_photo','Photosensitive rashes'],
+ ['h_wl','Weight loss'],['h_ns','Night sweats'],['h_sicca','Dry eyes / dry mouth (sicca symptoms)',null,true]
+].map(([id,label,negLabel,isNew])=>({g:'hx',id,name:label,isNew,o:[label+'{detailSep}','No history of '+(negLabel||label.replace(/ – .*$/,'')).replace(/^(?!Raynaud)./,c=>c.toLowerCase())],s:['Yes','No']}));
+/* Symptom questions printed as plain sentences (not "History of …"); answered via the same History step. */
+const EMS_DUR=[['<10','less than 10 minutes','Less than 10 minutes'],['10-30','10 to 30 minutes','10 to 30 minutes'],['30-60','30 minutes to 1 hour','30 minutes to 1 hour'],['60-120','1 to 2 hours','1 to 2 hours'],['allday','all day','All day']];
+const WX_OPTS=['cold weather','hot weather','damp or wet weather','both hot and cold weather','any change in the weather'];
+const SYM=[
+ {g:'hx',id:'h_ems',sym:true,isNew:true,name:'Early morning stiffness',o:['Early morning stiffness (lasting {ems})','No early morning stiffness'],s:['Yes','No'],dl:'Additional information',
+  fields:[{k:'ems',l:'Duration',when:0,opts:EMS_DUR.map(d=>d[1])}]},
+ {g:'hx',id:'h_wx',sym:true,isNew:true,name:'Arthralgia associated with changes in weather',o:['Arthralgia associated with changes in weather (worse with {wx})','No association between arthralgia and changes in weather'],s:['Yes','No'],dl:'Additional information',
+  fields:[{k:'wx',l:'Hot or cold weather',when:0,opts:WX_OPTS}]}
+];
+HX.unshift(...SYM);
+
+/* Range of motion — template Examination list. */
+const ROM=[['rom_dip','DIP joints of the hands','Hands'],['rom_pip','PIP joints of the hands','Hands'],['rom_mcp','MCP joints of the hands','Hands'],['rom_cmc','CMC joints of the thumbs','Hands'],['rom_ip','IP joints of the thumbs','Hands'],['rom_wri','wrist joints','Wrists'],['rom_elb','elbow joints','Elbows'],['rom_sho','shoulder joints','Shoulders'],['rom_ank','ankle joints','Ankles'],['rom_kne','knee joints','Knees'],['rom_hip','hip joints','Hips'],['rom_lsp','lumbar spine','Spine'],['rom_csp','cervical spine','Spine']]
+ .map(([id,part,grp])=>({g:'rom',id,grp,name:cap(part),o:['Normal range of motion of the '+part,'Reduced range of motion of the '+part],s:['Normal','Reduced'],negIdx:0}));
+
+/* Blood test catalogue — template fibromyalgia mimicker screen, plus anti-dsDNA (new). */
+const TESTS=['FBC','U&E','eGFR','LFTs','CRP','ESR','Ca','PO4','Vit D','PTH','CK','Glucose','HbA1c','Prolactin','TFTs','Ferritin','Iron studies','B12','Folate','IgA tTG','HLA-B27','ANA','ENA','anti-dsDNA','RF','anti-CCP','Serum urate','BNP','Immunoglobulins','ANCA','C3','C4','anti-cardiolipin','Beta-2-glycoprotein-I','Lyme serology','HIV screen','ASOT','CA125','PSA','VZV immune status','Hep B serology','Hep C serology','anti-HB core','Parvovirus IgM','EBV IgM','CMV IgM'];
+const PANELS={
+ 'Fibromyalgia mimicker screen':TESTS.filter(t=>t!=='anti-dsDNA'),
+ 'Inflammatory arthritis screen':['FBC','U&E','eGFR','LFTs','CRP','ESR','RF','anti-CCP','ANA','HLA-B27','Serum urate','CK'],
+ 'Connective tissue disease screen':['FBC','U&E','eGFR','LFTs','CRP','ESR','CK','ANA','ENA','anti-dsDNA','C3','C4','Immunoglobulins','ANCA','anti-cardiolipin','Beta-2-glycoprotein-I'],
+ 'Pre-biologic screen':['FBC','U&E','eGFR','LFTs','CRP','ESR','HIV screen','Hep B serology','Hep C serology','anti-HB core','VZV immune status'],
+ 'Additional blood tests':[]
+};
+
+/* Management — template items 1–55. Each builds {text, sub[]} from its controls.
+   mode: 'I have commenced' / 'You could consider adding'. counsel: was given / will need to be given. */
+const MODE={commenced:'I have commenced',consider:'You could consider adding'};
+const COUNSEL_OPIOID='Advice to the patient with regards to possible side effects, particularly drowsiness, dizziness, nausea, constipation, addictive tendency and falls risk';
+const counselLine=(base,v)=>v==='given'?base+' was given.':v==='later'?base+' will need to be given if prescribed.':null;
+const C_SELECT={k:'counsel',type:'select',l:'Side-effect advice',opts:[['given','was given'],['later','will need to be given if prescribed'],['','do not mention']],def:'given'};
+const MODE_SELECT={k:'mode',type:'seg',l:'Wording',opts:[['commenced','I have commenced'],['consider','You could consider adding']],def:'commenced'};
+const W=(k)=>wait(k)?` (waiting time up to ${wait(k)})`:'';
+const picks=(st,k)=>st[k]||[];
+
+const MG=[
+ ['inv','Investigations requested'],['ther','Therapy, aids and referrals'],['pain','Pain management'],['inj','Injections, Raynaud\'s and steroids'],['gout','Gout'],['dmard','DMARDs, biologics and monitoring'],['fu','Vaccination, onward referral and follow-up']
+];
+const MX=[
+ /* ---- Investigations ---- */
+ {g:'inv',id:'m_routine',n:1,name:'Routine tests',fields:[{k:'tests',type:'checks',opts:['FBC','U&E','eGFR','LFTs','CRP','ESR'],def:['FBC','U&E','eGFR','LFTs','CRP','ESR']}],
+  build:st=>({text:`I have ordered routine tests to include: ${listJoin(picks(st,'tests'))}.`})},
+ {g:'inv',id:'m_quant',n:2,name:'Quantiferon test',build:()=>({text:'I have ordered a Quantiferon test.'})},
+ {g:'inv',id:'m_screen',n:3,name:'Blood screen (fibromyalgia mimicker / other panels)',fields:[{k:'panel',type:'panel',l:'Screen name',def:'Fibromyalgia mimicker screen'},{k:'tests',type:'checks',opts:TESTS,def:PANELS['Fibromyalgia mimicker screen']},{k:'other',type:'text',l:'Other tests (free text)'}],
+  build:st=>{const t=[...picks(st,'tests'),...(st.other?[st.other]:[])];const p=st.panel||'Fibromyalgia mimicker screen';
+   return {text:p==='Additional blood tests'?`I have ordered additional blood tests to include: ${listJoin(t)}.`:`I have ordered ${/^[AEIOU]/i.test(p)?'an':'a'} ${p} to include: ${listJoin(t)}.`}}},
+ {g:'inv',id:'m_cvrisk',n:4,name:'Cardiovascular risk profile',fields:[{k:'tests',type:'checks',opts:['Random lipid profile','Random glucose'],def:['Random lipid profile','Random glucose']}],
+  build:st=>({text:`I have ordered a cardiovascular risk profile: ${listJoin(picks(st,'tests')).toLowerCase()}.`})},
+ {g:'inv',id:'m_xray',n:5,name:'X-rays',fields:[{k:'parts',type:'checks',opts:['Bilateral hands','Bilateral feet','Pelvis','Chest'],def:['Bilateral hands','Bilateral feet']},{k:'other',type:'text',l:'Other region'}],
+  build:st=>({text:`I have ordered X-rays of: ${listJoin([...picks(st,'parts'),st.other].filter(Boolean).map((x,i)=>i?x.toLowerCase():x))}.`})},
+ {g:'inv',id:'m_dxa',n:6,name:'DEXA scan',fields:[{k:'detail',type:'text',l:'Additional detail'}],
+  build:st=>({text:`I have ordered a DEXA scan to assess bone mineral density (from ${site('dxa')})${W('dxa')}.`+(st.detail?' '+st.detail:'')})},
+ {g:'inv',id:'m_bone',n:7,name:'Isotope bone scan',fields:[{k:'detail',type:'text',l:'Additional detail'}],
+  build:st=>({text:`I have ordered an isotope bone scan with dedicated views of the hands and feet from the Nuclear Medicine Department of ${site('bonescan')}${W('bonescan')}.`+(st.detail?' '+st.detail:'')})},
+ {g:'inv',id:'m_mri',n:8,name:'MRI scan',fields:[{k:'region',type:'text',l:'Region',ph:'e.g. sacroiliac joints'}],
+  build:st=>({text:`I have ordered an MRI scan of ${st.region||'[region]'} (from ${site('mri')})${W('mri')}.`})},
+ {g:'inv',id:'m_us',n:9,name:'Ultrasound scan',fields:[{k:'region',type:'text',l:'Region',ph:'e.g. both hands and wrists'}],
+  build:st=>({text:`I have ordered an ultrasound scan of ${st.region||'[region]'} (from ${site('us')})${W('us')}.`})},
+ {g:'inv',id:'m_ct',n:10,name:'CT scan',fields:[{k:'contrast',type:'select',l:'Contrast',opts:[['with IV and oral contrast','with IV and oral contrast'],['with IV contrast','with IV contrast'],['without contrast','without contrast']],def:'with IV and oral contrast'},{k:'region',type:'text',l:'Region'}],
+  build:st=>({text:`I have ordered a CT scan (${st.contrast||'with IV and oral contrast'}) of ${st.region||'[region]'} (from ${site('ct')})${W('ct')}.`})},
+ {g:'inv',id:'m_echo',n:11,name:'Echocardiogram',build:()=>({text:`I have ordered an echocardiogram (from ${site('echo')})${W('echo')}.`})},
+ {g:'inv',id:'m_abpm',n:12,name:'24-hour blood pressure monitor',build:()=>({text:`I have ordered a 24-hour blood pressure monitor (from ${site('abpm')})${W('abpm')}.`})},
+ {g:'inv',id:'m_pft',n:13,name:'PFTs and DLCO',build:()=>({text:`I have ordered PFTs and DLCO (from ${site('pft')})${W('pft')}.`})},
+ {g:'inv',id:'m_neuro',n:14,name:'Neurophysiological studies',fields:[{k:'limbs',type:'seg',l:'Limbs',opts:[['upper limbs','Upper'],['lower limbs','Lower'],['upper and lower limbs','Both']],def:'upper limbs'}],
+  build:st=>({text:`I have ordered neurophysiological studies (of the ${st.limbs||'upper limbs'}) from ${site('neuro')}${W('neuro')}.`})},
+ {g:'inv',id:'m_urine1',n:15,name:'Urine: urinalysis, ACR, microalbumin',fields:[{k:'t',type:'checks',opts:['Urinalysis','Urinary ACR','Urinary microalbumin'],def:['Urinalysis','Urinary ACR','Urinary microalbumin']}],
+  build:st=>({text:`I have checked urine for ${listJoin(picks(st,'t').map(x=>x[0].toLowerCase()+x.slice(1)))}.`})},
+ {g:'inv',id:'m_urine2',n:16,name:'Urine: O&S and casts',fields:[{k:'t',type:'checks',opts:['O&S','Casts'],def:['O&S','Casts']}],
+  build:st=>({text:`I have checked urine for ${listJoin(picks(st,'t')).replace('Casts','casts')}.`})},
+
+ /* ---- Therapy, aids, referrals ---- */
+ {g:'ther',id:'m_physio',n:17,name:'Physiotherapy referral',fields:[{k:'loc',type:'physio',l:'Location'},{k:'areas',type:'text',l:'Body areas',ph:'e.g. lumbar spine and both knees'}],
+  build:st=>({text:`I have referred the patient for a course of physiotherapy to ${st.loc?st.loc.replace(/^[^:]+:\s*/,''):'[location]'}.`+(st.areas?` I have asked for physiotherapy for the following body areas: ${st.areas}.`:'')})},
+ {g:'ther',id:'m_ot',n:18,name:'Occupational therapy referral',fields:[{k:'detail',type:'text',l:'For'}],
+  build:st=>({text:`I have referred the patient to occupational therapy for ${st.detail||'[reason]'}.`})},
+ {g:'ther',id:'m_thumb',n:19,name:'Thumb splint handout',build:()=>({text:`I have given {her} a handout that contains information and images with regards to thumb splints that can be ordered from the internet for 10–120 euro.`})},
+ {g:'ther',id:'m_wrist',n:20,name:'Wrist splints fitted',fields:[{k:'side',type:'seg',l:'Side',opts:[['bilateral','Bilateral'],['left','Left'],['right','Right']],def:'bilateral'}],
+  build:st=>({text:`I have fitted this patient with ${st.side==='bilateral'||!st.side?'bilateral wrist splints':st.side+' wrist splint'}, to be used at night for 6 weeks and with heavy lifting and strenuous activities of daily living.`})},
+ {g:'ther',id:'m_tennis',n:21,name:'Tennis elbow compression splint',build:()=>({text:'I have advised the patient to obtain a tennis elbow compression splint from their pharmacy (I have shown the patient a picture of this device).'})},
+ {g:'ther',id:'m_heel',n:22,name:'Heel pad',build:()=>({text:'I have advised the patient to purchase a gel or foam heel pad to insert into the shoe to decrease biomechanical stress at {her} heel. This costs approximately five euro.'})},
+ {g:'ther',id:'m_orth',n:23,name:'Orthotics (Elverys)',build:()=>({text:"I have advised that the patient is fitted with orthotics. I have given the patient an information leaflet on Elverys Orthotic service (available in Athlone or Portlaoise). They have a footplate machine that will calculate the size of orthotics needed and they can heat shrink a suitable pair for their shoes. I have advised the patient to bring along a number of pairs of shoes to make sure these orthotics fit correctly on the day."})},
+ {g:'ther',id:'m_ortho',n:24,name:'Orthopaedic referral',fields:[{k:'detail',type:'text',l:'For consideration of'}],
+  build:st=>({text:`I have referred this patient to ${H(S.ortho)}, for consideration of ${st.detail||'[procedure]'}.`})},
+ {g:'ther',id:'m_painref',n:25,name:'Pain consultant referral (suggested to GP)',check:'Confirm that the named pain consultants are still in post before sending.',fields:[{k:'who',type:'painlist',l:'Consultants'},{k:'proc',type:'checks',opts:['an epidural','a spinal nerve root block','a spinal facet joint block'],def:[]}],
+  build:st=>({text:picks(st,'who').length?'You could consider referral to a Consultant in Pain and Anaesthesia, e.g.:':'You could consider referral to a Consultant in Pain and Anaesthesia.',sub:[...picks(st,'who'),...(picks(st,'proc').length?['For consideration of '+listJoin(picks(st,'proc'))+'.']:[])]})},
+ {g:'ther',id:'m_booklets',n:26,name:'Patient information booklets',fields:[{k:'detail',type:'text',l:'Booklets given'}],
+  build:st=>({text:`I have given the patient the following patient information booklets: ${st.detail||'[booklets]'}.`})},
+
+ /* ---- Pain management (27 is the auto intro) ---- */
+ {g:'pain',id:'m_topical',n:28,name:'Topical preparations',fields:[MODE_SELECT,{k:'first',type:'checks',l:'First line',opts:['Difene 1% topical gel, one application four times per day for 1 month','Difene 4% spray gel, four sprays four times per day as required for 1 month'],def:['Difene 1% topical gel, one application four times per day for 1 month','Difene 4% spray gel, four sprays four times per day as required for 1 month']},{k:'alt',type:'checks',l:'If this fails, alternatives',opts:['Fastum topical gel 2.5%, one application four times per day topically as required for 1 month','Etoflam topical gel 5%, one application four times per day topically as required for 1 month','Flexiseq topical gel, one application four times per day as required for 1 month'],def:['Fastum topical gel 2.5%, one application four times per day topically as required for 1 month','Etoflam topical gel 5%, one application four times per day topically as required for 1 month','Flexiseq topical gel, one application four times per day as required for 1 month']}],
+  build:st=>({text:`${MODE[st.mode||'commenced']} topical preparations:`,sub:[...picks(st,'first').map(x=>x+'.'),...(picks(st,'alt').length?['If this fails, please try alternatives such as:',...picks(st,'alt').map(x=>'   '+x+'.')]:[])]})},
+ {g:'pain',id:'m_para',n:29,name:'Paracetamol / Solphadeine',fields:[{k:'solph',type:'checks',opts:['If this fails, try Solphadeine, two tablets four times per day as required for 1 month.'],def:['If this fails, try Solphadeine, two tablets four times per day as required for 1 month.']},C_SELECT],
+  build:st=>({text:'I have advised that paracetamol could be maximised to 1 g four times per day as required.',sub:[...picks(st,'solph'),counselLine(COUNSEL_OPIOID,st.counsel)].filter(Boolean)})},
+ {g:'pain',id:'m_nsaid',n:30,name:'Oral NSAIDs',fields:[MODE_SELECT,{k:'first',type:'checks',l:'First line',opts:['Vimovo (naproxen 500 mg / esomeprazole 20 mg) one tablet twice per day for 1 month'],def:['Vimovo (naproxen 500 mg / esomeprazole 20 mg) one tablet twice per day for 1 month']},{k:'second',type:'checks',l:'If this fails',opts:['Keral dispersible sachets 25 mg three times per day for 1 month'],def:['Keral dispersible sachets 25 mg three times per day for 1 month']},{k:'third',type:'checks',l:'Then one-month trial of one of',opts:['Celebrex 200 mg twice per day','Nurofen (ibuprofen) 400 mg three times per day','Oruvail (ketoprofen) 200 mg once per day','Vitafen 100 mg twice per day','Difene DR 75 mg twice per day','Mobic (meloxicam) 7.5 mg twice per day','Nabumetone 500 mg twice per day','Arcoxia 90 mg once per day'],def:['Celebrex 200 mg twice per day','Nurofen (ibuprofen) 400 mg three times per day','Oruvail (ketoprofen) 200 mg once per day','Vitafen 100 mg twice per day','Difene DR 75 mg twice per day','Mobic (meloxicam) 7.5 mg twice per day','Nabumetone 500 mg twice per day','Arcoxia 90 mg once per day']},{...C_SELECT}],
+  build:st=>({text:`${MODE[st.mode||'commenced']} oral NSAIDs:`,sub:[...picks(st,'first').map(x=>x+'.'),...picks(st,'second').map(x=>'If this fails, please try alternatives such as: '+x+'.'),...(picks(st,'third').length?['If this fails, please try one of these for a one-month trial, then re-assess response:',...picks(st,'third').map(x=>'   '+x)]:[]),counselLine('Advice to the patient with regards to possible side effects, such as upper gastrointestinal events, renal and liver abnormalities, and interaction with warfarin and NOACs,',st.counsel)].filter(Boolean)})},
+ {g:'pain',id:'m_otheroral',n:31,name:'Other oral pain medications',fields:[{k:'drugs',type:'checks',opts:['Tramadol','Gabapentin','Pregabalin','Palexia','Oxycontin','Targin'],def:['Tramadol','Gabapentin','Pregabalin','Palexia','Oxycontin','Targin']},C_SELECT],
+  build:st=>({text:'Other oral treatment medications that could be used for pain, in addition or as alternatives, include:',sub:[listJoin(picks(st,'drugs')).replace(/ and ([^ ]+)$/,' or $1')+' for a 1 month trial.',counselLine(COUNSEL_OPIOID,st.counsel)].filter(Boolean)})},
+ {g:'pain',id:'m_butrans',n:32,name:'Butrans patch',fields:[MODE_SELECT,C_SELECT],
+  build:st=>({text:`${MODE[st.mode||'commenced']} patch therapy: Butrans topical patch, commencing at 5 mcg, to be changed once per week for 1 month.`,sub:[counselLine(COUNSEL_OPIOID,st.counsel)].filter(Boolean)})},
+ {g:'pain',id:'m_tens',n:33,name:'TENS machine',build:()=>({text:'I have advised the patient to purchase a TENS machine, and have given the patient an information leaflet about this medical device. It can be purchased from Argos / pharmacists for approximately 50 euro.'})},
+ {g:'pain',id:'m_course',n:34,name:'Pain management courses',build:()=>({text:'I have advised about available pain management courses (Arthritis Ireland / Chronic Pain Ireland) and given the patient an information leaflet in this regard.'})},
+ {g:'pain',id:'m_ami',n:35,name:'Amitriptyline',fields:[MODE_SELECT,C_SELECT],
+  build:st=>({text:`${MODE[st.mode||'commenced']} amitriptyline at a dose of 10 mg at night for 1 month. This can be increased fortnightly as tolerated.`,sub:[counselLine('Advice to the patient with regards to possible side effects, particularly drowsiness, dizziness, hangover effects, nausea, constipation and falls risk',st.counsel)].filter(Boolean)})},
+ {g:'pain',id:'m_dulox',n:36,name:'Duloxetine',fields:[MODE_SELECT,C_SELECT],
+  build:st=>({text:`${MODE[st.mode||'commenced']} duloxetine commencing at a dose of 30 mg once per day for 1 month. This can be escalated fortnightly as tolerated to a maximum of 120 mg once per day.`,sub:[counselLine('Advice to the patient with regards to possible side effects, particularly drowsiness, dizziness, nausea and constipation',st.counsel)].filter(Boolean)})},
+
+ /* ---- Injections, Raynaud's, steroids ---- */
+ {g:'inj',id:'m_inject',n:37,name:'Joint / soft tissue injections',fields:[{k:'rows',type:'injections'},{k:'advice',type:'checks',opts:['I have advised the patient about possible side effects including infection and advised the patient to rest for 24 hours post injection.'],def:['I have advised the patient about possible side effects including infection and advised the patient to rest for 24 hours post injection.']}],
+  build:st=>({text:'I have injected the following joints / soft tissue areas:',sub:[...(st.rows||[]).filter(r=>r.site).map(r=>`${cap(r.side?r.side+' ':'')}${r.side?r.site.toLowerCase():r.site} with ${r.dose||'80 mg Depo-Medrone and 1 ml 1% lignocaine'}`),...picks(st,'advice')]})},
+ {g:'inj',id:'m_im',n:38,name:'IM Depo-Medrone 80 mg',fields:[{k:'side',type:'seg',l:'Thigh',opts:[['right','Right'],['left','Left']],def:'right'}],
+  build:st=>({text:`I have given the patient an IM injection of 80 mg Depo-Medrone into the ${st.side||'right'} lateral midpoint of thigh.`})},
+ {g:'inj',id:'m_rayn',n:39,name:"Raynaud's",fields:[{k:'items',type:'checks',opts:["A patient information leaflet on Raynaud's","A patient information leaflet about possible over-the-counter preparations that could be used to treat Raynaud's","A GP information leaflet about medication that can be given on prescription for treating Raynaud's",'Information on heated gloves that can be purchased (battery / USB type)','Information on a number of electronic hand warmers that are battery operated and that can be purchased on the internet','I have prescribed Rectogesic topical gel (GTN 4% gel), one application topically to fingers and / or toes once per day for 1 month. I have advised about possible adverse effects such as headache. I have given the patient an information leaflet about this topical GTN gel','I have prescribed Coracten (nifedipine) 10 mg twice per day for 1 month (I have advised about possible adverse effects such as dizziness, lower leg swelling and headache)'],def:["A patient information leaflet on Raynaud's"]}],
+  build:st=>({text:"For Raynaud's, I have given the patient:",sub:picks(st,'items').map(x=>x+'.')})},
+ {g:'inj',id:'m_pred',n:40,name:'Oral prednisolone',fields:[{k:'reg',type:'select',l:'Regimen',opts:[['10d','40 mg once per day for 10 days'],['taper','40 mg weekly taper to 0 over 5 weeks']],def:'taper'}],
+  build:st=>({text:'I have prescribed a course of oral prednisolone commencing at a dose of: '+(st.reg==='10d'?'40 mg once per day for 10 days.':'40 mg once per day for 1 week, 30 mg once per day for 1 week, 20 mg once per day for 1 week, 10 mg once per day for 1 week, 5 mg once per day for 1 week, then stop.')})},
+
+ /* ---- Gout ---- */
+ {g:'gout',id:'m_ult',n:41,name:'Urate-lowering treatment',check:'Current gout guidelines generally start allopurinol low (e.g. 100 mg daily, lower in renal impairment) and titrate to a target urate, and febuxostat is usually started at 80 mg. The template doses are kept below; use Edit wording if you change them.',
+  fields:[{k:'ult',type:'seg',l:'Urate-lowering drug',opts:[['febux','Febuxostat 120 mg'],['allo','Allopurinol 300 mg'],['','Neither']],def:'allo'},{k:'colch',type:'checks',opts:['Colchicine 500 mcg twice per day'],def:['Colchicine 500 mcg twice per day']}],
+  build:st=>({text:'I have commenced the following for urate-lowering effect:',sub:[st.ult==='febux'?'Febuxostat 120 mg once per day long-term (I have advised about possible adverse effects including skin rash, nausea, liver function test abnormalities, blood count abnormalities and allergic side effects).':st.ult==='allo'?'Allopurinol 300 mg once per day (I have advised about possible adverse effects including skin rash, nausea, liver function test abnormalities, blood count abnormalities and allergic side effects).':null,picks(st,'colch').length?'Colchicine 500 mcg twice per day long-term (I have advised about possible side effects, including nausea, diarrhoea, rash, muscle pain and weakness).':null].filter(Boolean)})},
+
+ /* ---- DMARDs ---- */
+ {g:'dmard',id:'m_mtx_po',n:42,name:'Oral methotrexate',build:()=>({text:'I have commenced oral methotrexate, commencing at 10 mg once per week for the first month, then 20 mg once per week for the next month, then 25 mg once per week thereafter. I have commenced folic acid 5 mg, which is to be taken the day before the methotrexate.'})},
+ {g:'dmard',id:'m_mtx_sc',n:43,name:'Subcutaneous methotrexate (Metoject)',build:()=>({text:'I have commenced subcutaneous methotrexate (Metoject), commencing at 10 mg once per week for the first month. The necessary paperwork has been completed for the initiation of this medication. I have commenced folic acid 5 mg, which is to be taken the day before the methotrexate.'})},
+ {g:'dmard',id:'m_mtx_preg',n:44,name:'Methotrexate pregnancy and contraception advice',check:'The template advises stopping methotrexate at least 3 months before conception. The 2022 BSR pregnancy guideline (as summarised by NHS Lothian rheumatology) advises stopping 1 month before, and says men can continue methotrexate. Choose the wording you want to use.',
+  fields:[{k:'v',type:'seg',l:'Wording',opts:[['t','Template (3 months)'],['b','BSR 2022 (1 month)']],def:'t'}],
+  build:st=>({text:st.v==='b'?'I have explained that female patients in their child-bearing years are advised not to become pregnant while on this medication. They should take contraceptive measures while taking methotrexate. If they wish to conceive they should stop methotrexate at least 1 month before planned conception. Male patients can continue methotrexate while trying to conceive.':'I have explained that female patients in their child-bearing years are advised not to become pregnant while on this medication. They should take contraceptive measures while taking methotrexate. If they wish to conceive they should stop methotrexate at least 3 months before planned conception.'})},
+ {g:'dmard',id:'m_ssz',n:45,name:'Sulphasalazine',build:()=>({text:'I have commenced sulphasalazine, commencing at 500 mg once per day for the 1st week, 500 mg twice per day the next week, 500 mg three times per day the next week, 1 g twice per day the next week and then 1.5 g twice per day thereafter.'})},
+ {g:'dmard',id:'m_hcq',n:46,name:'Hydroxychloroquine (Plaquenil)',check:'RCOphth (2020): keep the dose at or below 5 mg/kg/day of actual body weight; annual retinal screening from 5 years of treatment (from 1 year with additional risk factors). The template gives a flat 200 mg twice per day.',
+  fields:[{k:'v',type:'seg',l:'Wording',opts:[['t','Template'],['w','Weight-based + screening']],def:'t'},{k:'dose',type:'text',l:'Dose (weight-based wording)',ph:'200 mg once per day',when:{v:'w'}},{k:'wt',type:'text',l:'Weight (kg) — for your check, not printed',when:{v:'w'}}],
+  build:st=>({text:st.v==='w'?`I have commenced Plaquenil (hydroxychloroquine) ${st.dose||'[dose]'}, which is within 5 mg/kg/day of actual body weight. I have advised the patient about possible side effects e.g. nausea, rash, decreased vision with long-term usage, and the need to contact their doctor if a persistent change in vision is noted. Annual retinal screening is recommended after 5 years of treatment (or after 1 year if there are additional risk factors).`:'I have commenced Plaquenil (hydroxychloroquine) 200 mg twice per day. I have advised the patient about possible side effects e.g. nausea, rash, decreased vision with long-term usage, and the need to contact their doctor if a persistent change in vision is noted.'})},
+ {g:'dmard',id:'m_lef',n:47,name:'Leflunomide (Arava)',check:'Pregnancy and washout wording is the template text. Check it against the current SmPC and BSR 2022 guidance (which suggests men can continue leflunomide) before sending.',
+  build:()=>({text:'I have commenced leflunomide (Arava) commencing at 10 mg once per day for the first month, then 20 mg once per day thereafter. This requires a blood pressure check at the time of blood monitoring (due to the risk of developing hypertension with this medication). I have advised that patients (male and female) on leflunomide (Arava) should take additional contraceptive measures while on this medication. Pregnancy is not advised due to the potential for foetal malformations. If a male or female patient wishes to contemplate pregnancy, they should be off leflunomide (Arava) for 2 years before planned conception. An alternative is to have a drug washout procedure, which takes 11 days, followed by 2 separate blood tests at least 14 days apart to ensure drug elimination, after which pregnancy can be considered 1 month after the 2nd blood test has shown absent or safe leflunomide (Arava) blood levels.'})},
+ {g:'dmard',id:'m_bio',n:48,name:'Subcutaneous biologic agent',fields:[{k:'drug',type:'text',l:'Agent (optional)',ph:'e.g. adalimumab biosimilar'},{k:'items',type:'checks',opts:['I have advised the patient about adverse effects relating to this medication, particularly infection anywhere in the body (e.g. tuberculosis), blood test abnormalities and injection site reactions.','I have also advised that the patient should read the product information that comes with the medication, issued by their pharmacist.','I have given the patient an information booklet on this medication.','I have filled in the HITECH HSE paperwork on the HITECH Hub (electronic).','I have filled in the drug company nurse paperwork so that the patient can be taught to perform the subcutaneous injection and be given a sharps disposal box (the nurse will visit the patient in their own home for this).','I would be grateful if the patient can have their monitoring bloods performed by your practice nurse (FBC, U&E, LFTs and either an ESR or CRP), to identify potential drug-related adverse effects, and to track the inflammatory response, every 2 months.','I have advised the patient to temporarily stop this medication if they are on antibiotics or antivirals for infection, and to restart once antibiotics or antivirals are discontinued and the patient feels well again.']}],
+  build:st=>({text:`I decided to commence this patient on a subcutaneous biologic agent${st.drug?' ('+st.drug+')':''}.`,sub:picks(st,'items')})},
+ {g:'dmard',id:'m_dmardmon',n:49,name:'DMARD side effects and blood monitoring',fields:[{k:'items',type:'checks',opts:['E.g. infection anywhere in the body, blood and liver abnormalities and nausea.','I have also advised that the patient should read the product information that comes with the medication, issued by their pharmacist.','I have given the patient a GP and patient information leaflet about the benefits and risks of this medication.','I have given this patient a blood monitoring booklet.','I would be grateful if the patient can have their monitoring bloods performed by your practice nurse (FBC, U&E, LFTs and either an ESR or CRP), to identify potential drug-related adverse effects, and to track the inflammatory response, checked every 2 weeks for the first 2 months, and then every 2 months thereafter.','I have advised the patient to temporarily stop this medication if they are on antibiotics or antivirals for infection, and to restart once antibiotics or antivirals are discontinued and the patient feels well again.']}],
+  build:st=>({text:'I have warned the patient about potential side effects:',sub:picks(st,'items')})},
+
+ /* ---- Follow-up ---- */
+ {g:'fu',id:'m_vacc',n:50,name:'Vaccination advice (flu and pneumococcal)',fields:[{k:'zoster',type:'checks',opts:['Also advise shingles (recombinant zoster) vaccination'],def:[]}],
+  build:st=>({text:'I have advised about vaccination (flu vaccination yearly and Pneumovax vaccination as required)'+(picks(st,'zoster').length?', and shingles (recombinant zoster) vaccination.':'.')})},
+ {g:'fu',id:'m_covid',n:51,name:'Covid-19 booster advice',build:()=>({text:'I have advised about Covid-19 booster vaccination as required.'})},
+ {g:'fu',id:'m_cmc',n:52,name:'1st CMC joint — hand surgery referral',build:()=>({text:`For the patient's 1st CMC joint symptoms, if conservative measures fail, please consider referral to ${H(S.handsurgeon)} for consideration of a partial trapeziectomy, which has an 85% chance of the patient being pain and stiffness free 6 months post surgery. The operation can be done as a day case or with 1 overnight stay (and the hand / wrist is splinted post-operatively for 1 month after surgery).`})},
+ {g:'fu',id:'m_spine',n:53,name:'Persistent spinal pain — pain procedure referral',check:'Confirm that the named pain consultants are still in post before sending.',fields:[{k:'proc',type:'checks',opts:['An epidural','Facet joint injection','Nerve root block'],def:['An epidural','Facet joint injection','Nerve root block']},{k:'who',type:'painlist',l:'Consultants'}],
+  build:st=>({text:`For patients with persistent spinal pain (with or without radiculopathy), if conservative measures fail, please consider referral for: ${picks(st,'proc').join(' / ')} to a Consultant in Pain and Anaesthesia${picks(st,'who').length?':':'.'}`,sub:picks(st,'who').map(x=>{const [n,...r]=x.split(/,\s*Consultant in Pain and Anaesthesia,\s*/);return r.length?`${n} (${r.join(', ')})`:x})})},
+ {g:'fu',id:'m_discharge',n:54,name:'Discharge to GP care',build:()=>({text:"I have discharged the patient back into your care, but if any of the investigations show something I don't expect, I will let you know how to proceed."})},
+ {g:'fu',id:'m_review',n:55,name:'Review',fields:[{k:'when',type:'select',l:'Review in',opts:[['6 weeks','6 weeks'],['3 months','3 months'],['6 months','6 months'],['11 months','11 months'],['12 months','12 months']],def:'11 months'}],
+  build:st=>({text:`I will review the patient in ${st.when||'11 months'}.`})}
+];
+const MX_BY=Object.fromEntries(MX.map(m=>[m.id,m]));
+const INJ_SITES=['knee','shoulder (glenohumeral)','subacromial bursa','trochanteric bursa','carpal tunnel','de Quervain\'s tendon sheath','1st CMC joint','trigger finger (flexor tendon sheath)','plantar fascia','ankle','wrist','elbow','tennis elbow (common extensor origin)','golfer\'s elbow (common flexor origin)','acromioclavicular joint','sacroiliac joint'];
+const INJ_DOSES=['80 mg Depo-Medrone and 1 ml 1% lignocaine','40 mg Depo-Medrone and 1 ml 1% lignocaine','10 mg Depo-Medrone and 0.25 ml 1% lignocaine'];
+
+/* ---------- Joints (shared geometry with the patient questionnaire) ---------- */
+const JOINTS=(()=>{const J=[];
+ const body=[['SHO','shoulder',108,70],['ELB','elbow',86,128],['WRI','wrist',72,184],['HIP','hip',128,190],['KNE','knee',127,262],['ANK','ankle',125,334]];
+ for(const [side,Side,mx] of [['R','Right',0],['L','Left',1]]){
+  for(const [c,n,x,y] of body)J.push({id:side+'_'+c,side:Side,type:c,label:n,panel:'body',x:mx?300-x:x,y,d28:['SHO','ELB','WRI','KNE'].includes(c)});
+  const fx={5:30,4:58,3:86,2:114},off={5:14,4:4,3:0,2:4};
+  for(const f of [2,3,4,5]){
+   J.push({id:`${side}_MCP${f}`,side:Side,type:'MCP',num:f,label:'MCP '+f,panel:'hand',x:mx?340-fx[f]:fx[f],y:116+off[f]/2,d28:true});
+   J.push({id:`${side}_PIP${f}`,side:Side,type:'PIP',num:f,label:'PIP '+f,panel:'hand',x:mx?340-fx[f]:fx[f],y:76+off[f],d28:true});
+   J.push({id:`${side}_DIP${f}`,side:Side,type:'DIP',num:f,label:'DIP '+f,panel:'hand',x:mx?340-fx[f]:fx[f],y:42+off[f],d28:false});
+  }
+  J.push({id:`${side}_MCP1`,side:Side,type:'MCP',num:1,label:'MCP 1',panel:'hand',x:mx?340-146:146,y:150,d28:true});
+  J.push({id:`${side}_IP1`,side:Side,type:'IP',num:1,label:'thumb IP',panel:'hand',x:mx?340-160:160,y:118,d28:true});
+  const tx={1:132,2:108,3:86,4:64,5:42},ty={1:46,2:42,3:44,4:48,5:54};
+  for(const t of [1,2,3,4,5])J.push({id:`${side}_MTP${t}`,side:Side,type:'MTP',num:t,label:'MTP '+t,panel:'foot',x:mx?340-tx[t]:tx[t],y:ty[t]+30,d28:false});
+ }
+ return J})();
+const JOINT_BY=Object.fromEntries(JOINTS.map(j=>[j.id,j]));
+function jointSvg(panel,st){
+ const T=st.tender,Sw=st.swollen,P=st.patient||{};
+ const dot=(j,r)=>{const cls=['jt',T.includes(j.id)?'t':'',Sw.includes(j.id)?'s':'',(!T.includes(j.id)&&!Sw.includes(j.id)&&((P.t||[]).includes(j.id)||(P.s||[]).includes(j.id)))?'pr':''].join(' ');
+  return `<circle class="${cls}" data-joint="${j.id}" cx="${j.x}" cy="${j.y}" r="${r}" tabindex="0" role="button" aria-pressed="${T.includes(j.id)||Sw.includes(j.id)}" aria-label="${j.side} ${j.label}"><title>${j.side} ${j.label}</title></circle>`};
+ if(panel==='body'){
+  let s=`<svg viewBox="0 0 300 360" role="group" aria-label="Large joints, patient right on the left"><text class="jlbl" x="70" y="16">Patient right</text><text class="jlbl" x="230" y="16">Patient left</text>`;
+  s+=`<circle class="sil" cx="150" cy="38" r="20"/><rect class="sil" x="112" y="62" width="76" height="126" rx="22"/>`;
+  s+=`<g class="bone" stroke-width="13"><path d="M108 70 L86 128 L72 184"/><path d="M192 70 L214 128 L228 184"/><path d="M128 190 L127 262 L125 334"/><path d="M172 190 L173 262 L175 334"/></g>`;
+  JOINTS.filter(j=>j.panel==='body').forEach(j=>s+=dot(j,12));return s+'</svg>'}
+ if(panel==='hand'){
+  let s=`<svg viewBox="0 0 340 200" role="group" aria-label="Hands, dorsal view, patient right on the left"><text class="jlbl" x="80" y="14">Right hand</text><text class="jlbl" x="260" y="14">Left hand</text>`;
+  for(const m of [0,1]){const X=x=>m?340-x:x;
+   s+=`<path class="sil" d="M${X(18)} 104 Q${X(18)} 188 ${X(70)} 192 Q${X(122)} 194 ${X(134)} 168 L${X(150)} 132 L${X(130)} 104 Z"/>`;
+   s+=`<g class="bone" stroke-width="16">`;for(const [f,x,top] of [[5,30,34],[4,58,22],[3,86,18],[2,114,22]])s+=`<path d="M${X(x)} ${top} L${X(x)} 116"/>`;s+=`<path d="M${X(132)} 168 L${X(146)} 150 L${X(162)} 106"/></g>`;}
+  JOINTS.filter(j=>j.panel==='hand').forEach(j=>s+=dot(j,10));return s+'</svg>'}
+ let s=`<svg viewBox="0 0 340 130" role="group" aria-label="Forefeet, patient right on the left"><text class="jlbl" x="86" y="14">Right foot</text><text class="jlbl" x="254" y="14">Left foot</text>`;
+ for(const m of [0,1]){const X=x=>m?340-x:x;s+=`<path class="sil" d="M${X(30)} 82 Q${X(26)} 124 ${X(70)} 126 L${X(130)} 126 Q${X(152)} 120 ${X(148)} 76 L${X(142)} 62 Q${X(90)} 56 ${X(34)} 70 Z"/>`;s+=`<g class="bone" stroke-width="13">`;for(const t of [1,2,3,4,5]){const j=JOINT_BY[(m?'L':'R')+'_MTP'+t];s+=`<path d="M${j.x} ${j.y} L${j.x} ${j.y-30+(t===1?0:6)}"/>`}s+=`</g>`}
+ JOINTS.filter(j=>j.panel==='foot').forEach(j=>s+=dot(j,10));return s+'</svg>'}
+function describeJoints(ids){
+ /* Compact clinical description: "right wrist, right MCPs 2–4, left knee" */
+ const out=[];
+ for(const side of ['Right','Left']){
+  const js=ids.map(i=>JOINT_BY[i]).filter(j=>j&&j.side===side);if(!js.length)continue;
+  const parts=[];const order=['SHO','ELB','WRI','MCP','IP','PIP','DIP','HIP','KNE','ANK','MTP'];
+  for(const t of order){const g=js.filter(j=>j.type===t);if(!g.length)continue;
+   if(!g[0].num){parts.push(g[0].label);continue}
+   if(t==='IP'){parts.push('thumb IP');continue}
+   const nums=g.map(j=>j.num).sort((a,b)=>a-b);const runs=[];let a=nums[0],b=nums[0];
+   for(const n of nums.slice(1)){if(n===b+1)b=n;else{runs.push([a,b]);a=b=n}}runs.push([a,b]);
+   parts.push((nums.length>1?t+'s ':t+' ')+runs.map(([x,y])=>x===y?x:x+'–'+y).join(', '))}
+  out.push(side.toLowerCase()+' '+parts.join(', '))}
+ return out.join('; ')}
+
+/* ============================================================
+   STATE
+   ============================================================ */
+function freshState(){return {
+ v:3,step:0,
+ meta:{type:'new',date:today(),pron:'her',initials:'',gp:'',salutation:true,compact:false,ref:newRef(),q:{status:'',linkAt:'',returnedAt:''}},
+ dx:{},hx:{},rom:{},
+ history:{opening:true,summary:'',includePatient:true},
+ exam:{synovitis:false,synDetail:'',tender:[],swollen:[],patient:null,das:{marker:'CRP',value:'',ptga:''},includeDas:false,other:''},
+ meds:[],
+ inv:{bloods:'',radiology:'',other:''},
+ mg:{},extra:[],
+ results:'',cc:'',
+ patient:null,scribe:null
+}}
+/* ---------- Letter references and the clinic list (drafts kept in this browser) ---------- */
+function newRef(){const A='23456789ABCDEFGHJKMNPQRSTUVWXYZ';const r=new Uint8Array(6);(window.crypto||window.msCrypto).getRandomValues(r);return 'RL-'+[...r].map(x=>A[x%A.length]).join('')}
+const DRAFT_KEY='rl3-drafts';
+function loadDrafts(){try{return JSON.parse(localStorage.getItem(DRAFT_KEY)||'{}')||{}}catch(e){return {}}}
+function saveDrafts(d){try{localStorage.setItem(DRAFT_KEY,JSON.stringify(d))}catch(e){}}
+function saveCurrentDraft(){if(!state.meta.ref||!(state.meta.initials||state.meta.q?.status))return;const d=loadDrafts();d[state.meta.ref]={state,updated:new Date().toISOString()};saveDrafts(d)}
+function restoreState(s){const f=freshState();const st={...f,...s,meta:{...f.meta,...(s.meta||{})}};st.meta.q={...f.meta.q,...(st.meta.q||{})};return st}
+function initialsOf(x){return String(x||'').replace(/[^A-Za-z]/g,'').toUpperCase().slice(0,4)}
+let state=loadState();
+function loadState(){try{const s=JSON.parse(sessionStorage.getItem('rl3-state')||'null');if(s&&s.v===3)return restoreState(s)}catch(e){}return freshState()}
+let saveTimer;function persist(){clearTimeout(saveTimer);saveTimer=setTimeout(()=>{try{sessionStorage.setItem('rl3-state',JSON.stringify(state))}catch(e){}saveCurrentDraft()},250)}
+function openDraft(ref){saveCurrentDraft();const d=loadDrafts()[ref];if(!d)return;state=restoreState(d.state);state.step=0;renderSteps();renderForm();toast('Opened letter '+(state.meta.initials?state.meta.initials+' · ':'')+ref)}
+function newLetter(){saveCurrentDraft();state=freshState();renderSteps();renderForm();toast('New letter '+state.meta.ref)}
+function deleteDraft(ref){const d=loadDrafts();delete d[ref];saveDrafts(d);if(state.meta.ref===ref){state=freshState();renderSteps()}renderForm()}
+function defaultQUrl(){if(/github\.io$/.test(location.hostname))return new URL('patient-v4.html',location.href.split(/[?#]/)[0]).href;return 'https://dos1984.github.io/Rheumletter/patient-v4.html'}
+function questionnaireUrl(){const base=(S.qUrl||'').trim()||defaultQUrl();return `${base}?ref=${encodeURIComponent(state.meta.ref)}&i=${encodeURIComponent(initialsOf(state.meta.initials))}`}
+function questionnaireMessage(){return `Rheumatology clinic${S.hospName?', '+S.hospName:''}: before your appointment, please complete this short questionnaire (about 10 minutes): ${questionnaireUrl()} Your reference is ${state.meta.ref}. Please do not enter your name or date of birth.`}
+const qStatusText=q=>q?.status==='returned'?`Answers returned ${fmtDate(q.returnedAt)}`:q?.status==='link'?`Link created ${fmtDate(q.linkAt)} · waiting for answers`:'No questionnaire link yet';
+function letterUI(){
+ const m=state.meta,q=m.q||{},drafts=Object.entries(loadDrafts()).sort((a,b)=>(b[1].state.meta?.date||'').localeCompare(a[1].state.meta?.date||''));
+ const ini=initialsOf(m.initials);
+ return `<div class="group"><div class="group-head"><h3>This letter</h3><div class="row"><span class="refbadge">${esc(ini||'No initials')} · ${esc(m.ref)}</span><button class="btn small" type="button" id="new-letter">+ New letter</button></div></div>
+ <p class="tiny">Each letter has its own reference. The questionnaire link carries the same reference and initials, so returned answers go back into the right letter.</p>
+ <div class="stack" style="margin-top:6px">
+ ${ini?`<div class="row"><button class="btn primary" type="button" id="q-link">${q.status?'Show questionnaire link':'Create questionnaire link'}</button><span class="tiny">${esc(qStatusText(q))}</span></div>`:'<p class="check"><b>Add the patient\'s initials</b> in the letter details below to create their questionnaire link.</p>'}
+ ${q.status&&ini?`<label class="f"><span>Link for this patient</span><input type="text" id="q-url" readonly value="${esc(questionnaireUrl())}"></label>
+ <div class="row"><button class="btn small" type="button" id="q-copy">Copy link</button><button class="btn small" type="button" id="q-msg">Copy text message</button><button class="btn small" type="button" id="q-qr">Show QR code</button></div>
+ <div id="q-qr-box" class="stack"></div>`:''}
+ <details><summary class="tiny" style="cursor:pointer">Questionnaire web address</summary><label class="f" style="margin-top:6px"><span>Where patients open the questionnaire (your GitHub Pages copy of patient-v4.html)</span><input type="text" data-sign="qUrl" placeholder="${esc(defaultQUrl())}" value="${esc(S.qUrl)}"></label></details>
+ <details ${drafts.length>1?'':''}><summary class="tiny" style="cursor:pointer">Clinic list: ${drafts.length} letter${drafts.length===1?'':'s'} saved in this browser</summary>
+ ${drafts.length?`<div class="tblwrap" style="margin-top:6px"><table class="cliniclist"><thead><tr><th>Initials</th><th>Reference</th><th>Clinic date</th><th>Questionnaire</th><th></th></tr></thead><tbody>${drafts.map(([ref,d])=>{const dm=d.state.meta||{};return `<tr class="${ref===m.ref?'cur':''}"><td>${esc(initialsOf(dm.initials)||'—')}</td><td style="font-family:var(--f-mono)">${esc(ref)}</td><td>${esc(fmtDate(dm.date))}</td><td>${esc(qStatusText(dm.q))}</td><td style="white-space:nowrap">${ref===m.ref?'<span class="tiny">open</span>':`<button class="btn small" type="button" data-open-draft="${esc(ref)}">Open</button>`} <button class="btn small ghost danger" type="button" data-del-draft="${esc(ref)}">Delete</button></td></tr>`}).join('')}</tbody></table></div><p class="tiny">Saved on this computer and browser only. Delete letters once they are sent.</p>`:'<p class="tiny">Letters appear here once they have initials or a questionnaire link.</p>'}
+ </details></div></div>`}
+let pendingImport=null;
+
+/* ============================================================
+   TEXT ENGINE
+   ============================================================ */
+const PRON={her:{her:'her',she:'she'},his:{her:'his',she:'he'},their:{her:'their',she:'they'}};
+function pron(text){return text.replace(/\{her\}/g,PRON[state.meta.pron]?.her||'their')}
+function fill(text,vals){
+ // Drop parenthetical groups whose tokens are all empty, e.g. "(BMI {bmi})"
+ text=text.replace(/\s*\(([^()]*\{[a-z]+\}[^()]*)\)/g,(m,inner)=>{const toks=[...inner.matchAll(/\{([a-z]+)\}/g)].map(x=>x[1]).filter(t=>t!=='date');if(toks.length&&toks.every(t=>!vals[t]))return '';const lead=m.match(/^\s*/)[0];return lead+'('+inner.split(/,\s*/).filter(seg=>{const tk=[...seg.matchAll(/\{([a-z]+)\}/g)].map(x=>x[1]).filter(t=>t!=='date');return !tk.length||tk.some(t=>vals[t])}).join(', ')+')'});
+ // "noted on {date}" with no date: drop the phrase
+ text=text.replace(/\s*(noted on|advised on|given on|noted at consultation on|performed in)\s*\{(date|year)\}/g,(m,p,t)=>vals[t]?` ${p} ${vals[t]}`:(t==='year'?'':''));
+ return text.replace(/\{([a-z]+)\}/g,(m,k)=>vals[k]??'').replace(/\s{2,}/g,' ').trim()}
+function choiceSentence(item,sel){
+ if(!sel||sel.o==null||sel.o<0)return null;
+ const base=item.o[sel.o];if(!base)return null;
+ const vals={...(sel.f||{}),date:fmtDate(sel.date??state.meta.date),year:sel.f?.year||''};
+ let txt=base.replace('{detailSep}','');
+ const hasDetailTok=txt.includes('{detail}');
+ vals.detail=sel.detail||(hasDetailTok?'[details]':'');
+ txt=fill(txt,vals);
+ if(sel.detail&&!hasDetailTok)txt+=' – '+sel.detail;
+ for(const f of (item.fields||[]).filter(f=>f.after&&(f.when==null||f.when===sel.o))){const v=(sel.f?.[f.k]||'').trim();if(v)txt+=` (${f.pre?f.pre+' ':''}${v})`}
+ return txt}
+const confirmed=sel=>sel&&sel.o!=null&&sel.o>=0&&!sel.suggested;
+
+function buildLetter(){
+ const L=[];const m=state.meta;
+ const H=t=>L.push({t:'h',text:t});const Pp=t=>L.push({t:'p',text:t});
+ if(m.salutation){Pp(`Dear ${m.gp?m.gp.trim():'Doctor'},`);if(m.initials)Pp(`Re: ${m.initials}`)}
+ // Diagnosis list
+ const dx=DX.map(it=>confirmed(state.dx[it.id])?choiceSentence(it,state.dx[it.id]):null).filter(Boolean);
+ if(dx.length){H('Diagnosis List');L.push({t:'ol',items:dx.map(x=>({text:x}))})}
+ // Medications
+ const cur=state.meds.filter(x=>!x.suggested&&x.kind!=='previous'&&(x.name||x.brand));
+ const prev=state.meds.filter(x=>!x.suggested&&x.kind==='previous'&&(x.name||x.brand));
+ if(cur.length||prev.length){H('Medications');
+  if(cur.length)L.push({t:'ol',items:cur.map(x=>({text:medLine(x)}))});
+  if(prev.length){Pp('Previous treatments:');L.push({t:'ul',items:prev.map(x=>medLine(x)+(x.notes?' – '+x.notes:''))})}}
+ // Investigations
+ const inv=[['Bloods',state.inv.bloods],['Radiology',state.inv.radiology],['Other',state.inv.other]].filter(([,v])=>v.trim());
+ if(inv.length){H('Investigations:');inv.forEach(([k,v])=>Pp(`${k}: ${v.trim()}`))}
+ // History / Examination
+ const hxOut=[];
+ if(state.history.opening)hxOut.push(m.type==='return'?'I reviewed this patient at rheumatology clinic today. The full diagnosis and medication list are as mentioned above.':'I saw this patient at rheumatology clinic today, full diagnosis and medication list as mentioned above.');
+ if(state.history.summary.trim())hxOut.push(state.history.summary.trim());
+ if(state.history.includePatient&&state.patient)hxOut.push(patientSummaryLine());
+ const hxPos=[],hxNeg=[];
+ const symLines=HX.filter(it=>it.sym&&confirmed(state.hx[it.id])).map(it=>choiceSentence(it,state.hx[it.id])+'.');
+ HX.forEach(it=>{if(it.sym)return;const sel=state.hx[it.id];if(!confirmed(sel))return;(sel.o===0?hxPos:hxNeg).push(sel.o===0?'History of '+lowerFirst(choiceSentence(it,sel)):choiceSentence(it,sel))});
+ const exam=examLines();
+ if(hxOut.length||symLines.length||hxPos.length||hxNeg.length||exam.length){
+  H('History / Examination');hxOut.forEach(Pp);symLines.forEach(Pp);
+  if(hxPos.length||hxNeg.length){
+   if(m.compact&&hxNeg.length>1){hxPos.forEach(Pp);Pp('No history of '+listJoin(hxNeg.map(x=>x.replace(/^No history of /,'')))+'.')}
+   else [...hxPos,...hxNeg].forEach(Pp)}
+  if(exam.length){H('Examination');exam.forEach(e=>e.t?L.push(e):Pp(e))}}
+ // Management
+ const mg=managementItems();
+ if(mg.length){H('Management');L.push({t:'ol',items:mg})}
+ L.push({t:'sig',text:'Yours sincerely\n\n_________________\n'+signatureText()});
+ if(state.results.trim()){H('Results');state.results.trim().split('\n').forEach(Pp)}
+ if(state.cc.trim()){H('Cc');state.cc.trim().split('\n').forEach(Pp)}
+ return L.map(x=>x.text?{...x,text:pron(x.text)}:x.items?{...x,items:x.items.map(i=>typeof i==='string'?pron(i):{text:pron(i.text),sub:(i.sub||[]).map(pron)})}:x)}
+const lowerFirst=s=>s.replace(/^./,c=>/[A-Z]/.test(c)&&!/^(Raynaud|Crohn)/.test(s)?c.toLowerCase():c);
+function medLine(x){const freq=x.freq==='other'?x.freqOther:x.freq;const f=freq+(x.day&&/week/.test(freq||'')?` (${x.day})`:'');return [x.name,x.brand,x.dose,x.route&&x.route!=='oral'?x.route:'',f].filter(Boolean).join(' – ')}
+function examLines(){
+ const e=state.exam,out=[];
+ if(e.synovitis)out.push('Synovitis'+(e.synDetail?': '+e.synDetail:'')+'.');
+ if(e.tender.length)out.push(`Tender joints (${e.tender.length}): ${describeJoints(e.tender)}.`);
+ if(e.swollen.length)out.push(`Swollen joints (${e.swollen.length}): ${describeJoints(e.swollen)}.`);
+ if(e.includeDas){const d=das28();if(d)out.push(d.text)}
+ const romSel=ROM.filter(it=>confirmed(state.rom[it.id]));
+ if(m_compactNormals()&&romSel.filter(it=>state.rom[it.id].o===0).length>1){
+  const norm=romSel.filter(it=>state.rom[it.id].o===0).map(it=>it.o[0].replace('Normal range of motion of the ',''));
+  out.push('Normal range of motion of the '+listJoin(norm)+'.');
+  romSel.filter(it=>state.rom[it.id].o===1).forEach(it=>out.push(choiceSentence(it,state.rom[it.id])+'.'))}
+ else romSel.forEach(it=>out.push(choiceSentence(it,state.rom[it.id])+'.'));
+ if(e.other.trim())out.push(e.other.trim());
+ return out}
+const m_compactNormals=()=>state.meta.compact;
+function das28(){
+ const d=state.exam.das;const tj=state.exam.tender.filter(i=>JOINT_BY[i]?.d28).length,sj=state.exam.swollen.filter(i=>JOINT_BY[i]?.d28).length;
+ const v=parseFloat(d.value),g=parseFloat(d.ptga);if(isNaN(v)||isNaN(g))return null;
+ const score=d.marker==='CRP'?0.56*Math.sqrt(tj)+0.28*Math.sqrt(sj)+0.36*Math.log(v+1)+0.014*g+0.96:0.56*Math.sqrt(tj)+0.28*Math.sqrt(sj)+0.70*Math.log(Math.max(v,1))+0.014*g;
+ return {score,text:`DAS28-${d.marker} ${score.toFixed(2)} (TJC28 ${tj}, SJC28 ${sj}, ${d.marker} ${v}, patient global ${g}/100).`}}
+function managementItems(){
+ const items=[];let introDone=false;
+ for(const it of MX){
+  const st=state.mg[it.id];if(!st?.on)continue;
+  // Template item 27 introduces the pain options; insert it once, before the first pain item.
+  if(it.g==='pain'&&!introDone){items.push({text:"In terms of this patient's pain control there are a number of options that can be prescribed / considered as follows:"});introDone=true}
+  if(st.override!=null){const ls=st.override.split('\n');items.push({text:ls[0],sub:ls.slice(1).filter(x=>x.trim()).map(x=>x.replace(/^\s*[-–]\s*/,''))});continue}
+  const b=it.build(st.f||{});items.push({text:b.text,sub:(b.sub||[]).filter(Boolean)})}
+ state.extra.filter(x=>x.trim()).forEach(x=>items.push({text:x.trim()}));
+ return items}
+function patientSummaryLine(){
+ const p=state.patient;if(!p)return '';const s=p.sym||{};const bits=[];
+ if(s.pain!=='' &&s.pain!=null)bits.push(`pain ${s.pain}/10`);
+ if(s.ptga!==''&&s.ptga!=null)bits.push(`patient global ${s.ptga}/10`);
+ if(s.fatigue!==''&&s.fatigue!=null)bits.push(`fatigue ${s.fatigue}/10`);
+ if(s.stiffness&&!s.ems)bits.push(`early morning stiffness ${s.stiffness} minutes`);
+ const ibp=s.ibp||{};const ibpN=['under40','gradual','exercise','rest','night'].filter(k=>ibp[k]==='yes').length;
+ if(s.backpain==='yes')bits.push(`back pain with ${ibpN} of 5 inflammatory features`);
+ let t='Patient-reported (pre-clinic questionnaire): '+(bits.join(', ')||'questionnaire returned');
+ if(s.concerns)t+='. Main concerns: '+s.concerns;
+ if(s.duration)t+='. Symptoms since: '+s.duration;
+ const vac=Object.entries(p.vacc||{}).filter(([,v])=>v?.a==='yes').map(([k])=>({flu:'flu (last 12 months)',pneumo:'pneumococcal',covid:'Covid-19 (last 12 months)',zoster:'shingles'}[k])).filter(Boolean);
+ if(vac.length)t+='. Vaccines reported: '+listJoin(vac);
+ return t.replace(/\.?$/,'.')}
+
+/* ---------- Renderers: preview, text, docx ---------- */
+function letterHTML(L){
+ let h='';let any=false;
+ for(const b of L){
+  if(b.t==='h')h+=`<h4>${esc(b.text)}</h4>`;
+  else if(b.t==='p'){h+=`<p>${esc(b.text)}</p>`;any=true}
+  else if(b.t==='ol'){h+='<ol>'+b.items.map(i=>`<li>${esc(i.text)}${i.sub?.length?'<ul>'+i.sub.map(s=>`<li>${esc(s.trim())}</li>`).join('')+'</ul>':''}</li>`).join('')+'</ol>';any=true}
+  else if(b.t==='ul'){h+='<ul>'+b.items.map(i=>`<li>${esc(i)}</li>`).join('')+'</ul>'}
+  else if(b.t==='sig')h+=`<div class="sig">${esc(b.text)}</div>`;
+ }
+ if(!any)h='<p class="empty">The letter builds here as you select findings. Nothing is included until you choose it.</p>'+h;
+ return h}
+function letterText(L){
+ const out=[];
+ for(const b of L){
+  if(b.t==='h'){out.push('');out.push(b.text)}
+  else if(b.t==='p')out.push(b.text);
+  else if(b.t==='ol')b.items.forEach((i,n)=>{out.push(`${n+1}. ${i.text}`);(i.sub||[]).forEach(s=>out.push((s.startsWith('   ')?'      - ':'   - ')+s.trim()))});
+  else if(b.t==='ul')b.items.forEach(i=>out.push('   - '+i));
+  else if(b.t==='sig'){out.push('');out.push(b.text)}
+ }
+ return out.join('\n').replace(/^\n+/,'')+'\n'}
+function xmlEsc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function wP(text,{bold=false,indent=0,hanging=0,after=80,underline=false}={}){
+ const runs=String(text).split('\n').map((ln,i)=>(i?'<w:r><w:br/></w:r>':'')+`<w:r><w:rPr>${bold?'<w:b/>':''}${underline?'<w:u w:val="single"/>':''}</w:rPr><w:t xml:space="preserve">${xmlEsc(ln)}</w:t></w:r>`).join('');
+ return `<w:p><w:pPr><w:spacing w:after="${after}"/>${indent||hanging?`<w:ind w:left="${indent}" w:hanging="${hanging}"/>`:''}${hanging?`<w:tabs><w:tab w:val="left" w:pos="${indent}"/></w:tabs>`:''}</w:pPr>${runs}</w:p>`}
+async function makeDocx(L){
+ await loadScript(LIBS.jszip);
+ let body='';
+ for(const b of L){
+  if(b.t==='h')body+=wP(b.text,{bold:true,underline:true,after:120}).replace('<w:spacing w:after="120"/>','<w:spacing w:before="200" w:after="120"/>');
+  else if(b.t==='p')body+=wP(b.text);
+  else if(b.t==='ol')b.items.forEach((i,n)=>{body+=wP(`${n+1}.\t${i.text}`,{indent:426,hanging:426});(i.sub||[]).forEach(s=>{const deep=s.startsWith('   ');body+=wP(`–\t${s.trim()}`,{indent:deep?1278:852,hanging:426,after:40})})});
+  else if(b.t==='ul')b.items.forEach(i=>body+=wP(`–\t${i}`,{indent:852,hanging:426,after:40}));
+  else if(b.t==='sig'){const [a,...rest]=b.text.split('\n\n');body+=wP(a,{after:240}).replace('<w:spacing w:after="240"/>','<w:spacing w:before="240" w:after="240"/>');body+=wP(rest.join('\n\n'))}
+ }
+ const doc=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>${body}<w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1134" w:right="1134" w:bottom="1134" w:left="1134" w:header="567" w:footer="567" w:gutter="0"/></w:sectPr></w:body></w:document>`;
+ const styles=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:docDefaults><w:rPrDefault><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial" w:eastAsia="Arial"/><w:sz w:val="22"/><w:szCs w:val="22"/><w:lang w:val="en-IE"/></w:rPr></w:rPrDefault><w:pPrDefault><w:pPr><w:spacing w:after="80" w:line="264" w:lineRule="auto"/></w:pPr></w:pPrDefault></w:docDefaults><w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/></w:style></w:styles>`;
+ const zip=new JSZip();
+ zip.file('[Content_Types].xml','<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/></Types>');
+ zip.file('_rels/.rels','<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>');
+ zip.file('word/_rels/document.xml.rels','<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>');
+ zip.file('word/document.xml',doc);zip.file('word/styles.xml',styles);
+ return zip.generateAsync({type:'blob',mimeType:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'})}
+function download(blob,name){const a=document.createElement('a'),u=URL.createObjectURL(blob);a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),2000)}
+const fileStem=()=>`rheum-letter-${state.meta.date||'undated'}${state.meta.initials?'-'+state.meta.initials.replace(/[^A-Za-z0-9]/g,''):''}`;
+
+let previewTimer;
+function refreshPreview(){clearTimeout(previewTimer);previewTimer=setTimeout(()=>{$('#paper').innerHTML=letterHTML(buildLetter());updateStepCounts();persist()},60)}
+
+/* ============================================================
+   UI — steps
+   ============================================================ */
+const STEPS=[['start','Start'],['dx','Diagnoses & meds'],['hx','History'],['exam','Examination'],['inv','Investigations'],['mg','Management'],['finish','Finish']];
+function renderSteps(){
+ $('#steps').innerHTML=STEPS.map(([k,n],i)=>`<button type="button" data-step="${i}" ${i===state.step?'aria-current="step"':''}>${i+1}. ${n}<span class="ct" data-count="${k}"></span></button>`).join('');
+ updateStepCounts()}
+function updateRefBadge(){const b=$('#cur-ref');if(b)b.textContent=(initialsOf(state.meta.initials)||'—')+' · '+state.meta.ref}
+function updateStepCounts(){updateRefBadge();
+ const c={dx:Object.values(state.dx).filter(confirmed).length+state.meds.filter(m=>!m.suggested).length,hx:Object.values(state.hx).filter(confirmed).length,exam:Object.values(state.rom).filter(confirmed).length+state.exam.tender.length+state.exam.swollen.length,mg:Object.values(state.mg).filter(x=>x.on).length};
+ document.querySelectorAll('[data-count]').forEach(el=>{const v=c[el.dataset.count];el.textContent=v?v:''})}
+function go(i){state.step=Math.max(0,Math.min(STEPS.length-1,i));renderSteps();renderForm();window.scrollTo({top:0});persist()}
+
+function renderForm(){
+ const k=STEPS[state.step][0];
+ const f={start:formStart,dx:formDx,hx:formHx,exam:formExam,inv:formInv,mg:formMg,finish:formFinish}[k];
+ $('#form').innerHTML=f()+`<div class="navbtns"><button class="btn" type="button" data-nav="-1" ${state.step===0?'disabled':''}>← Previous</button><button class="btn primary" type="button" data-nav="1" ${state.step===STEPS.length-1?'disabled':''}>Next: ${STEPS[state.step+1]?.[1]||''} →</button></div>`;
+ decorateMics();refreshPreview()}
+
+/* ---------- Choice item (Diagnosis / History / ROM) ---------- */
+function choiceItem(it,bucket){
+ const sel=state[bucket][it.id]||{};const labels=it.s||(it.o.length===2?['Yes','No']:it.o);
+ const on=sel.o!=null&&sel.o>=0;
+ let h=`<div class="item ${on?'on':''}" data-item="${it.id}" data-bucket="${bucket}"><div class="name">${esc(it.name)}${it.n?`<span class="tag" title="Template item number">T${it.n}</span>`:''}${it.isNew?'<span class="tag new">new</span>':''}${LINK_NOTE[it.id]?`<span class="tag link" title="This question appears in two sections; answering it here answers both">↔ ${LINK_NOTE[it.id]}</span>`:''}${sel.suggested?`<span class="tag p" title="Tap the highlighted answer to confirm">${sel.src==='recording'?'from recording':'patient said'}</span>`:''}</div>`;
+ h+=`<div class="seg" role="group" aria-label="${esc(it.name)}">`+labels.map((l,i)=>{const neg=(it.negIdx!=null?i===it.negIdx:i===1)&&!it.noNeg;const pressed=sel.o===i&&!sel.suggested;return `<button type="button" class="${neg?'no':''} ${sel.o===i&&sel.suggested?'sugg':''}" aria-pressed="${pressed}" data-opt="${i}">${esc(l)}</button>`}).join('')+`</div>`;
+ const isNeg=on&&!it.noNeg&&(it.negIdx!=null?sel.o===it.negIdx:sel.o===1)&&it.o.length>1;
+ const optHasFields=on&&((it.fields||[]).some(f=>!f.after&&(f.when==null||f.when===sel.o))||/\{date\}/.test(it.o[sel.o]||''));
+ if(on&&(!isNeg||sel.detail||sel.suggested||optHasFields)){
+  h+=`<div class="more">`;const txt=it.o[sel.o]||'';
+  const fields=(it.fields||[]).filter(f=>(f.when==null||f.when===sel.o)&&!f.after);
+  const afterFields=(it.fields||[]).filter(f=>(f.when==null||f.when===sel.o)&&f.after);
+  const needsDate=/\{date\}/.test(txt);
+  if(needsDate||fields.length)h+=`<div class="two">${needsDate?`<label class="f"><span>Date</span><input type="date" data-k="date" value="${esc(sel.date??state.meta.date)}"></label>`:''}${fields.map(f=>f.opts?`<label class="f"><span>${esc(f.l)}</span><select data-k="f.${f.k}"><option value="">Choose…</option>${[...f.opts,...(sel.f?.[f.k]&&!f.opts.includes(sel.f[f.k])?[sel.f[f.k]]:[])].map(o=>`<option ${sel.f?.[f.k]===o?'selected':''}>${esc(o)}</option>`).join('')}</select></label>`:`<label class="f"><span>${esc(f.l)}</span><input type="text" data-k="f.${f.k}" value="${esc(sel.f?.[f.k]||'')}"></label>`).join('')}</div>`;
+  h+=`<label class="f"><span>${esc(it.dl||'Details')} <span class="tiny">(optional, typed or dictated)</span></span><input type="text" data-k="detail" data-dictate value="${esc(sel.detail||'')}"></label>`;
+  h+=afterFields.map(f=>`<label class="f"><span>${esc(f.l)}</span><input type="text" data-k="f.${f.k}" value="${esc(sel.f?.[f.k]||'')}" style="max-width:260px"></label>`).join('');
+  if(it.check)h+=`<p class="check"><b>Check before sending:</b> ${esc(it.check)}</p>`;
+  if(sel.evidence)h+=`<p class="evidence">“${esc(sel.evidence)}”</p>`;
+  h+=`<p class="sentence" data-sentence>${esc(choiceSentence(it,{...sel,suggested:false})||'')}</p></div>`}
+ else if(it.check)h+=`<div class="more"><p class="check"><b>Check before sending:</b> ${esc(it.check)}</p></div>`;
+ return h+'</div>'}
+function groupBlock(title,items,bucket,{negBtn=true,normalBtn=false}={}){
+ const hasSugg=items.some(it=>state[bucket][it.id]?.suggested);
+ return `<div class="group"><div class="group-head"><h3>${esc(title)}</h3><div class="row">${hasSugg?`<button class="btn small" type="button" data-confirm-group="${esc(items.map(i=>i.id).join(','))}" data-bucket="${bucket}">Confirm suggestions</button>`:''}${negBtn&&items.some(it=>it.o.length>1&&!it.noNeg)?`<button class="btn small ghost" type="button" data-rest="${esc(items.map(i=>i.id).join(','))}" data-bucket="${bucket}">${normalBtn?'Mark remaining normal':'Mark remaining as No'}</button>`:''}</div></div>${items.map(it=>choiceItem(it,bucket)).join('')}</div>`}
+
+/* ---------- Step 1: Start ---------- */
+function formStart(){
+ const m=state.meta;
+ return `<h2>Start</h2><p class="lede">Set up the letter and send the patient their questionnaire link. When their answers come back, import them here; they appear as suggestions you confirm.</p>
+ ${letterUI()}
+ <div class="group"><div class="group-head"><h3>Letter details</h3></div><div class="two">
+  <label class="f"><span>Letter type</span><select id="m-type" data-meta="type"><option value="new" ${m.type==='new'?'selected':''}>New patient (IPMS template)</option><option value="return" ${m.type==='return'?'selected':''}>Return patient</option></select></label>
+  <label class="f"><span>Consultation date</span><input type="date" id="m-date" data-meta="date" value="${esc(m.date)}"></label>
+  <label class="f"><span>Patient pronoun in letter</span><select id="m-pron" data-meta="pron"><option value="her" ${m.pron==='her'?'selected':''}>her</option><option value="his" ${m.pron==='his'?'selected':''}>his</option><option value="their" ${m.pron==='their'?'selected':''}>their</option></select></label>
+  <label class="f"><span>Patient initials</span><input type="text" id="m-initials" data-meta="initials" maxlength="4" placeholder="AB" autocomplete="off" value="${esc(m.initials)}"></label>
+  <label class="f"><span>GP name for salutation</span><input type="text" id="m-gp" data-meta="gp" placeholder="Dr Byrne" value="${esc(m.gp)}"></label>
+ </div>
+ <div class="checks" style="margin-top:10px">
+  <label><input type="checkbox" data-meta="salutation" ${m.salutation?'checked':''}> Add "Dear Dr…" line (turn off if IPMS adds its own header)</label>
+  <label><input type="checkbox" data-meta="compact" ${m.compact?'checked':''}> Combine negatives into one sentence</label>
+ </div></div>
+ ${recorderUI()}
+ ${signerUI()}
+ <div class="group"><div class="group-head"><h3>Patient questionnaire</h3>${state.patient?'<span class="tag p">imported</span>':''}</div>
+ <p class="tiny">Import the file, response code or QR code the patient returns. The reference on it opens the matching letter automatically.</p>
+ <div id="pt-choice"></div>
+ <div class="stack">
+  <label class="f"><span>Questionnaire file (.json)</span><input type="file" id="pt-file" accept=".json,application/json"></label>
+  <label class="f"><span>Or paste the response code</span><textarea id="pt-code" rows="2" placeholder="RL3:…"></textarea></label>
+  <label class="f"><span>Or a photo of the QR code</span><input type="file" id="pt-qr" accept="image/*" capture="environment"></label>
+  <div class="row"><button class="btn primary" type="button" id="pt-import">Import answers</button>${state.patient?'<button class="btn danger" type="button" id="pt-remove">Remove imported answers</button>':''}</div>
+  <p class="status" id="pt-status"></p>
+  ${state.patient?patientCard():''}
+ </div></div>
+ ${scribeUI()}`}
+function patientCard(){
+ const p=state.patient;const n=countSuggestions();
+ const mism=[];if(p.ref&&p.ref!==state.meta.ref)mism.push(`reference ${esc(p.ref)} (this letter is ${esc(state.meta.ref)})`);if(p.i&&initialsOf(state.meta.initials)&&p.i!==initialsOf(state.meta.initials))mism.push(`initials ${esc(p.i)} (this letter is ${esc(initialsOf(state.meta.initials))})`);
+ return `${mism.length?`<p class="flag"><b>Check this is the right patient:</b> the questionnaire has ${mism.join(' and ')}.</p>`:''}<div class="check" style="background:var(--surface-2)"><b style="color:var(--fg)">Imported questionnaire${p.ref?' · ref '+esc(p.ref):''}${p.i?' · '+esc(p.i):''}</b><br>${esc(patientSummaryLine())}<br><span class="tiny">${n} suggested answers waiting for confirmation across Diagnoses, History and Medications. Patient-marked joints show as dashed rings on the joint map.</span></div>`}
+function countSuggestions(){return [...Object.values(state.dx),...Object.values(state.hx),...Object.values(state.rom)].filter(x=>x?.suggested).length+state.meds.filter(m=>m.suggested).length+Object.values(state.mg).filter(m=>m?.sugg&&!m.on).length}
+
+/* ---------- Step 2: Diagnoses & medications ---------- */
+function formDx(){
+ let h=`<h2>Diagnosis list and medications</h2><p class="lede">Items follow the template order (T-numbers). Tap an answer to select it and tap it again to clear. "Mark remaining as No" fills every unanswered yes/no item in that group with the negative statement.</p>`;
+ h+=confirmAllBar(['dx'],true);
+ for(const [g,title] of DX_GROUPS)h+=groupBlock(title,DX.filter(d=>d.g===g),'dx');
+ h+=`<div class="group"><div class="group-head"><h3>Medications</h3><span class="tiny">Template: drug name – brand – dose – frequency</span></div>${medsUI()}</div>`;
+ return h}
+const FREQ=[['','Frequency…'],['once daily','Once daily (OD)'],['twice daily','Twice daily (BD)'],['three times daily','Three times daily (TDS)'],['four times daily','Four times daily (QDS)'],['at night','At night (nocte)'],['once weekly','Once weekly'],['every 2 weeks','Every 2 weeks'],['every 4 weeks','Every 4 weeks'],['as required','As required (PRN)'],['other','Other…']];
+const ROUTES=['oral','subcutaneous','intramuscular','intravenous','topical','inhaled'];
+function medsUI(){
+ let h='';
+ state.meds.forEach((x,i)=>{
+  h+=`<div class="medrow ${x.suggested?'sugg':''}" data-med="${i}">
+  ${x.suggested?`<div class="row" style="justify-content:space-between"><span class="tag p">${x.source==='photo'?'read from photo':x.source==='recording'?'from recording':'patient said'} — check against the source</span>${x.evidence?`</div><p class="evidence">“${esc(x.evidence)}”</p><div class="row" style="justify-content:flex-end">`:''}<button class="btn small primary" type="button" data-med-confirm="${i}">Confirm</button></div>`:''}
+  <div class="medgrid">
+   <label class="f"><span>Drug name</span><input type="text" data-mk="name" value="${esc(x.name)}"></label>
+   <label class="f"><span>Brand</span><input type="text" data-mk="brand" value="${esc(x.brand)}"></label>
+   <label class="f"><span>Dose</span><input type="text" data-mk="dose" value="${esc(x.dose)}" placeholder="15 mg"></label>
+   <label class="f"><span>Route</span><select data-mk="route">${ROUTES.map(r=>`<option ${x.route===r?'selected':''}>${r}</option>`).join('')}</select></label>
+   <label class="f"><span>Frequency</span><select data-mk="freq">${FREQ.map(([v,l])=>`<option value="${v}" ${x.freq===v?'selected':''}>${l}</option>`).join('')}</select></label>
+   ${x.freq==='other'?`<label class="f"><span>Other frequency</span><input type="text" data-mk="freqOther" value="${esc(x.freqOther||'')}"></label>`:''}
+   ${/week/.test(x.freq||'')?`<label class="f"><span>Day of week</span><select data-mk="day">${['','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'].map(d=>`<option ${x.day===d?'selected':''}>${d}</option>`).join('')}</select></label>`:''}
+   <label class="f"><span>Status</span><select data-mk="kind"><option value="current" ${x.kind!=='previous'?'selected':''}>Current</option><option value="previous" ${x.kind==='previous'?'selected':''}>Previous</option></select></label>
+  </div>
+  ${x.kind==='previous'?`<label class="f"><span>Reason stopped / response</span><input type="text" data-mk="notes" data-dictate value="${esc(x.notes||'')}"></label>`:''}
+  <div class="row"><button class="btn small ghost danger" type="button" data-med-remove="${i}">Remove</button>${/methotrexate/i.test(x.name)&&!/week/.test(x.freq||'')?'<span class="check"><b>Check:</b> methotrexate is usually once weekly.</span>':''}</div></div>`});
+ h+=`<div class="row"><button class="btn primary" type="button" id="med-add">+ Add medication</button></div>
+ <details style="margin-top:10px"><summary class="tiny" style="cursor:pointer">Import from a medication list (paste text or photo of a label)</summary>
+ <div class="stack" style="margin-top:8px"><label class="f"><span>Paste a de-identified medication list</span><textarea id="med-paste" rows="3" placeholder="Methotrexate 15mg once weekly&#10;Folic acid 5mg once weekly"></textarea></label>
+ <label class="f"><span>Or a cropped photo of a label or list</span><input type="file" id="med-photo" accept="image/*" capture="environment"></label>
+ <div class="row"><button class="btn" type="button" id="med-parse">Read medications</button></div><p class="status" id="med-status"></p><div id="med-flags"></div></div></details>`;
+ return h}
+
+/* ---------- Step 3: History ---------- */
+function formHx(){
+ const h=state.history;
+ let s=`<h2>History</h2><p class="lede">Template: "I saw this patient at rheumatology clinic today…", the summary, then the "History of" items.</p>
+ <div class="group"><div class="checks"><label><input type="checkbox" data-hist="opening" ${h.opening?'checked':''}> Opening line: “${state.meta.type==='return'?'I reviewed this patient at rheumatology clinic today…':'I saw this patient at rheumatology clinic today, full diagnosis and medication list as mentioned above.'}”</label>
+ ${state.patient?`<label><input type="checkbox" data-hist="includePatient" ${h.includePatient?'checked':''}> Include patient-reported scores line</label>`:''}</div>
+ ${state.scribe?.summary&&!state.scribe.used?.summary?`<div class="scribe-box" style="margin-top:10px"><span class="tag p" style="justify-self:start">from recording</span><span>${esc(state.scribe.summary)}</span><div class="row"><button class="btn small primary" type="button" data-scribe-use="summary">Insert into summary</button><button class="btn small ghost" type="button" data-scribe-dismiss="summary">Dismiss</button></div></div>`:''}
+ <label class="f" style="margin-top:10px"><span>Summary <span class="tiny">(presenting complaint, duration, stiffness, function)</span></span><textarea id="hx-summary" data-hist-text="summary" data-dictate rows="5">${esc(h.summary)}</textarea></label></div>`;
+ s+=confirmAllBar(['hx'],false)+groupBlock('Stiffness and weather',HX.filter(x=>x.sym),'hx')+groupBlock('History of',HX.filter(x=>!x.sym),'hx');
+ return s}
+
+/* ---------- Step 4: Examination ---------- */
+let paintMode='tender';
+function formExam(){
+ const e=state.exam;const d=das28();
+ const tj=e.tender.filter(i=>JOINT_BY[i]?.d28).length,sj=e.swollen.filter(i=>JOINT_BY[i]?.d28).length;
+ return `<h2>Examination</h2><p class="lede">Choose Tender or Swollen, then tap joints. The thumb IP counts as PIP 1 in the 28-joint count. Patient right is on your left.</p>
+ <div class="group"><div class="item ${e.synovitis?'on':''}"><div class="name">Synovitis<span class="tag">T</span></div><div class="seg"><button type="button" id="syn" aria-pressed="${e.synovitis}">Present</button></div>${e.synovitis?`<div class="more"><label class="f"><span>Details</span><input type="text" id="syn-detail" data-dictate value="${esc(e.synDetail)}"></label></div>`:''}</div></div>
+ <div class="group jm" id="jointmap"><div class="group-head"><h3>Tender and swollen joints</h3>
+  <div class="seg" role="group" aria-label="Marking mode"><button type="button" data-paint="tender" aria-pressed="${paintMode==='tender'}">Tender</button><button type="button" data-paint="swollen" aria-pressed="${paintMode==='swollen'}">Swollen</button></div></div>
+  <div class="legend"><span><i class="dot t"></i>Tender</span><span><i class="dot s"></i>Swollen</span>${e.patient||e.scribe?'<span><i class="dot pr"></i>Suggested (questionnaire or recording)</span>':''}</div>
+  ${e.scribe&&(e.scribe.t.length||e.scribe.s.length)?`<div class="scribe-box"><span><span class="tag p">from recording</span> Tender: ${esc(describeJoints(e.scribe.t)||'none')}. Swollen: ${esc(describeJoints(e.scribe.s)||'none')}. Shown as dashed rings.</span>${e.scribe.evidence?`<p class="evidence">“${esc(e.scribe.evidence)}”</p>`:''}<div class="row"><button class="btn small primary" type="button" id="scribe-joints">Add these joints</button><button class="btn small ghost" type="button" id="scribe-joints-dismiss">Dismiss</button></div></div>`:''}
+  <div class="panels"><div>${jointSvg('body',jstate())}</div><div class="stack">${jointSvg('hand',jstate())}${jointSvg('foot',jstate())}</div></div>
+  <div class="counts" id="jcounts">${countsHTML()}</div>
+  <div class="row"><button class="btn small ghost" type="button" data-jclear="tender">Clear tender</button><button class="btn small ghost" type="button" data-jclear="swollen">Clear swollen</button></div>
+  <details ${e.includeDas?'open':''}><summary class="tiny" style="cursor:pointer">DAS28 (optional)</summary>
+  <div class="two" style="margin-top:8px"><label class="f"><span>Marker</span><select data-das="marker"><option ${e.das.marker==='CRP'?'selected':''}>CRP</option><option ${e.das.marker==='ESR'?'selected':''}>ESR</option></select></label>
+  <label class="f"><span>${e.das.marker==='CRP'?'CRP (mg/L)':'ESR (mm/h)'}</span><input type="number" step="0.1" min="0" data-das="value" value="${esc(e.das.value)}"></label>
+  <label class="f"><span>Patient global (0–100)</span><input type="number" min="0" max="100" data-das="ptga" value="${esc(e.das.ptga)}"></label></div>
+  <p class="tiny" id="das-out">${d?`<b style="font:600 16px var(--f-mono);color:var(--fg)">${d.score.toFixed(2)}</b> · ${d.score<2.6?'remission range (<2.6)':d.score<=3.2?'low activity (2.6–3.2)':d.score<=5.1?'moderate activity (3.2–5.1)':'high activity (>5.1)'}`:'Enter the marker and patient global to calculate.'}${state.patient?.sym?.ptga!=null&&state.patient.sym.ptga!==''?` Patient's questionnaire global: ${state.patient.sym.ptga}/10.`:''}</p>
+  <div class="checks"><label><input type="checkbox" data-das-include ${e.includeDas?'checked':''}> Include DAS28 in the letter</label></div></details>
+ </div>
+ ${confirmAllBar(['rom'],false)}${groupBlock('Range of motion',ROM,'rom',{normalBtn:true})}
+ <div class="group">${state.scribe?.examOther&&!state.scribe.used?.examOther?`<div class="scribe-box"><span><span class="tag p">from recording</span> ${esc(state.scribe.examOther)}</span><div class="row"><button class="btn small primary" type="button" data-scribe-use="examOther">Insert</button><button class="btn small ghost" type="button" data-scribe-dismiss="examOther">Dismiss</button></div></div>`:''}<label class="f"><span>Other examination findings</span><textarea id="exam-other" data-dictate rows="3">${esc(e.other)}</textarea></label></div>`}
+const jstate=()=>{const p=state.exam.patient||{},r=state.exam.scribe||{};return {tender:state.exam.tender,swollen:state.exam.swollen,patient:{t:[...(p.t||[]),...(r.t||[])],s:[...(p.s||[]),...(r.s||[])]}}};
+function countsHTML(){const e=state.exam;const tj=e.tender.filter(i=>JOINT_BY[i]?.d28).length,sj=e.swollen.filter(i=>JOINT_BY[i]?.d28).length;
+ return `<div class="count"><b>${e.tender.length}</b><span>tender (all)</span></div><div class="count"><b>${e.swollen.length}</b><span>swollen (all)</span></div><div class="count"><b>${tj}</b><span>TJC28</span></div><div class="count"><b>${sj}</b><span>SJC28</span></div>`}
+
+/* ---------- Step 5: Investigations ---------- */
+function formInv(){
+ return `<h2>Investigations</h2><p class="lede">Results already available at this visit. Imported text is checked for identifiers and shown for review before it is added.</p>
+ ${['bloods','radiology','other'].filter(k=>state.scribe?.inv?.[k]&&!state.scribe.used?.['inv_'+k]).map(k=>`<div class="scribe-box"><span><span class="tag p">from recording</span> ${cap(k)}: ${esc(state.scribe.inv[k])}</span><div class="row"><button class="btn small primary" type="button" data-scribe-use="inv_${k}">Add to ${k}</button><button class="btn small ghost" type="button" data-scribe-dismiss="inv_${k}">Dismiss</button></div></div>`).join('')}
+ <div class="group stack">
+  <label class="f"><span>Bloods</span><textarea id="inv-bloods" data-inv="bloods" data-dictate rows="4" placeholder="e.g. 14/10/2026: CRP 18, ESR 32, RF positive, anti-CCP 240">${esc(state.inv.bloods)}</textarea></label>
+  <label class="f"><span>Radiology</span><textarea id="inv-radiology" data-inv="radiology" data-dictate rows="4">${esc(state.inv.radiology)}</textarea></label>
+  <label class="f"><span>Other</span><textarea id="inv-other" data-inv="other" data-dictate rows="3">${esc(state.inv.other)}</textarea></label>
+ </div>
+ <div class="group"><div class="group-head"><h3>Import a report</h3></div>
+ <div class="two"><label class="f"><span>File (PDF, Word, text or photo)</span><input type="file" id="inv-file" accept=".pdf,.docx,.txt,image/*"></label>
+ <label class="f"><span>Add to</span><select id="inv-target"><option value="bloods">Bloods</option><option value="radiology">Radiology</option><option value="other">Other</option></select></label></div>
+ <div class="row" style="margin-top:8px"><button class="btn" type="button" id="inv-read">Read report</button></div><p class="status" id="inv-status"></p><div id="inv-review"></div></div>`}
+
+/* ---------- Step 6: Management ---------- */
+function formMg(){
+ let h=`<h2>Management</h2><p class="lede">Template items 1–55 in order. Tick what was done or advised. Each item prints in the template's own wording; use <b>Edit wording</b> to change it for this letter only. Notes marked "Check before sending" are for you and never print.</p>`;
+ const recN=Object.values(state.mg).filter(m=>m?.sugg&&!m.on).length;
+ if(recN)h+=`<div class="scribe-box"><span><b>${recN} management item${recN>1?'s':''} from the recording</b> have a dashed outline. Tick each one to confirm it, or accept them all and then check the wording.</span><div class="row"><button class="btn small primary" type="button" id="scribe-mg-all">Accept all ${recN}</button></div></div>`;
+ const sug=suggestions();
+ if(sug.length)h+=`<div class="suggest" aria-live="polite"><b>Linked items</b>${sug.map((s,i)=>`<div class="row"><span>${esc(s.text)}</span><button class="btn small primary" type="button" data-sugg="${i}">${esc(s.btn)}</button></div>`).join('')}</div>`;
+ for(const [g,title] of MG){
+  const items=MX.filter(m=>m.g===g);const n=items.filter(m=>state.mg[m.id]?.on).length;const sn=items.filter(m=>state.mg[m.id]?.sugg&&!state.mg[m.id].on).length;
+  h+=`<details class="group" ${n||sn||openMg.has(g)?'open':''} data-mgroup="${g}"><summary class="group-head" style="cursor:pointer"><h3 style="display:inline">${esc(title)}</h3> <span class="tiny">${[n?n+' selected':'',sn?sn+' suggested':''].filter(Boolean).join(', ')}</span></summary>${g==='pain'?'<p class="tiny">Item 27 (“In terms of this patient\'s pain control…”) is added automatically before the first pain item.</p>':''}${items.map(mgItem).join('')}</details>`}
+ h+=`<div class="group"><div class="group-head"><h3>Additional management lines</h3><button class="btn small" type="button" id="extra-add">+ Add line</button></div>${state.extra.map((x,i)=>`<div class="row" style="margin:6px 0;flex-wrap:nowrap"><textarea data-extra="${i}" data-dictate rows="2">${esc(x)}</textarea><button class="btn small ghost danger" type="button" data-extra-remove="${i}" aria-label="Remove line">✕</button></div>`).join('')}</div>`;
+ return h}
+const openMg=new Set(['inv']);
+document.addEventListener('toggle',e=>{const g=e.target?.dataset?.mgroup;if(g){e.target.open?openMg.add(g):openMg.delete(g)}},true);
+function mgState(id){return state.mg[id]||(state.mg[id]={on:false,f:defaults(MX_BY[id]),override:null})}
+function defaults(it){const f={};(it.fields||[]).forEach(fl=>{if(fl.def!==undefined)f[fl.k]=Array.isArray(fl.def)?[...fl.def]:fl.def;if(fl.type==='injections')f[fl.k]=[{side:'right',site:'',dose:INJ_DOSES[0]}];if(fl.type==='painlist')f[fl.k]=[]});return f}
+function mgItem(it){
+ const st=state.mg[it.id];const on=!!st?.on;
+ const sg=st?.sugg&&!on?st.sugg:null;const ln=LINK_NOTE[it.id]?`<span class="tag link" title="This question appears in two sections; answering it here answers both">↔ ${LINK_NOTE[it.id]}</span>`:'';
+ let h=`<div class="mitem ${on?'on':''} ${sg?'sugg':''}" data-mg="${it.id}"><label class="mhead"><input type="checkbox" data-mg-toggle ${on?'checked':''}><span class="t"><b>${esc(it.name)}</b> <span class="tag">T${it.n}</span>${ln}${sg?`<span class="tag p">from recording</span>${sg.detail?`<span class="tiny" style="display:block">Said: ${esc(sg.detail)}</span>`:''}<span class="evidence" style="display:block;margin-top:4px">“${esc(sg.evidence)}”</span>`:''}${on||sg?'':`<span class="tiny" style="display:block">${esc(pron(it.build(defaults(it)).text).slice(0,140))}${it.build(defaults(it)).text.length>140?'…':''}</span>`}</span></label>`;
+ if(on){
+  h+='<div class="mbody">';
+  if(it.check)h+=`<p class="check"><b>Check before sending:</b> ${esc(it.check)}</p>`;
+  if(st.override!=null){h+=`<label class="f"><span>Wording for this letter (first line is the item; lines starting with “-” are sub-points)</span><textarea data-override rows="6" data-dictate>${esc(st.override)}</textarea></label><div class="row"><button class="btn small" type="button" data-reset-wording>Reset to template wording</button></div>`}
+  else{
+   for(const fl of it.fields||[])h+=fieldUI(it,fl,st.f);
+   const b=it.build(st.f);h+=`<div class="sentence">${esc(pron(b.text))}${(b.sub||[]).filter(Boolean).map(s=>'<br>– '+esc(pron(s.trim()))).join('')}</div><div class="row"><button class="btn small ghost" type="button" data-edit-wording>Edit wording</button></div>`}
+  h+='</div>'}
+ return h+'</div>'}
+function fieldUI(it,fl,f){
+ if(fl.when){const [k,v]=Object.entries(fl.when)[0];if(f[k]!==v)return ''}
+ const L=fl.l?`<span>${esc(fl.l)}</span>`:'';
+ if(fl.type==='checks'){const sel=f[fl.k]||[];
+  const presets=it.id==='m_screen'?`<div class="row">${Object.keys(PANELS).map(p=>`<button class="btn small ${f.panel===p?'primary':''}" type="button" data-panel="${esc(p)}">${esc(p.replace(' screen',''))}</button>`).join('')}<button class="btn small ghost" type="button" data-panel-clear>Clear tests</button></div>`:'';
+  return `<div class="f">${L}${presets}<div class="checks">${fl.opts.map(o=>`<label><input type="checkbox" data-fk="${fl.k}" value="${esc(o)}" ${sel.includes(o)?'checked':''}>${esc(o)}</label>`).join('')}</div></div>`}
+ if(fl.type==='seg')return `<div class="f">${L}<div class="seg">${fl.opts.map(([v,l])=>`<button type="button" data-fk="${fl.k}" data-v="${esc(v)}" aria-pressed="${(f[fl.k]??fl.def)===v}">${esc(l)}</button>`).join('')}</div></div>`;
+ if(fl.type==='select')return `<label class="f">${L}<select data-fk="${fl.k}">${fl.opts.map(([v,l])=>`<option value="${esc(v)}" ${(f[fl.k]??fl.def)===v?'selected':''}>${esc(l)}</option>`).join('')}</select></label>`;
+ if(fl.type==='text')return `<label class="f">${L}<input type="text" data-fk="${fl.k}" data-dictate value="${esc(f[fl.k]||'')}" placeholder="${esc(fl.ph||'')}"></label>`;
+ if(fl.type==='panel')return '';
+ if(fl.type==='physio'){const locs=lines('physio');if(!locs.length)return `<label class="f">${L}<input type="text" data-fk="${fl.k}" value="${esc(f[fl.k]||'')}" placeholder="Physiotherapy department"></label><p class="tiny">Add your usual physiotherapy locations in Local settings to choose from a list.</p>`;return `<label class="f">${L}<select data-fk="${fl.k}"><option value="">Choose location…</option>${locs.map(l=>`<option ${f[fl.k]===l?'selected':''}>${esc(l)}</option>`).join('')}</select></label>`}
+ if(fl.type==='painlist'){const sel=f[fl.k]||[];if(!lines('painConsultants').length)return `<p class="tiny">No pain consultants saved. Add names in Local settings to list them here.</p>`;return `<div class="f">${L}<div class="checks">${lines('painConsultants').map(o=>`<label><input type="checkbox" data-fk="${fl.k}" value="${esc(o)}" ${sel.includes(o)?'checked':''}>${esc(o.split(',')[0])}</label>`).join('')}</div></div>`}
+ if(fl.type==='injections'){const rows=f[fl.k]||[];
+  return `<div class="f"><span>Injections</span><datalist id="inj-sites">${INJ_SITES.map(s=>`<option value="${esc(s)}">`).join('')}</datalist>${rows.map((r,i)=>`<div class="two" data-inj="${i}" style="align-items:end"><label class="f"><span>Side</span><select data-ik="side">${['left','right','bilateral',''].map(s=>`<option value="${s}" ${r.side===s?'selected':''}>${s?cap(s):'(none)'}</option>`).join('')}</select></label><label class="f"><span>Site</span><input type="text" list="inj-sites" data-ik="site" value="${esc(r.site)}" placeholder="knee"></label><label class="f"><span>Dose</span><select data-ik="dose">${INJ_DOSES.map(d=>`<option ${r.dose===d?'selected':''}>${esc(d)}</option>`).join('')}</select></label><button class="btn small ghost danger" type="button" data-inj-remove="${i}">Remove</button></div>`).join('')}<div class="row"><button class="btn small" type="button" data-inj-add>+ Add injection</button></div></div>`}
+ return ''}
+function confirmAllBar(buckets,meds){const n=buckets.reduce((a,b)=>a+Object.values(state[b]).filter(x=>x?.suggested).length,0)+(meds?state.meds.filter(m=>m.suggested).length:0);
+ return n?`<div class="suggest"><div class="row"><span><b>${n} suggested answer${n>1?'s':''}</b> from the questionnaire or recording are highlighted with a dashed outline. They are not in the letter until confirmed.</span><button class="btn small primary" type="button" data-confirm-all="${buckets.join(',')}${meds?',meds':''}">Confirm all ${n}</button></div></div>`:''}
+function suggestions(){
+ const on=id=>state.mg[id]?.on;const out=[];
+ if((on('m_mtx_po')||on('m_mtx_sc'))&&!on('m_mtx_preg'))out.push({text:'Methotrexate selected: add the pregnancy and contraception advice (T44)?',btn:'Add T44',act:()=>setMg('m_mtx_preg',true)});
+ if((on('m_mtx_po')||on('m_mtx_sc'))&&!confirmed(state.dx.tmp_mtx))out.push({text:'Methotrexate selected: add the trimethoprim warning to the Diagnosis List (T57)?',btn:'Add T57',act:()=>{state.dx.tmp_mtx={o:0}}});
+ if((on('m_mtx_po')||on('m_mtx_sc')||on('m_ssz')||on('m_lef')||on('m_hcq'))&&!on('m_dmardmon'))out.push({text:'DMARD selected: add side-effect counselling and blood monitoring (T49)?',btn:'Add T49',act:()=>{setMg('m_dmardmon',true);state.mg.m_dmardmon.f.items=[...MX_BY.m_dmardmon.fields[0].opts]}});
+ if(on('m_bio')&&!on('m_quant'))out.push({text:'Biologic selected: add a Quantiferon test (T2)?',btn:'Add T2',act:()=>setMg('m_quant',true)});
+ if(on('m_bio')&&!(on('m_screen')&&state.mg.m_screen.f.panel==='Pre-biologic screen'))out.push({text:'Biologic selected: order the pre-biologic screen (HIV, hepatitis B and C, VZV)?',btn:'Add screen',act:()=>{setMg('m_screen',true);state.mg.m_screen.f.panel='Pre-biologic screen';state.mg.m_screen.f.tests=[...PANELS['Pre-biologic screen']]}});
+ if((on('m_mtx_po')||on('m_mtx_sc')||on('m_lef')||on('m_bio'))&&!on('m_vacc'))out.push({text:'Immunosuppression selected: add vaccination advice (T50)?',btn:'Add T50',act:()=>setMg('m_vacc',true)});
+ return out}
+/* ============================================================
+   LINKED QUESTIONS — the same question asked in two sections is answered once.
+   Choice ↔ choice: answer, details and suggestion status are mirrored.
+   Diagnosis-list vaccinations ↔ Management T50/T51.
+   ============================================================ */
+const CHOICE_LINKS=[[['dx','px_pso'],['hx','h_pso']],[['dx','px_ibd'],['hx','h_ibd']]];
+const LINK_NOTE={px_pso:'Also answers History',h_pso:'Also answers Diagnosis list (T13–14)',px_ibd:'Also answers History',h_ibd:'Also answers Diagnosis list (T17–18)',
+ vac_flu:'Linked to Management T50',vac_pneumo:'Linked to Management T50',vac_zoster:'Linked to Management T50 (shingles)',vac_covid:'Linked to Management T51',
+ m_vacc:'Also answers Diagnosis list (T58)',m_covid:'Also answers Diagnosis list (T59)'};
+const ZOSTER_OPT=()=>MX_BY.m_vacc.fields[0].opts[0];
+const dxOn=id=>confirmed(state.dx[id])&&state.dx[id].o===0;
+function linkFrom(bucket,id){
+ for(const [a,b] of CHOICE_LINKS){
+  const [src,dst]=a[0]===bucket&&a[1]===id?[a,b]:b[0]===bucket&&b[1]===id?[b,a]:[null,null];if(!src)continue;
+  const s=state[src[0]][src[1]];
+  if(!s||s.o==null||s.o<0){if(state[dst[0]][dst[1]])state[dst[0]][dst[1]]={...state[dst[0]][dst[1]],o:null,detail:'',suggested:false};continue}
+  const d=state[dst[0]][dst[1]]||{};
+  state[dst[0]][dst[1]]={...d,o:s.o,detail:s.detail||'',suggested:!!s.suggested,src:s.src,evidence:s.evidence}}
+ if(bucket==='dx'&&['vac_flu','vac_pneumo','vac_zoster'].includes(id)){
+  const st=mgState('m_vacc');
+  if(id!=='vac_zoster'){const both=dxOn('vac_flu')&&dxOn('vac_pneumo');if(both&&!st.on){st.on=true;delete st.sugg}else if(!both&&st.on)st.on=false}
+  if(st.on)st.f.zoster=dxOn('vac_zoster')?[ZOSTER_OPT()]:[]}
+ if(bucket==='dx'&&id==='vac_covid'){const st=mgState('m_covid');st.on=dxOn('vac_covid');if(st.on)delete st.sugg}}
+function linkMg(id){
+ const st=state.mg[id];if(!st)return;
+ const set=(dx,on)=>{if(on)state.dx[dx]={...(state.dx[dx]||{}),o:0,suggested:false};else if(state.dx[dx]?.o===0)state.dx[dx]={...state.dx[dx],o:null}};
+ if(id==='m_vacc'){set('vac_flu',st.on);set('vac_pneumo',st.on);if(st.on)set('vac_zoster',(st.f.zoster||[]).length>0)}
+ if(id==='m_covid')set('vac_covid',st.on)}
+function fillMissingLinks(){
+ for(const [a,b] of CHOICE_LINKS){const A=state[a[0]][a[1]],B=state[b[0]][b[1]];const has=x=>x&&x.o!=null&&x.o>=0;
+  if(has(A)&&!has(B))linkFrom(a[0],a[1]);else if(has(B)&&!has(A))linkFrom(b[0],b[1])}
+ for(const id of ['m_vacc','m_covid'])if(state.mg[id]?.on)linkMg(id)}
+
+function setMg(id,v){const s=mgState(id);s.on=v;linkMg(id)}
+
+/* ---------- Step 7: Finish ---------- */
+function formFinish(){
+ const sug=countSuggestions();const pend=MX.filter(m=>state.mg[m.id]?.on&&m.check).map(m=>m.name);
+ const dxChecks=DX.filter(d=>d.check&&confirmed(state.dx[d.id])).map(d=>d.name);
+ return `<h2>Finish</h2><p class="lede">Results and Cc print after the signature, as in the template.</p>
+ ${sug?`<p class="check"><b>${sug} patient answers still unconfirmed.</b> They are not in the letter.</p>`:''}
+ ${pend.length+dxChecks.length?`<p class="check"><b>Check before sending:</b> ${esc([...pend,...dxChecks].join('; '))}.</p>`:''}
+ <div class="group stack"><label class="f"><span>Results-</span><textarea id="fin-results" data-fin="results" data-dictate rows="4">${esc(state.results)}</textarea></label>
+ <label class="f"><span>Cc</span><textarea id="fin-cc" data-fin="cc" rows="2" placeholder="One recipient per line">${esc(state.cc)}</textarea></label></div>
+ <div class="group"><div class="row"><button class="btn primary" type="button" data-export="docx">Download .docx</button><button class="btn" type="button" data-export="copy">Copy text for IPMS</button><button class="btn" type="button" data-export="txt">Download .txt</button><button class="btn" type="button" data-export="print">Print</button></div>
+ <p class="tiny">The .docx is laid out like the template: bold headings, numbered Diagnosis List, Medications and Management, signature block, then Results and Cc.</p></div>`}
+
+/* ============================================================
+   EVENTS
+   ============================================================ */
+document.addEventListener('click',async e=>{
+ const t=e.target.closest('button,[data-joint]');if(!t)return;
+ if(t.dataset.step!=null)return go(+t.dataset.step);
+ if(t.dataset.nav)return go(state.step+ +t.dataset.nav);
+ // choice items
+ const item=t.closest('[data-item]');
+ if(item&&t.dataset.opt!=null){
+  const b=item.dataset.bucket,id=item.dataset.item,o=+t.dataset.opt;const cur=state[b][id]||{};
+  if(cur.o===o&&!cur.suggested)state[b][id]={...cur,o:null};else state[b][id]={...cur,o,suggested:false};
+  {const it=HX.find(x=>x.id===id);if(it?.sym&&state[b][id].o===1){delete state[b][id].detail;delete state[b][id].f}}
+  linkFrom(b,id);rerenderItem(item);return}
+ if(t.dataset.rest){const b=t.dataset.bucket;for(const id of t.dataset.rest.split(',')){const it=[...DX,...HX,...ROM].find(x=>x.id===id);if(!it||it.o.length<2||it.noNeg)continue;const cur=state[b][id];if(cur&&cur.o!=null&&cur.o>=0&&!cur.suggested)continue;if(cur?.suggested)continue;state[b][id]={o:it.negIdx??1};linkFrom(b,id)}renderForm();return}
+ if(t.dataset.confirmAll){for(const b of t.dataset.confirmAll.split(',')){if(b==='meds')state.meds.forEach(m=>m.suggested=false);else Object.entries(state[b]).forEach(([id,v])=>{if(v?.suggested){v.suggested=false;linkFrom(b,id)}})}renderForm();toast('Suggestions confirmed');return}
+ if(t.dataset.confirmGroup){const b=t.dataset.bucket;t.dataset.confirmGroup.split(',').forEach(id=>{if(state[b][id]?.suggested){state[b][id].suggested=false;linkFrom(b,id)}});renderForm();return}
+ // joints
+ if(t.dataset.joint){toggleJoint(t.dataset.joint);return}
+ if(t.dataset.paint){paintMode=t.dataset.paint;document.querySelectorAll('[data-paint]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.paint===paintMode));return}
+ if(t.dataset.jclear){state.exam[t.dataset.jclear]=[];renderForm();return}
+ if(t.id==='syn'){state.exam.synovitis=!state.exam.synovitis;renderForm();return}
+ // meds
+ if(t.id==='med-add'){state.meds.push({name:'',brand:'',dose:'',route:'oral',freq:'',kind:'current'});renderForm();setTimeout(()=>document.querySelector(`[data-med="${state.meds.length-1}"] input`)?.focus(),0);return}
+ if(t.dataset.medRemove!=null){state.meds.splice(+t.dataset.medRemove,1);renderForm();return}
+ if(t.dataset.medConfirm!=null){state.meds[+t.dataset.medConfirm].suggested=false;renderForm();return}
+ if(t.id==='med-parse')return parseMeds();
+ // patient import
+ if(t.id==='pt-import')return importPatient();
+ if(t.dataset.pimport&&pendingImport){const p=pendingImport;if(t.dataset.pimport==='new'){saveCurrentDraft();state=freshState();state.meta.ref=String(p.ref).toUpperCase().slice(0,20);state.meta.initials=initialsOf(p.i);renderSteps()}finishPatientImport(p);return}
+ if(t.id==='new-letter'){newLetter();return}
+ if(t.dataset.openDraft){openDraft(t.dataset.openDraft);return}
+ if(t.dataset.delDraft){if(t.dataset.armed){deleteDraft(t.dataset.delDraft);toast('Letter deleted')}else{t.dataset.armed='1';t.textContent='Tap again'}return}
+ if(t.id==='q-link'){if(!state.meta.q.status){state.meta.q={...state.meta.q,status:'link',linkAt:today()};saveCurrentDraft()}renderForm();setTimeout(()=>$('#q-url')?.select(),0);return}
+ if(t.id==='q-copy'||t.id==='q-msg'){const txt=t.id==='q-copy'?questionnaireUrl():questionnaireMessage();try{await navigator.clipboard.writeText(txt);toast(t.id==='q-copy'?'Link copied':'Text message copied')}catch(err){$('#q-url').select();toast('Press Ctrl+C to copy')}return}
+ if(t.id==='q-qr'){const box=$('#q-qr-box');try{await loadScript(LIBS.qrgen);const q=qrcode(0,'M');q.addData(questionnaireUrl());q.make();box.innerHTML=`<div class="qrbox">${q.createSvgTag({cellSize:4,margin:2,scalable:true})}</div><p class="tiny">The patient can scan this with their phone camera. Reference ${esc(state.meta.ref)} · ${esc(initialsOf(state.meta.initials))}</p>`}catch(err){box.innerHTML='<p class="tiny">The QR code tool could not load. Copy the link instead.</p>'}return}
+ if(t.id==='scribe-import')return importScribe();
+ if(t.id==='rec-start')return startRecording();
+ if(t.id==='rec-stop')return stopRecording();
+ if(t.id==='rec-recheck'){detectHelper();return}
+ if(t.id==='rec-file-go'){const f=$('#rec-file').files[0];if(!f){recSay('Choose an audio file first.');return}return processAudio(f)}
+ if(t.id==='rec-extract'){const tx=$('#rec-transcript').value.trim();if(!tx){recSay('Paste or record a transcript first.');return}return runExtract(tx)}
+ if(t.id==='scribe-remove'){removeScribe();return}
+ if(t.dataset.scribeUse){useScribe(t.dataset.scribeUse);return}
+ if(t.dataset.scribeDismiss){(state.scribe.used=state.scribe.used||{})[t.dataset.scribeDismiss]=true;renderForm();return}
+ if(t.id==='scribe-joints'){const r=state.exam.scribe;for(const k of ['t','s']){const tgt=state.exam[k==='t'?'tender':'swollen'];r[k].forEach(j=>{if(!tgt.includes(j))tgt.push(j)})}state.exam.scribe=null;renderForm();toast('Joints added');return}
+ if(t.id==='scribe-joints-dismiss'){state.exam.scribe=null;renderForm();return}
+ if(t.id==='scribe-mg-all'){Object.values(state.mg).forEach(m=>{if(m?.sugg&&!m.on){m.on=true;delete m.sugg}});['m_vacc','m_covid'].forEach(linkMg);renderForm();toast('Management items accepted — check the wording');return}
+ if(t.id==='load-services'){applyServices(S.hospital);saveSettings();renderForm();toast('Local service defaults loaded');return}
+ if(t.id==='pt-remove'){removePatient();return}
+ // investigations
+ if(t.id==='inv-read')return readReport();
+ if(t.dataset.invAdd!=null)return addReport(t);
+ if(t.dataset.invRedact!=null){const ta=document.getElementById('inv-review-text');ta.value=redact(ta.value);checkReview();return}
+ // management
+ const mi=t.closest('[data-mg]');
+ if(mi){const id=mi.dataset.mg,st=mgState(id),it=MX_BY[id];
+  if(t.dataset.fk&&t.dataset.v!=null){st.f[t.dataset.fk]=t.dataset.v;rerenderMg(mi);return}
+  if(t.dataset.panel){st.f.panel=t.dataset.panel;st.f.tests=[...PANELS[t.dataset.panel]];rerenderMg(mi);return}
+  if(t.dataset.panelClear!=null){st.f.tests=[];rerenderMg(mi);return}
+  if(t.dataset.injAdd!=null){st.f.rows.push({side:'right',site:'',dose:INJ_DOSES[0]});rerenderMg(mi);return}
+  if(t.dataset.injRemove!=null){st.f.rows.splice(+t.dataset.injRemove,1);rerenderMg(mi);return}
+  if(t.dataset.editWording!=null){const b=it.build(st.f);st.override=[pron(b.text),...(b.sub||[]).filter(Boolean).map(s=>'- '+pron(s.trim()))].join('\n');rerenderMg(mi);return}
+  if(t.dataset.resetWording!=null){st.override=null;rerenderMg(mi);return}}
+ if(t.dataset.sugg!=null){suggestions()[+t.dataset.sugg]?.act();renderForm();return}
+ if(t.id==='extra-add'){state.extra.push('');renderForm();return}
+ if(t.dataset.extraRemove!=null){state.extra.splice(+t.dataset.extraRemove,1);renderForm();return}
+ if(t.dataset.export)return doExport(t.dataset.export);
+ if(t.classList.contains('mic'))return dictate(t);
+ if(t.dataset.consent!=null)return consentAnswer(t);
+});
+document.addEventListener('keydown',e=>{const j=e.target.closest?.('[data-joint]');if(j&&(e.key==='Enter'||e.key===' ')){e.preventDefault();toggleJoint(j.dataset.joint)}});
+document.addEventListener('input',e=>{
+ const t=e.target;
+ if(t.dataset.sign&&t.type!=='checkbox'&&t.tagName!=='SELECT'){S[t.dataset.sign]=t.value;if(t.dataset.sign==='hospName'&&(S.hospital==='other'||!S.hospShort))S.hospShort=t.value;saveSettings();refreshPreview();return}
+ if(t.dataset.meta&&t.type!=='checkbox'){if(t.dataset.meta==='initials'){const pos=t.selectionStart;t.value=t.value.toUpperCase();try{t.setSelectionRange(pos,pos)}catch(e){}}state.meta[t.dataset.meta]=t.value;refreshPreview();updateRefBadge();return}
+ const item=t.closest('[data-item]');
+ if(item&&t.dataset.k){const sel=state[item.dataset.bucket][item.dataset.item];if(!sel)return;
+  if(t.dataset.k.startsWith('f.')){sel.f=sel.f||{};sel.f[t.dataset.k.slice(2)]=t.value}else sel[t.dataset.k]=t.value;
+  if(t.dataset.k==='detail')linkFrom(item.dataset.bucket,item.dataset.item);
+  const it=[...DX,...HX,...ROM].find(x=>x.id===item.dataset.item);item.querySelector('[data-sentence]').textContent=choiceSentence(it,{...sel,suggested:false})||'';refreshPreview();return}
+ if(t.dataset.histText){state.history[t.dataset.histText]=t.value;refreshPreview();return}
+ if(t.id==='syn-detail'){state.exam.synDetail=t.value;refreshPreview();return}
+ if(t.id==='exam-other'){state.exam.other=t.value;refreshPreview();return}
+ if(t.dataset.das){state.exam.das[t.dataset.das]=t.value;updateDas();refreshPreview();return}
+ if(t.dataset.inv){state.inv[t.dataset.inv]=t.value;refreshPreview();return}
+ if(t.dataset.fin){state[t.dataset.fin]=t.value;refreshPreview();return}
+ if(t.dataset.extra!=null){state.extra[+t.dataset.extra]=t.value;refreshPreview();return}
+ if(t.id==='inv-review-text'){checkReview();return}
+ const med=t.closest('[data-med]');
+ if(med&&t.dataset.mk&&t.tagName==='INPUT'){state.meds[+med.dataset.med][t.dataset.mk]=t.value;refreshPreview();return}
+ const mi=t.closest('[data-mg]');
+ if(mi){const st=mgState(mi.dataset.mg);
+  if(t.dataset.override!=null){st.override=t.value;refreshPreview();return}
+  if(t.dataset.fk&&t.type==='text'){st.f[t.dataset.fk]=t.value;updateMgSentence(mi);refreshPreview();return}
+  const inj=t.closest('[data-inj]');if(inj&&t.dataset.ik&&t.tagName==='INPUT'){st.f.rows[+inj.dataset.inj][t.dataset.ik]=t.value;updateMgSentence(mi);refreshPreview();return}}
+});
+document.addEventListener('change',e=>{
+ const t=e.target;
+ if(t.id==='rec-consent'){recConsent=t.checked;const b=$('#rec-start');if(b)b.disabled=!recConsent||!!recorder||recBusy;return}
+ if(t.dataset.signHospital!=null){chooseHospital(t.value);renderForm();return}
+ if(t.dataset.sign&&(t.type==='checkbox'||t.tagName==='SELECT')){S[t.dataset.sign]=t.type==='checkbox'?t.checked:t.value;saveSettings();if(t.dataset.sign==='role')renderForm();else refreshPreview();return}
+ if(t.dataset.meta){state.meta[t.dataset.meta]=t.type==='checkbox'?t.checked:t.value;if(['type','pron','initials'].includes(t.dataset.meta))renderForm();else refreshPreview();return}
+ if(t.dataset.hist){state.history[t.dataset.hist]=t.checked;refreshPreview();return}
+ if(t.dataset.das){state.exam.das[t.dataset.das]=t.value;if(t.dataset.das==='marker')renderForm();return}
+ if(t.dataset.dasInclude!=null){state.exam.includeDas=t.checked;refreshPreview();return}
+ const med=t.closest('[data-med]');
+ if(med&&t.dataset.mk&&t.tagName==='SELECT'){state.meds[+med.dataset.med][t.dataset.mk]=t.value;renderForm();return}
+ const mi=t.closest('[data-mg]');
+ if(mi){const id=mi.dataset.mg,st=mgState(id);
+  if(t.dataset.mgToggle!=null){st.on=t.checked;if(t.checked)delete st.sugg;linkMg(id);renderForm();return}
+  if(t.dataset.fk&&t.type==='checkbox'){const a=new Set(st.f[t.dataset.fk]||[]);t.checked?a.add(t.value):a.delete(t.value);
+   const fl=MX_BY[id].fields.find(f=>f.k===t.dataset.fk);st.f[t.dataset.fk]=(fl.opts||lines('painConsultants')).filter(o=>a.has(o));
+   if(id==='m_vacc')linkMg(id);updateMgSentence(mi);refreshPreview();return}
+  if(t.dataset.fk&&t.tagName==='SELECT'){st.f[t.dataset.fk]=t.value;updateMgSentence(mi);refreshPreview();return}
+  const inj=t.closest('[data-inj]');if(inj&&t.dataset.ik){st.f.rows[+inj.dataset.inj][t.dataset.ik]=t.value;updateMgSentence(mi);refreshPreview();return}}
+ if(t.id==='pt-file'||t.id==='pt-qr'){$('#pt-status').textContent=t.files[0]?'Ready: '+t.files[0].name+'. Select Import answers.':'';return}
+});
+const sameSet=(a,b)=>a.length===b.length&&a.every(x=>b.includes(x));
+function rerenderItem(el){const b=el.dataset.bucket,id=el.dataset.item;const it=[...DX,...HX,...ROM].find(x=>x.id===id);const tmp=document.createElement('div');tmp.innerHTML=choiceItem(it,b);el.replaceWith(tmp.firstElementChild);decorateMics();refreshPreview()}
+function rerenderMg(el){const tmp=document.createElement('div');tmp.innerHTML=mgItem(MX_BY[el.dataset.mg]);el.replaceWith(tmp.firstElementChild);decorateMics();refreshPreview()}
+function updateMgSentence(el){const it=MX_BY[el.dataset.mg],st=state.mg[it.id];const s=el.querySelector('.sentence');if(!s)return;const b=it.build(st.f);s.innerHTML=esc(pron(b.text))+(b.sub||[]).filter(Boolean).map(x=>'<br>– '+esc(pron(x.trim()))).join('')}
+function toggleJoint(id){
+ const arr=state.exam[paintMode];const i=arr.indexOf(id);if(i>=0)arr.splice(i,1);else arr.push(id);
+ document.querySelectorAll(`[data-joint="${id}"]`).forEach(c=>{c.classList.toggle('t',state.exam.tender.includes(id));c.classList.toggle('s',state.exam.swollen.includes(id));c.classList.toggle('pr',false);c.setAttribute('aria-pressed',state.exam.tender.includes(id)||state.exam.swollen.includes(id))});
+ $('#jcounts').innerHTML=countsHTML();updateDas();refreshPreview()}
+function updateDas(){const el=$('#das-out');if(!el)return;const d=das28();el.innerHTML=d?`<b style="font:600 16px var(--f-mono);color:var(--fg)">${d.score.toFixed(2)}</b> · ${d.score<2.6?'remission range (<2.6)':d.score<=3.2?'low activity (2.6–3.2)':d.score<=5.1?'moderate activity (3.2–5.1)':'high activity (>5.1)'}`:'Enter the marker and patient global to calculate.'}
+
+/* ---------- Export ---------- */
+async function doExport(kind){
+ const L=buildLetter();const st=$('#export-status');
+ try{
+  if(kind==='copy'){const txt=letterText(L);try{await navigator.clipboard.writeText(txt);toast('Letter copied')}catch(e){const r=document.createRange();r.selectNodeContents($('#paper'));const s=getSelection();s.removeAllRanges();s.addRange(r);toast('Text selected — press Ctrl+C to copy')}}
+  if(kind==='txt')download(new Blob([letterText(L)],{type:'text/plain'}),fileStem()+'.txt');
+  if(kind==='docx'){st.textContent='Building .docx…';download(await makeDocx(L),fileStem()+'.docx');st.textContent='Downloaded '+fileStem()+'.docx'}
+  if(kind==='print')window.print();
+ }catch(err){st.textContent='Export failed: '+err.message}}
+$('#btn-docx').onclick=()=>doExport('docx');$('#btn-copy').onclick=()=>doExport('copy');$('#btn-txt').onclick=()=>doExport('txt');
+$('#jump').onclick=()=>$('#preview-col').scrollIntoView({behavior:'smooth'});
+let clearArmed=false;
+$('#btn-clear').onclick=e=>{if(!clearArmed){clearArmed=true;e.target.textContent='Tap again to clear';setTimeout(()=>{clearArmed=false;e.target.textContent='Clear consultation'},3000);return}
+ {const d=loadDrafts();delete d[state.meta.ref];saveDrafts(d)}state=freshState();try{sessionStorage.removeItem('rl3-state')}catch(err){}clearArmed=false;e.target.textContent='Clear consultation';renderSteps();renderForm();toast('Consultation cleared')};
+
+/* ---------- Settings dialog ---------- */
+$('#btn-settings').onclick=()=>{
+ $('#settings-body').innerHTML=`<p class="tiny">Saved in this browser only. These fill the site names, waiting times and named clinicians in the Management items. Use "site | waiting time" where shown; {hospital} becomes your hospital's name (${esc(S.hospShort||S.hospName||'not chosen yet')}). Your name, role and hospital are on the Start step.</p>`+Object.keys(GENERIC_SERVICES).map(k=>`<label class="f"><span>${esc(SERVICE_LABELS[k])}</span>${['painConsultants','physio'].includes(k)?`<textarea data-setting="${k}" rows="5">${esc(S[k])}</textarea>`:`<input type="text" data-setting="${k}" value="${esc(S[k])}">`}</label>`).join('')+`<div class="row"><button class="btn small" type="button" id="settings-reset">Load defaults for ${esc(S.hospShort||'the selected hospital')}</button>${S.hospital!=='mrht'?'<button class="btn small" type="button" id="settings-tullamore">Load MRH Tullamore template presets</button>':''}</div><div class="group"><p class="tiny">For the recording scribe script: download the list of letter fields it may fill. Re-export it whenever the template items change.</p><button class="btn small" type="button" id="export-fields">Export field list (rheumletter_fields.json)</button></div>`;
+ $('#settings-dialog').showModal()};
+$('#settings-body').addEventListener('input',e=>{const k=e.target.dataset.setting;if(k){S[k]=e.target.value;S.servicesEdited=true;saveSettings();refreshPreview()}});
+function fieldCatalogue(){return {type:'rheumletter-fields',v:1,note:'Generated from Rheumletter v3. Choice items: pick the option index whose sentence matches what was said. Management items: tick only actions the clinician states were done or advised.',
+ choices:[...DX.map(d=>({...d,section:'dx'})),...HX.map(d=>({...d,section:'hx'})),...ROM.map(d=>({...d,section:'rom'}))].map(d=>({section:d.section,id:d.id,name:d.name,options:d.o.map(o=>o.replace('{detailSep}',''))})),
+ management:MX.map(m=>({id:m.id,template_no:m.n,name:m.name,default_wording:m.build(defaults(m)).text.slice(0,220)})),
+ joints:JOINTS.map(j=>({id:j.id,name:j.side+' '+j.label}))}}
+$('#settings-body').addEventListener('click',e=>{if(e.target.id==='export-fields'){download(new Blob([JSON.stringify(fieldCatalogue(),null,1)],{type:'application/json'}),'rheumletter_fields.json');return}if(e.target.id==='settings-reset'||e.target.id==='settings-tullamore'){applyServices(e.target.id==='settings-tullamore'?'mrht':S.hospital);if(e.target.id==='settings-tullamore')S.servicesEdited=true;saveSettings();$('#settings-dialog').close();$('#btn-settings').click();refreshPreview()}});
+$('#settings-close').onclick=()=>{$('#settings-dialog').close();renderForm()};
+
+/* ============================================================
+   PRIVACY SCREEN (fixed patterns — single backslashes)
+   ============================================================ */
+const ID_PATTERNS=[
+ [/\b(?:patient(?:'s)?\s*name|name|surname|forename)\s*[:#]/i,'name label'],
+ [/\b(?:d\.?o\.?b\.?|date\s+of\s+birth|born)\s*[:#]?\s*\d/i,'date of birth'],
+ [/\b(?:mrn|hospital\s*(?:no|number)|chart\s*(?:no|number)|patient\s*id|medical\s*record\s*(?:no|number)|ipms\s*(?:no|number))\s*[:#]?/i,'record number'],
+ [/\b(?:ppsn?|pps\s*number)\s*[:#]?|\b\d{7}[A-W][A-IW]?\b/i,'PPS number'],
+ [/\b(?:address|addr)\s*[:#]/i,'address label'],
+ [/\b[AC-FHKNPRTV-Y]\d{2}\s?[AC-FHKNPRTV-Y0-9]{4}\b/,'Eircode'],
+ [/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i,'email address'],
+ [/(?:\+353|\b0)\s?8[35679][\s-]?\d{3}[\s-]?\d{4}\b/,'mobile number']
+];
+function idFlags(text){const out=[];text.split(/\r?\n/).forEach((ln,i)=>{for(const [re,label] of ID_PATTERNS)if(re.test(ln)){out.push({line:i,label,text:ln});break}});return out}
+function redact(text){const f=new Set(idFlags(text).map(x=>x.line));return text.split(/\r?\n/).filter((_,i)=>!f.has(i)).join('\n')}
+
+/* ---------- Report import ---------- */
+async function extractText(file){
+ const ext=file.name.split('.').pop().toLowerCase();
+ if(ext==='txt'||file.type==='text/plain')return file.text();
+ if(ext==='docx'){await loadScript(LIBS.mammoth);return (await mammoth.extractRawText({arrayBuffer:await file.arrayBuffer()})).value}
+ if(ext==='pdf'){await loadScript(LIBS.pdfjs);pdfjsLib.GlobalWorkerOptions.workerSrc=LIBS.pdfworker;const pdf=await pdfjsLib.getDocument({data:await file.arrayBuffer()}).promise;let t='';for(let i=1;i<=Math.min(pdf.numPages,15);i++){const c=await (await pdf.getPage(i)).getTextContent();let lastY=null;for(const it of c.items){if(lastY!==null&&Math.abs(it.transform[5]-lastY)>2)t+='\n';t+=it.str+' ';lastY=it.transform[5]}t+='\n'}return t}
+ if(file.type.startsWith('image/')){await loadScript(LIBS.tesseract);return (await Tesseract.recognize(file,'eng')).data.text}
+ throw new Error('Unsupported file. Use PDF, Word (.docx), text or an image. Convert old .doc files to .docx first.')}
+async function readReport(){
+ const f=$('#inv-file').files[0],st=$('#inv-status');if(!f){st.textContent='Choose a file first.';return}
+ st.textContent='Reading '+f.name+'…';
+ try{const raw=(await extractText(f)).trim();if(!raw){st.textContent='No text found. For a scanned PDF, upload a photo of the page instead.';return}
+  $('#inv-review').innerHTML=`<label class="f"><span>Review the extracted text (edit freely)</span><textarea id="inv-review-text" rows="8">${esc(raw.slice(0,12000))}</textarea></label><div id="inv-flags"></div><div class="row"><button class="btn primary" type="button" data-inv-add>Add to ${esc($('#inv-target').selectedOptions[0].text)}</button></div>`;
+  checkReview();st.textContent='Check every value, date and unit against the original before adding.'}
+ catch(err){st.textContent='Could not read the file: '+err.message}}
+function checkReview(){const ta=$('#inv-review-text');if(!ta)return;const fl=idFlags(ta.value);const btn=document.querySelector('[data-inv-add]');
+ $('#inv-flags').innerHTML=fl.length?`<div class="flag"><b>Possible identifiers on ${fl.length} line${fl.length>1?'s':''}:</b><br>${fl.slice(0,6).map(x=>`<mark>${esc(x.label)}</mark> — ${esc(x.text.slice(0,90))}`).join('<br>')}<div class="row" style="margin-top:6px"><button class="btn small danger" type="button" data-inv-redact>Remove these lines</button></div></div>`:'';
+ if(btn)btn.disabled=fl.length>0}
+function addReport(){const ta=$('#inv-review-text');if(idFlags(ta.value).length)return;const k=$('#inv-target').value;state.inv[k]=[state.inv[k].trim(),ta.value.trim()].filter(Boolean).join('\n');renderForm();toast('Added to '+k)}
+
+/* ---------- Medication parsing (fixed) ---------- */
+function parseMedText(text){
+ return text.split(/\r?\n/).map(l=>l.trim()).filter(l=>l&&/\d\s*(?:mg|mcg|µg|micrograms?|g|ml|units?|%)\b|\b(?:tablet|capsule|patch|injection|gel|spray|inhaler)s?\b/i.test(l)).slice(0,40).map(line=>{
+  const dose=(line.match(/\d+(?:\.\d+)?\s*(?:mg|mcg|µg|micrograms?|g|ml|units?|%)/i)||[''])[0];
+  const fm=line.match(/\b(once\s+(?:daily|weekly|a\s+week)|twice\s+daily|three\s+times\s+(?:daily|a\s+day)|four\s+times\s+(?:daily|a\s+day)|at\s+night|nocte|weekly|od|bd|tds|tid|qds|qid|on|prn|as\s+required)\b/i);
+  const map={od:'once daily',bd:'twice daily',tds:'three times daily',tid:'three times daily',qds:'four times daily',qid:'four times daily',on:'at night',nocte:'at night',prn:'as required','as required':'as required',weekly:'once weekly','once a week':'once weekly'};
+  let freq=fm?(map[fm[1].toLowerCase().replace(/\s+/g,' ')]||fm[1].toLowerCase().replace(/\s+/g,' ')):'';
+  if(freq==='three times a day')freq='three times daily';if(freq==='four times a day')freq='four times daily';
+  const known=FREQ.some(([v])=>v===freq);
+  const name=line.split(/\s\d/)[0].replace(/^[^A-Za-z]+/,'').replace(/\b(tablets?|capsules?)\b/i,'').trim().slice(0,60);
+  const route=/inject|sc\b|subcut|pen\b/i.test(line)?'subcutaneous':/gel|cream|spray|patch/i.test(line)?'topical':'oral';
+  return {name,brand:'',dose,route,freq:known?freq:(freq?'other':''),freqOther:known?'':freq,kind:'current',suggested:true,source:'photo'}}).filter(m=>m.name)}
+async function parseMeds(){
+ const st=$('#med-status');let text=$('#med-paste').value;const f=$('#med-photo').files[0];
+ try{if(f){st.textContent='Reading photo in your browser…';text+='\n'+await extractText(f)}
+  const fl=idFlags(text);
+  if(fl.length){$('#med-flags').innerHTML=`<div class="flag"><b>Possible identifiers found</b> (${esc(fl.map(x=>x.label).join(', '))}). Those lines were skipped.</div>`;text=redact(text)}else $('#med-flags').innerHTML='';
+  const found=parseMedText(text);if(!found.length){st.textContent='No medication lines recognised. Add them manually, or paste one drug per line with its strength.';return}
+  state.meds.push(...found);renderForm();toast(found.length+' medication(s) added for review')}
+ catch(err){st.textContent='Could not read: '+err.message}}
+
+/* ============================================================
+   PATIENT QUESTIONNAIRE IMPORT
+   ============================================================ */
+const PT_MAP={ // patient key -> [bucket, item id]
+ hx:{pso:[['dx','px_pso'],['hx','h_pso']],ibd:[['dx','px_ibd'],['hx','h_ibd']],eye:[['hx','h_eye']],mouth:[['hx','h_mouth']],skinulc:[['hx','h_skin']],genital:[['hx','h_gen']],rayn:[['hx','h_rayn']],bald:[['hx','h_bald']],rash:[['hx','h_rash']],photo:[['hx','h_photo']],wl:[['hx','h_wl']],ns:[['hx','h_ns']],sicca:[['hx','h_sicca']],backpain:[],
+  cvd:[['dx','cvd']],chol:[['dx','chol']],htn:[['dx','htn']],dm:[['dx','dm']],fx:[['dx','fx']],tb:[['dx','tb']],tbc:[['dx','tb_contact']],oa:[['dx','oa']]},
+ fh:{ra:'fh_ra',psa:'fh_psa',ctd:'fh_ctd',vasc:'fh_vasc',gout:'fh_gout',pso:'fh_pso',ibd:'fh_ibd',op:'fh_op',parfx:'par_fx',haem:'fh_haem',cvd:'fh_cvd',ca:'fh_ca'},
+ surg:{app:'s_app',ton:'s_ton',chol:'s_chol',hyst:'s_hyst'}
+};
+async function decodeCode(code){
+ code=code.trim().replace(/\s+/g,'');
+ const b64=s=>{s=s.replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';return Uint8Array.from(atob(s),c=>c.charCodeAt(0))};
+ if(code.startsWith('RL3Z:')){const bytes=b64(code.slice(5));const ds=new DecompressionStream('deflate-raw');const out=await new Response(new Blob([bytes]).stream().pipeThrough(ds)).text();return JSON.parse(out)}
+ if(code.startsWith('RL3J:'))return JSON.parse(new TextDecoder().decode(b64(code.slice(5))));
+ throw new Error('That does not look like a Rheumletter response code (it should start with RL3).')}
+async function readQR(file){
+ await loadScript(LIBS.jsqr);
+ const img=await createImageBitmap(file);const scale=Math.min(1,1600/Math.max(img.width,img.height));
+ const c=document.createElement('canvas');c.width=img.width*scale;c.height=img.height*scale;const g=c.getContext('2d');g.drawImage(img,0,0,c.width,c.height);
+ const r=jsQR(g.getImageData(0,0,c.width,c.height).data,c.width,c.height);if(!r)throw new Error('No QR code found. Take a closer, sharper photo of the code.');return r.data}
+async function importPatient(){
+ const st=$('#pt-status');
+ try{let p;
+  const f=$('#pt-file').files[0],q=$('#pt-qr').files[0],code=$('#pt-code').value.trim();
+  if(f){if(f.size>200000)throw new Error('File is larger than 200 KB.');p=JSON.parse(await f.text())}
+  else if(code)p=await decodeCode(code);
+  else if(q){st.textContent='Reading QR code…';p=await decodeCode(await readQR(q))}
+  else{st.textContent='Choose a file, paste a code or add a QR photo first.';return}
+  if(p.type!=='rheumletter-patient'||p.v!==3)throw new Error(p.type==='rheumletter-patient-v1'?'This is a version 2 questionnaire file. Ask the patient to use the new questionnaire.':'Unrecognised questionnaire format.');
+  const pref=String(p.ref||'').toUpperCase().trim().slice(0,20);
+  if(pref&&pref!==state.meta.ref){
+   const d=loadDrafts()[pref];
+   if(d){saveCurrentDraft();state=restoreState(d.state);state.step=0;renderSteps();finishPatientImport(p,`Matched to letter ${initialsOf(state.meta.initials)||''} · ${pref}`);return}
+   pendingImport=p;
+   $('#pt-choice').innerHTML=`<div class="flag"><b>No letter with reference ${esc(pref)}${p.i?' ('+esc(p.i)+')':''} is saved in this browser.</b><div class="row" style="margin-top:6px"><button class="btn small primary" type="button" data-pimport="new">Start a new letter for ${esc(pref)}</button><button class="btn small" type="button" data-pimport="current">Add to the open letter (${esc(initialsOf(state.meta.initials)||'no initials')} · ${esc(state.meta.ref)})</button></div></div>`;
+   st.textContent='';return}
+  finishPatientImport(p)}
+ catch(err){st.textContent='Could not import: '+err.message}}
+function finishPatientImport(p,msg){
+ pendingImport=null;applyPatient(p);
+ if(!state.meta.initials&&p.i)state.meta.initials=initialsOf(p.i);
+ state.meta.q={...state.meta.q,status:'returned',returnedAt:today()};
+ if(!state.meta.q.linkAt)state.meta.q.linkAt='';
+ saveCurrentDraft();renderSteps();renderForm();toast((msg?msg+' — ':'Questionnaire imported — ')+countSuggestions()+' answers to confirm')}
+function suggest(bucket,id,o,extra={}){const cur=state[bucket][id];if(cur&&cur.o!=null&&cur.o>=0&&!cur.suggested)return;state[bucket][id]={o,suggested:true,...extra}}
+function applyPatient(p){
+ state.patient={ref:String(p.ref||'').toUpperCase().slice(0,20),i:initialsOf(p.i),sym:p.sym||{},vacc:p.vacc||{},created:p.created};
+ const yn=a=>a==='yes'?0:a==='no'?1:null;
+ const sy=p.sym||{};
+ if(sy.ems==='yes'){const d=EMS_DUR.find(x=>x[0]===sy.emsDur);suggest('hx','h_ems',0,d?{f:{ems:d[1]}}:{})}else if(sy.ems==='no')suggest('hx','h_ems',1);
+ if(sy.wx==='yes'){const map={cold:'cold weather',hot:'hot weather',damp:'damp or wet weather',any:'any change in the weather'};const ws=(Array.isArray(sy.wxType)?sy.wxType:[]).map(x=>map[x]).filter(Boolean);
+  const wx=ws.includes('cold weather')&&ws.includes('hot weather')&&ws.length===2?'both hot and cold weather':listJoin(ws);suggest('hx','h_wx',0,{...(wx?{f:{wx}}:{}),...(sy.wxD?{detail:String(sy.wxD).slice(0,300)}:{})})}
+ else if(sy.wx==='no')suggest('hx','h_wx',1);
+ for(const [k,targets] of Object.entries(PT_MAP.hx)){const a=p.hx?.[k];if(!a)continue;const o=yn(a.a);if(o==null)continue;for(const [b,id] of targets)suggest(b,id,o,a.d?{detail:String(a.d).slice(0,300)}:{})}
+ for(const [k,id] of Object.entries(PT_MAP.fh)){const a=p.fh?.[k];if(!a)continue;const o=yn(a.a);if(o==null)continue;suggest('dx',id,o,a.d?{detail:String(a.d).slice(0,300)}:{})}
+ for(const [k,id] of Object.entries(PT_MAP.surg)){const a=p.surg?.[k];if(a?.a==='yes')suggest('dx',id,0,{f:{year:String(a.year||'').slice(0,10)}})}
+ const sm={current:0,never:1,ex:2}[p.life?.smoking];if(sm!=null)suggest('dx','smoke',sm);
+ const h=parseFloat(p.life?.height),w=parseFloat(p.life?.weight);
+ if(h>100&&w>25){const bmi=w/Math.pow(h/100,2);suggest('dx','bmi',bmi<18.5?2:bmi<25?0:1,{f:{bmi:bmi.toFixed(1)}})}
+ if(p.allergy?.a==='yes')suggest('dx','allergy',0,{detail:String(p.allergy.d||'').slice(0,300)});if(p.allergy?.a==='no')suggest('dx','allergy',1);
+ for(const m of (p.meds||[]).slice(0,30)){if(!m.n)continue;const fr=FREQ.find(([v,l])=>v&&(v===String(m.f).toLowerCase()||l.toLowerCase().startsWith(String(m.f).toLowerCase())));
+  state.meds.push({name:String(m.n).slice(0,60),brand:'',dose:String(m.d||'').slice(0,30),route:'oral',freq:fr?fr[0]:(m.f?'other':''),freqOther:fr?'':String(m.f||'').slice(0,40),kind:'current',suggested:true,source:'patient'})}
+ const valid=a=>(Array.isArray(a)?a:[]).filter(x=>JOINT_BY[x]);
+ state.exam.patient={t:valid(p.joints?.t),s:valid(p.joints?.s)};
+ state.history.includePatient=true;fillMissingLinks()}
+/* ============================================================
+   RECORDED CONSULTATION IMPORT (rheumletter-scribe JSON from rheumletter_scribe.py)
+   ============================================================ */
+/* ---------- Live recording via the local helper (rheumletter_local.py) ---------- */
+let helper=null,recorder=null,recChunks=[],recStart=0,recTimer=null,recBusy=false,recConsent=false;
+async function detectHelper(){try{const r=await fetch('/api/status',{cache:'no-store'});if(!r.ok)return;const j=await r.json();if(!j.ok||!j.whisper)return;helper=j;if(STEPS[state.step][0]==='start'&&!recorder&&!recBusy)renderForm()}catch(e){}}
+function recorderUI(){
+ if(!helper)return '';const o=helper.ollama||{};
+ const llm=o.reachable?(o.model?`Qwen3 via Ollama (<b>${esc(o.model)}</b>)`:'Ollama is running but has no models. Run <code>ollama pull qwen3</code>.'):'Ollama is not running. Start it from the Start menu, then <button class="btn small" type="button" id="rec-recheck">check again</button>';
+ return `<div class="group"><div class="group-head"><h3>Record consultation</h3><span class="tag new">on this computer</span></div>
+ <p class="tiny">Connected to Whisper (<b>${esc(helper.whisper.model)}</b>) and ${llm}. Audio and text stay on this computer; the recording is deleted after it is transcribed.</p>
+ <div class="checks"><label><input type="checkbox" id="rec-consent" ${recConsent?'checked':''}> The patient has been told the consultation is being recorded and has agreed</label></div>
+ <div class="row" style="margin-top:8px"><button class="btn primary" type="button" id="rec-start" ${recorder||recBusy||!recConsent?'disabled':''}>● Start recording</button><button class="btn" type="button" id="rec-stop" ${recorder?'':'disabled'}>■ Stop and fill letter</button><span class="tiny" id="rec-timer" style="font-family:var(--f-mono)">${recorder?'Recording…':''}</span></div>
+ <details style="margin-top:8px"><summary class="tiny" style="cursor:pointer">Use an audio file, or paste a transcript</summary>
+ <div class="stack" style="margin-top:8px"><label class="f"><span>Audio file</span><input type="file" id="rec-file" accept="audio/*,video/webm"></label>
+ <div class="row"><button class="btn small" type="button" id="rec-file-go" ${recBusy?'disabled':''}>Transcribe file</button></div>
+ <label class="f"><span>Transcript (edit before extracting if needed)</span><textarea id="rec-transcript" rows="6">${esc(state.scribe?.transcript||'')}</textarea></label>
+ <div class="row"><button class="btn small" type="button" id="rec-extract" ${recBusy||!o.model?'disabled':''}>Extract letter fields</button></div></div></details>
+ <p class="status" id="rec-status" aria-live="polite"></p></div>`}
+function recSay(msg){const el=$('#rec-status');if(el)el.textContent=msg}
+async function startRecording(){
+ try{const stream=await navigator.mediaDevices.getUserMedia({audio:{channelCount:1,echoCancellation:true,noiseSuppression:true}});
+  const type=['audio/webm;codecs=opus','audio/webm','audio/ogg;codecs=opus'].find(t=>window.MediaRecorder&&MediaRecorder.isTypeSupported(t))||'';
+  recorder=new MediaRecorder(stream,type?{mimeType:type}:{});recChunks=[];
+  recorder.ondataavailable=e=>{if(e.data.size)recChunks.push(e.data)};
+  recorder.start(1000);recStart=Date.now();
+  recTimer=setInterval(()=>{const t=Math.floor((Date.now()-recStart)/1000);const el=$('#rec-timer');if(el)el.textContent='● '+String(Math.floor(t/60)).padStart(2,'0')+':'+String(t%60).padStart(2,'0')},500);
+  renderForm()}
+ catch(e){recSay('Could not use the microphone: '+e.message+'. Check Windows microphone permissions for your browser.')}}
+async function stopRecording(){
+ if(!recorder)return;const r=recorder;
+ await new Promise(res=>{r.onstop=res;r.stop()});r.stream.getTracks().forEach(t=>t.stop());clearInterval(recTimer);recorder=null;
+ const blob=new Blob(recChunks,{type:r.mimeType||'audio/webm'});recChunks=[];
+ await processAudio(blob)}
+async function processAudio(blob){
+ recBusy=true;renderForm();const t0=Date.now();const tick=setInterval(()=>recSay(`Transcribing with Whisper… ${Math.round((Date.now()-t0)/1000)} s`),1000);
+ try{const r=await fetch('/api/transcribe',{method:'POST',headers:{'Content-Type':blob.type||'audio/webm'},body:blob});const j=await r.json();clearInterval(tick);
+  if(!r.ok)throw new Error(j.error||r.status);
+  if(!j.transcript.trim())throw new Error('No speech was recognised. Check the microphone and try again.');
+  state.scribe={...(state.scribe||{}),transcript:j.transcript};persist();
+  await runExtract(j.transcript)}
+ catch(e){clearInterval(tick);recBusy=false;renderForm();recSay('Transcription failed: '+e.message)}}
+async function runExtract(transcript){
+ recBusy=true;if(!$('#rec-status')?.textContent)renderForm();const t0=Date.now();const tick=setInterval(()=>recSay(`Reading the transcript with ${helper?.ollama?.model||'Qwen3'}… ${Math.round((Date.now()-t0)/1000)} s (this can take a few minutes)`),1000);
+ try{const r=await fetch('/api/extract',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({transcript})});const j=await r.json();clearInterval(tick);
+  if(!r.ok)throw new Error(j.error||r.status);
+  recBusy=false;applyScribe(j);renderForm();toast('Recording processed — review the dashed suggestions');
+  recSay(`Done in ${Math.round((Date.now()-t0)/1000)} s. ${state.scribe.counts} Go through each step to confirm.`)}
+ catch(e){clearInterval(tick);recBusy=false;renderForm();recSay('Extraction failed: '+e.message+'. The transcript is kept below; you can edit it and try again.')}}
+detectHelper();
+
+function scribeUI(){
+ const sc=state.scribe;
+ return `<div class="group"><div class="group-head"><h3>Import a recorded consultation</h3>${sc?'<span class="tag p">imported</span>':''}</div>
+ <p class="tiny">Load the <code>consultation.json</code> made by the Rheumletter scribe script (Whisper transcription plus field extraction). Every item arrives as a suggestion with the quote it came from. Nothing enters the letter until you confirm it.</p>
+ <div class="stack"><label class="f"><span>Consultation file (.json)</span><input type="file" id="scribe-file" accept=".json,application/json"></label>
+ <div class="row"><button class="btn primary" type="button" id="scribe-import">Import recording</button>${sc?.counts?'<button class="btn danger" type="button" id="scribe-remove">Remove recording suggestions</button>':''}</div>
+ <p class="status" id="scribe-status"></p>
+ ${sc?.counts?`<div class="check" style="background:var(--surface-2)"><b style="color:var(--fg)">Recording imported</b> · ${esc(sc.backend||'')}${sc.model?' ('+esc(sc.model)+')':''}<br>${sc.counts}${sc.rejected?`<br><span class="tiny">${sc.rejected} item${sc.rejected>1?'s were':' was'} dropped because the quoted words could not be found in the transcript.</span>`:''}</div>
+ ${sc.transcript?`<details><summary class="tiny" style="cursor:pointer">Show transcript</summary><div class="transcript">${esc(sc.transcript)}</div></details>`:''}`:''}
+ </div></div>`}
+async function importScribe(){
+ const st=$('#scribe-status');const f=$('#scribe-file').files[0];
+ if(!f){st.textContent='Choose the consultation .json file first.';return}
+ try{if(f.size>2000000)throw new Error('File is larger than 2 MB.');
+  const p=JSON.parse(await f.text());if(p.type!=='rheumletter-scribe'||p.v!==1)throw new Error('This is not a Rheumletter scribe file.');
+  applyScribe(p);renderForm();toast('Recording imported — review the dashed suggestions')}
+ catch(err){st.textContent='Could not import: '+err.message}}
+function applyScribe(p){
+ const ids={dx:new Set(DX.map(x=>x.id)),hx:new Set(HX.map(x=>x.id)),rom:new Set(ROM.map(x=>x.id))};
+ const all={...Object.fromEntries(DX.map(x=>[x.id,x])),...Object.fromEntries(HX.map(x=>[x.id,x])),...Object.fromEntries(ROM.map(x=>[x.id,x]))};
+ let nF=0,nM=0,nG=0;
+ for(const f of p.findings||[]){const b=['dx','hx','rom'].find(k=>ids[k].has(f.id));const it=all[f.id];if(!b||!Number.isInteger(f.option)||f.option<0||f.option>=it.o.length)continue;
+  const cur=state[b][f.id];if(cur&&cur.o!=null&&cur.o>=0&&!cur.suggested)continue;
+  state[b][f.id]={o:f.option,suggested:true,src:'recording',evidence:String(f.evidence||'').slice(0,300),...(f.detail?{detail:String(f.detail).slice(0,200)}:{})};nF++}
+ for(const m of p.medications||[]){if(!m.name)continue;const fr=FREQ.find(([v])=>v&&v===String(m.frequency||'').toLowerCase());
+  state.meds.push({name:String(m.name).slice(0,60),brand:'',dose:String(m.dose||'').slice(0,30),route:ROUTES.includes(m.route)?m.route:'oral',freq:fr?fr[0]:(m.frequency?'other':''),freqOther:fr?'':String(m.frequency||'').slice(0,40),kind:m.status==='previous'?'previous':'current',suggested:true,source:'recording',evidence:String(m.evidence||'').slice(0,300)});nM++}
+ for(const m of p.management||[]){const it=MX_BY[m.id];if(!it)continue;const st=mgState(m.id);if(st.on)continue;
+  st.sugg={detail:String(m.detail||'').slice(0,200),evidence:String(m.evidence||'').slice(0,300)};prefillMg(it,st,st.sugg.detail);nG++}
+ fillMissingLinks();
+ const valid=a=>(Array.isArray(a)?a:[]).filter(x=>JOINT_BY[x]);
+ const jt=valid(p.joints?.tender),js=valid(p.joints?.swollen);
+ state.exam.scribe=jt.length||js.length?{t:jt,s:js,evidence:String(p.joints?.evidence||'').slice(0,400)}:null;
+ state.scribe={backend:p.backend,model:p.model,created:p.created,summary:String(p.summary||'').slice(0,3000),examOther:String(p.exam_other||'').slice(0,2000),
+  inv:{bloods:String(p.investigations?.bloods||'').slice(0,2000),radiology:String(p.investigations?.radiology||'').slice(0,2000),other:String(p.investigations?.other||'').slice(0,2000)},
+  transcript:String(p.transcript||'').slice(0,60000),rejected:(p.rejected||[]).length,used:{},
+  counts:`${nF} history and examination answers, ${nM} medication${nM===1?'':'s'}, ${nG} management item${nG===1?'':'s'}${jt.length||js.length?', joint findings':''}${p.summary?', a summary':''}.`}}
+function prefillMg(it,st,detail){
+ if(!detail)return;const d=detail.toLowerCase();
+ if(it.id==='m_review'){const m=d.match(/(\d+|six|three|eleven|twelve)\s*(week|month)/);if(m){const w={six:'6',three:'3',eleven:'11',twelve:'12'}[m[1]]||m[1];const v=`${w} ${m[2]}s`;if(it.fields[0].opts.some(([o])=>o===v))st.f.when=v}return}
+ if(it.id==='m_xray'){const parts=[];if(/hand/.test(d))parts.push('Bilateral hands');if(/f(ee|oo)t/.test(d))parts.push('Bilateral feet');if(/pelvi/.test(d))parts.push('Pelvis');if(/chest/.test(d))parts.push('Chest');if(parts.length)st.f.parts=parts;return}
+ if(it.id==='m_screen'){st.f.panel='Additional blood tests';st.f.tests=TESTS.filter(t=>d.includes(t.toLowerCase()));if(!st.f.tests.length)st.f.other=detail;return}
+ const tf=(it.fields||[]).find(f=>f.type==='text');if(tf&&!st.f[tf.k])st.f[tf.k]=detail}
+function useScribe(k){
+ const sc=state.scribe;(sc.used=sc.used||{})[k]=true;
+ if(k==='summary')state.history.summary=[state.history.summary.trim(),sc.summary].filter(Boolean).join('\n');
+ else if(k==='examOther')state.exam.other=[state.exam.other.trim(),sc.examOther].filter(Boolean).join('\n');
+ else if(k.startsWith('inv_')){const f=k.slice(4);state.inv[f]=[state.inv[f].trim(),sc.inv[f]].filter(Boolean).join('\n')}
+ renderForm();toast('Inserted — edit as needed')}
+function removeScribe(){
+ for(const b of ['dx','hx','rom'])for(const [k,v] of Object.entries(state[b]))if(v?.suggested&&v.src==='recording')delete state[b][k];
+ state.meds=state.meds.filter(m=>!(m.suggested&&m.source==='recording'));
+ for(const v of Object.values(state.mg))if(v?.sugg)delete v.sugg;
+ state.exam.scribe=null;state.scribe=null;renderForm()}
+function removePatient(){
+ for(const b of ['dx','hx'])for(const [k,v] of Object.entries(state[b]))if(v?.suggested&&v.src!=='recording')delete state[b][k];
+ state.meds=state.meds.filter(m=>!(m.suggested&&m.source==='patient'));state.patient=null;state.exam.patient=null;renderForm()}
+
+/* ============================================================
+   DICTATION (one consent per session, shown in the page)
+   ============================================================ */
+let rec=null,recBtn=null,consentGiven=false;try{consentGiven=sessionStorage.getItem('rl3-dictation')==='yes'}catch(e){}
+function decorateMics(){
+ if(!(window.SpeechRecognition||window.webkitSpeechRecognition))return;
+ document.querySelectorAll('#form [data-dictate]').forEach(f=>{if(f.nextElementSibling?.classList?.contains('mic'))return;const b=document.createElement('button');b.type='button';b.className='mic';b.textContent='🎙 Dictate';b.setAttribute('aria-pressed','false');b.setAttribute('aria-label','Dictate into this field');f.insertAdjacentElement('afterend',b)})}
+function dictate(btn){
+ if(rec){const same=recBtn===btn;rec.stop();if(same)return}
+ if(!consentGiven){if(btn.nextElementSibling?.classList.contains('consent'))return;const c=document.createElement('div');c.className='consent';c.innerHTML='<span>Browser dictation sends audio to your browser\'s speech service (Google, for Chrome). Use test data only.</span><div class="row"><button class="btn small primary" type="button" data-consent="yes">Start dictation</button><button class="btn small" type="button" data-consent="no">Cancel</button></div>';btn.insertAdjacentElement('afterend',c);return}
+ const field=btn.previousElementSibling;const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+ const r=new SR();r.lang='en-IE';r.continuous=true;r.interimResults=false;rec=r;recBtn=btn;btn.textContent='■ Stop';btn.setAttribute('aria-pressed','true');
+ r.onresult=ev=>{for(let i=ev.resultIndex;i<ev.results.length;i++)if(ev.results[i].isFinal){const w=ev.results[i][0].transcript.trim();if(!w)continue;const pos=field.selectionStart??field.value.length;const before=field.value.slice(0,pos),after=field.value.slice(pos);const add=(before&&!/\s$/.test(before)?' ':'')+w;field.value=before+add+after;field.dispatchEvent(new Event('input',{bubbles:true}));try{field.setSelectionRange(pos+add.length,pos+add.length)}catch(e){}}};
+ r.onerror=ev=>{if(ev.error!=='aborted'&&ev.error!=='no-speech')toast('Dictation stopped: '+ev.error)};
+ r.onend=()=>{btn.textContent='🎙 Dictate';btn.setAttribute('aria-pressed','false');if(rec===r){rec=null;recBtn=null}};
+ try{r.start()}catch(err){toast('Could not start dictation: '+err.message)}}
+function consentAnswer(t){const box=t.closest('.consent');const mic=box.previousElementSibling;box.remove();if(t.dataset.consent==='yes'){consentGiven=true;try{sessionStorage.setItem('rl3-dictation','yes')}catch(e){}dictate(mic)}}
+
+/* ---------- Boot ---------- */
+const setTop=()=>document.documentElement.style.setProperty('--toph',document.querySelector('.top').offsetHeight+'px');addEventListener('resize',setTop);setTop();
+renderSteps();renderForm();
+</script>
+</body>
+</html>
